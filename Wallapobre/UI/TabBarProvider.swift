@@ -19,12 +19,18 @@ class TabBarProvider {
     init() {
         let viewModel = MainViewModel()
         let mainViewController: MainViewController = MainViewController(viewModel: viewModel)
+        let productViewController: MainViewController = MainViewController(viewModel: viewModel)
         
         mainViewController.tabBarItem = UITabBarItem.init(title: "Productos", image: UIImage.init(systemName: "star.fill"), tag: 0)
+        
+        //productViewController.tabBarItem = UITabBarItem.init(title: "Nuevo Producto", image: UIImage.init(systemName: "star.fill"), tag: 2)
 
-        TabBarProvider.navigation = UINavigationController.init(rootViewController: mainViewController)
+        let mainNavigationController: UINavigationController = UINavigationController.init(rootViewController: mainViewController)
+        //let productNavigationController: UINavigationController = UINavigationController.init(rootViewController: productViewController)
+        
+        //TabBarProvider.navigation = UINavigationController.init(rootViewController: mainViewController)
 
-        tabBar.viewControllers = [TabBarProvider.navigation!]
+        tabBar.viewControllers = [mainNavigationController] //, productNavigationController]
         tabBar.tabBar.barStyle = .default
         tabBar.tabBar.isTranslucent = false
         tabBar.tabBar.tintColor = .black

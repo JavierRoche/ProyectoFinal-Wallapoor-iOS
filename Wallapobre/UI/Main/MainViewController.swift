@@ -43,6 +43,17 @@ class MainViewController: UIViewController {
         indicator.style = UIActivityIndicatorView.Style.large
         return indicator
     }()
+    
+    lazy var newProductButton: UIButton = {
+        let button: UIButton = UIButton()
+        button.setTitle("+", for: .normal)
+        button.tintColor = UIColor.black
+        button.backgroundColor = UIColor.black
+        //button.layer.cornerRadius = button.frame.size.height / 2
+        button.addTarget(self, action: #selector (tapOnNewProduct), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
 
     /// Objeto del modelo que contiene las imagenes
     let viewModel: MainViewModel
@@ -67,11 +78,19 @@ class MainViewController: UIViewController {
         view.backgroundColor = .white
 
         view.addSubview(collectionView)
+        view.addSubview(newProductButton)
+        view.bringSubviewToFront(newProductButton)
+        
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: view.topAnchor),
             collectionView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -6.0),
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             collectionView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 6.0)
+        ])
+        
+        NSLayoutConstraint.activate([
+            newProductButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            newProductButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20.0)
         ])
     }
 
@@ -90,18 +109,16 @@ class MainViewController: UIViewController {
     fileprivate func configureUI() {
         /// Asignacion del UISearchController y atributos del navigationController
         self.navigationItem.searchController = searchController
-        /// Creacion del boton de menu para abrir el menu desplaegable lateral
-        /*let menu: UIBarButtonItem = UIBarButtonItem(image: UIImage.init(systemName: "line.horizontal.3"), style: .plain, target: self, action: #selector(menuTapped))
-        self.navigationItem.searchController?.toolbarItems?.append(menu)*/
+        
         
     }
     
-    @objc func menuTapped() {
-        // TODO
-    }
-    
-    @objc func uploadProduct() {
-        // TODO
+    @objc func tapOnNewProduct(sender: UIButton!) {
+        let productViewModel: ProductViewModel = ProductViewModel()
+        let productViewController: ProductViewController = ProductViewController(viewModel: productViewModel)
+        let navigationController: UINavigationController = UINavigationController.init(rootViewController: productViewController)
+        navigationController.modalPresentationStyle = UIDevice.current.userInterfaceIdiom == .pad ? .formSheet : .automatic
+        self.present(navigationController, animated: true, completion: nil)
     }
 }
 
@@ -120,7 +137,10 @@ extension MainViewController: MainViewModelDelegate {
 extension MainViewController: FiltersDelegate {
     func filterCreated(filter: Filter) {
         print("filterCreated")
-        // TODO : Aplicar filtro
+        let initialFilter = Filter()
+        if filter != initialFilter {
+            // Abrir Controller con lista filtrada
+        }
     }
 }
 
@@ -171,14 +191,14 @@ extension MainViewController: UISearchBarDelegate  {
     func searchBarBookmarkButtonClicked(_ searchBar: UISearchBar) {
         print("searchBarBookmarkButtonClicked")
         /// Presentamos el modal con las opciones de filtrado
-        let viewModel = FiltersViewModel()
-        let filtersViewController: FiltersViewController = FiltersViewController(viewModel: viewModel)
+        let filtersViewModel: FiltersViewModel = FiltersViewModel()
+        let filtersViewController: FiltersViewController = FiltersViewController(viewModel: filtersViewModel)
         filtersViewController.delegate = self
+        let navigationController: UINavigationController = UINavigationController.init(rootViewController: filtersViewController)
+        navigationController.modalPresentationStyle = .formSheet
+        navigationController.navigationBar.isHidden = true
         
-        TabBarProvider.navigation?.modalPresentationStyle = .formSheet
-        TabBarProvider.navigation?.navigationBar.isHidden = true
-        
-        self.present(filtersViewController, animated: true, completion: nil)
+        self.present(navigationController, animated: true, completion: nil)
     }
     
     /// Funcion delegada de UISearchBar para controlar el click en Cancel

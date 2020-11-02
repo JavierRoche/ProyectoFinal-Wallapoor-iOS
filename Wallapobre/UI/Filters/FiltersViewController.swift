@@ -13,7 +13,7 @@ protocol FiltersDelegate: class {
 }
 
 class FiltersViewController: UIViewController {
-    lazy var whiteView: UIView = {
+    lazy var backgroundView: UIView = {
         let view: UIView = UIView(frame: self.view.bounds)
         view.backgroundColor = UIColor.white
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -54,7 +54,7 @@ class FiltersViewController: UIViewController {
         label.font = UIFont.fontStyle18Bold
         label.textColor = UIColor.black
         label.numberOfLines = 1
-        label.text = "Motor y Accesorios"
+        label.text = Category.motor.rawValue
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -64,7 +64,7 @@ class FiltersViewController: UIViewController {
         label.font = UIFont.fontStyle18Bold
         label.textColor = UIColor.black
         label.numberOfLines = 1
-        label.text = "Textil"
+        label.text = Category.textile.rawValue
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -74,7 +74,7 @@ class FiltersViewController: UIViewController {
         label.font = UIFont.fontStyle18Bold
         label.textColor = UIColor.black
         label.numberOfLines = 1
-        label.text = "Hogar"
+        label.text = Category.homes.rawValue
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -84,7 +84,7 @@ class FiltersViewController: UIViewController {
         label.font = UIFont.fontStyle18Bold
         label.textColor = UIColor.black
         label.numberOfLines = 1
-        label.text = "Informática y Electrónica"
+        label.text = Category.informatic.rawValue
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -94,7 +94,7 @@ class FiltersViewController: UIViewController {
         label.font = UIFont.fontStyle18Bold
         label.textColor = UIColor.black
         label.numberOfLines = 1
-        label.text = "Deporte y Ocio"
+        label.text = Category.sports.rawValue
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -104,7 +104,7 @@ class FiltersViewController: UIViewController {
         label.font = UIFont.fontStyle18Bold
         label.textColor = UIColor.black
         label.numberOfLines = 1
-        label.text = "Servicios"
+        label.text = Category.services.rawValue
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -183,7 +183,7 @@ class FiltersViewController: UIViewController {
 
     init(viewModel: FiltersViewModel) {
         self.viewModel = viewModel
-        super.init(nibName: nil, bundle: nil)
+        super.init(nibName: String(describing: FiltersViewController.self), bundle: nil)
     }
 
     required init?(coder: NSCoder) {
@@ -211,12 +211,12 @@ class FiltersViewController: UIViewController {
     }
     
     
-    // MARK: Functions
+    // MARK: Private Functions
        
     fileprivate func setViewsHierarchy() {
         view = UIView()
         
-        view.addSubview(whiteView)
+        view.addSubview(backgroundView)
         view.addSubview(filtersLabel)
         view.addSubview(acceptButton)
         view.addSubview(categoriesLabel)
@@ -234,23 +234,24 @@ class FiltersViewController: UIViewController {
         view.addSubview(servicesSwitch)
         view.addSubview(slider)
         view.addSubview(sliderLabel)
+        view.bringSubviewToFront(acceptButton)
     }
     
     fileprivate func setConstraints() {
         NSLayoutConstraint.activate([
-            self.whiteView.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height / 2),
-            self.whiteView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            self.whiteView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            self.whiteView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+            self.backgroundView.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height / 2),
+            self.backgroundView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            self.backgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            self.backgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
         
         NSLayoutConstraint.activate([
-            self.filtersLabel.topAnchor.constraint(equalTo: whiteView.topAnchor, constant: 16.0),
+            self.filtersLabel.topAnchor.constraint(equalTo: backgroundView.topAnchor, constant: 16.0),
             self.filtersLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
         
         NSLayoutConstraint.activate([
-            self.acceptButton.topAnchor.constraint(equalTo: whiteView.topAnchor, constant: 16.0),
+            self.acceptButton.topAnchor.constraint(equalTo: backgroundView.topAnchor, constant: 16.0),
             self.acceptButton.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
         
@@ -331,6 +332,9 @@ class FiltersViewController: UIViewController {
         ])
         
     }
+    
+    
+    // MARK: User Interactions
     
     @objc func sliderValueDidChange(sender: UISlider!) {
         sender.value = round(sender.value / 10) * 10
