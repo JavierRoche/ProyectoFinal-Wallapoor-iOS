@@ -36,7 +36,7 @@ class LoginViewController: UIViewController {
         textField.keyboardType = UIKeyboardType.emailAddress
         textField.returnKeyType = UIReturnKeyType.done
         textField.clearButtonMode = UITextField.ViewMode.whileEditing
-        textField.delegate = (self as! UITextFieldDelegate)
+        //textField.delegate = (self as! UITextFieldDelegate)
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
@@ -61,7 +61,7 @@ class LoginViewController: UIViewController {
         textField.keyboardType = UIKeyboardType.default
         textField.returnKeyType = UIReturnKeyType.done
         textField.clearButtonMode = UITextField.ViewMode.whileEditing
-        textField.delegate = (self as! UITextFieldDelegate)
+        //textField.delegate = (self as! UITextFieldDelegate)
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
@@ -88,7 +88,7 @@ class LoginViewController: UIViewController {
         textField.keyboardType = UIKeyboardType.default
         textField.returnKeyType = UIReturnKeyType.done
         textField.clearButtonMode = UITextField.ViewMode.whileEditing
-        textField.delegate = (self as! UITextFieldDelegate)
+        //textField.delegate = (self as! UITextFieldDelegate)
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
@@ -97,7 +97,7 @@ class LoginViewController: UIViewController {
         let button: UIButton = UIButton(type: UIButton.ButtonType.system)
         button.setTitle("Login", for: .normal)
         button.tintColor = UIColor.black
-        button.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapOnRegister)))
+        button.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapOnLogin)))
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -151,7 +151,6 @@ class LoginViewController: UIViewController {
     
     lazy var registerPosition: CGPoint = CGPoint(x: 0, y: 0)
     lazy var loginPosition: CGPoint = CGPoint(x: 0, y: 0)
-    var originalPosition: CGPoint = CGPoint(x: 0, y: 0)
     var registerInterface: Bool = false
     
     
@@ -165,17 +164,49 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        //viewModel.viewWasLoaded()
-        //configureUI()
-        //var position: CGPoint = passwordTextField.layer.bounds.origin //  frame.origin
-        
+        let manager: UserFirebase = UserFirebase()
+        manager.isLogged(onSuccess: { (user) in
+            if let _ = user {
+                // TOO: NAVIGATE
+            }
+        }, onError: nil)
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        /// Inicializamos valores globales para una CAAnimation
         registerPosition = CGPoint(x: registerButton.layer.position.x, y: registerButton.layer.position.y)
         loginPosition = CGPoint(x: loginButton.layer.position.x, y: loginButton.layer.position.y)
-        
-        
+    }
+    
+    
+    // MARK: User Interactions
+    
+    @objc func tapOnLogin(sender: UIButton!) {
+        /// Accedemos a la WindowScene de la App para la navegacion
+        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+              let sceneDelegate = windowScene.delegate as? SceneDelegate else { return }
+        /// Creamos el TabBar con las pestañas de la App
+        let tabBar: TabBarProvider = TabBarProvider.init()
+        sceneDelegate.window?.rootViewController = tabBar.activeTab()
+        /// Eliminamos el controlador del login
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    @objc func tapOnRegister(sender: UIButton!) {
+        if !registerInterface {
+            openRegisterInterface()
+            
+        } else {
+            register()
+        }
+    }
+    
+    @objc func tapOnHideUsername(sender: UIButton!) {
+        closeRegisterInterface()
+    }
+    
+    @objc func tapOnRecover(sender: UIButton!) {
+        recover()
     }
     
     
@@ -263,37 +294,25 @@ class LoginViewController: UIViewController {
         ])
     }
     
-    
-    // MARK: User Interactions
-    
-    @objc func tapOnLogin(sender: UIButton!) {
-        print("tapOnLogin")
+    fileprivate func openRegisterInterface() {
+        /// Creamos una posicion inicial y una final aplicando una traslacion en vertical
+        var startPosition: CGPoint = CGPoint(x: registerPosition.x, y: registerPosition.y)
+        registerAnimation.fromValue = startPosition
+        registerAnimation.toValue = startPosition.applying(.init(translationX: 0.0, y: 90))
+        
+        /// Al ser una animacion de Core Animation se incluye en la layer de la vista, no en la vista
+        registerButton.layer.add(registerAnimation, forKey: "position")
+        
+        /// Creamos una posicion inicial y una final aplicando una traslacion en vertical
+        startPosition = CGPoint(x: loginPosition.x, y: loginPosition.y)
+        loginAnimation.fromValue = startPosition
+        loginAnimation.toValue = startPosition.applying(.init(translationX: 0.0, y: 90))
+        
+        /// Al ser una animacion de Core Animation se incluye en la layer de la vista, no en la vista
+        loginButton.layer.add(loginAnimation, forKey: "position")
     }
     
-    @objc func tapOnRegister(sender: UIButton!) {
-        if !registerInterface {
-            /// Creamos una posicion inicial y una final aplicando una traslacion en vertical
-            var startPosition: CGPoint = CGPoint(x: registerPosition.x, y: registerPosition.y)
-            registerAnimation.fromValue = startPosition
-            registerAnimation.toValue = startPosition.applying(.init(translationX: 0.0, y: 90))
-            
-            /// Al ser una animacion de Core Animation se incluye en la layer de la vista, no en la vista
-            registerButton.layer.add(registerAnimation, forKey: "position")
-            
-            /// Creamos una posicion inicial y una final aplicando una traslacion en vertical
-            startPosition = CGPoint(x: loginPosition.x, y: loginPosition.y)
-            loginAnimation.fromValue = startPosition
-            loginAnimation.toValue = startPosition.applying(.init(translationX: 0.0, y: 90))
-            
-            /// Al ser una animacion de Core Animation se incluye en la layer de la vista, no en la vista
-            loginButton.layer.add(loginAnimation, forKey: "position")
-            
-        } else {
-            print("Registrar")
-        }
-    }
-    
-    @objc func tapOnHideUsername(sender: UIButton!) {
+    fileprivate func closeRegisterInterface() {
         /// Creamos una posicion inicial y una final aplicando una traslacion en vertical
         var startPosition: CGPoint = CGPoint(x: registerPosition.x, y: registerPosition.y)
         registerAnimation.fromValue = startPosition
@@ -311,60 +330,58 @@ class LoginViewController: UIViewController {
         loginButton.layer.add(loginAnimation, forKey: "position")
     }
     
-    @objc func tapOnRecover(sender: UIButton!) {
-        print("tapOnRecover")
-    }
-}
-
-
-// MARK: UITextView / UITextField Delegates (Hiding Keyboard)
-
-extension LoginViewController: UITextFieldDelegate {
-    
-}
-
-
-// MARK: UITextView / UITextField Delegates (Hiding Keyboard)
-
-extension LoginViewController: CAAnimationDelegate {
-    
-    func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
-        if registerInterface == false {
-            registerInterface = true
-            /// Visibilidad de los botones
-            loginButton.isHidden = true
-            hideButton.isHidden = false
-            /// Mostramos los datos para el registro
-            usernameLabel.isHidden = false
-            usernameTextField.isHidden = false
+    fileprivate func login() {
+        /// Comprobamos que el usuario ha introducido un email y un pass
+        guard let email = emailTextField.text, let password = passwordTextField.text else {
+            self.showAlert(title: "Warning", message: "Missing data")
+            return
+        }
+        
+        /// Inicializamos un User con los datos introducidos por el usuario
+        let user: User = User.init(id: "", email: email, password: password)
+        let manager: UserFirebase = UserFirebase()
+        /// Obtenemos el manager del interactor y hacemos el login
+        manager.login(user: user, onSuccess: { (user) in
+            // TODO: Navigate donde sea
             
-            /// Guardamos los nuevos puntos porque (no se por que) se descolocan tras la animacion
-            registerPosition = CGPoint(x: registerPosition.x, y: registerPosition.y + 90)
-            loginPosition = CGPoint(x: loginPosition.x, y: loginPosition.y + 90)
-            /// Movemos la view tras la animacion para trasladar los Gestures
-            registerButton.frame.origin = registerPosition
-            
-        } else {
-            registerInterface = false
-            
-            /// Guardamos los nuevos puntos porque (no se por que) se descolocan tras la animacion
-            registerPosition = CGPoint(x: registerPosition.x, y: registerPosition.y + -90)
-            loginPosition = CGPoint(x: loginPosition.x, y: loginPosition.y + -90)
-            /// Movemos la view tras la animacion para trasladar los Gestures
-            registerButton.frame.origin = registerPosition
+        }) { (error) in
+            self.showAlert(title: "Error", message: error.localizedDescription)
         }
     }
     
-    func animationDidStart(_ anim: CAAnimation) {
-        if registerInterface == true {
+    fileprivate func register() {
+        /// Comprobamos que el usuario ha introducido un email y un pass
+        guard let email = emailTextField.text, let password = passwordTextField.text else {
+            self.showAlert(title: "Warning", message: "Missing data")
+            return
+        }
+        
+        /// Inicializamos un User con los datos introducidos por el usuario
+        let user: User = User.init(id: "", email: email, password: password)
+        let manager: UserFirebase = UserFirebase()
+        manager.register(user: user, onSuccess: { (user) in
+            // TODO: Navigate donde sea
             
-            /// Visibilidad de los botones
-            loginButton.isHidden = false
-            hideButton.isHidden = true
-            /// Ocultamos los datos para el registro
-            usernameLabel.isHidden = true
-            usernameTextField.isHidden = true
+        }) { (error) in
+            self.showAlert(title: "Error", message: error.localizedDescription)
+        }
+    }
+    
+    fileprivate func recover() {
+        /// Comprobamos que el usuario ha introducido un email
+        guard let email = emailTextField.text else {
+            self.showAlert(title: "Warning", message: "Missing data")
+            return
+        }
+        
+        /// Inicializamos un User con los datos introducidos por el usuario
+        let user = User.init(id: "", email: email, password: nil)
+        let manager: UserFirebase = UserFirebase()
+        manager.recoverPassword(user: user, onSuccess: { (user) in
+            self.showAlert(title: "Password", message: "Password recovered")
             
+        }) { (error) in
+            self.showAlert(title: "Error", message: error.localizedDescription)
         }
     }
 }

@@ -8,9 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		1825BAE025502BC700C3CDFA /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1825BADF25502BC700C3CDFA /* LoginViewController.swift */; };
-		1825BAE22551913600C3CDFA /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1825BAE12551913600C3CDFA /* LoginViewModel.swift */; };
 		1825BAE82551B1C700C3CDFA /* UserFirebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1825BAE72551B1C700C3CDFA /* UserFirebase.swift */; };
 		1825BAEA2551B1DB00C3CDFA /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1825BAE92551B1DB00C3CDFA /* UserManager.swift */; };
+		1825BAEC2551B56200C3CDFA /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1825BAEB2551B56200C3CDFA /* User.swift */; };
+		1825BAEE2551BFFC00C3CDFA /* LoginViewController+Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1825BAED2551BFFC00C3CDFA /* LoginViewController+Animation.swift */; };
+		1825BAF12551D1EA00C3CDFA /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1825BAF02551D1EA00C3CDFA /* ProfileViewController.swift */; };
+		1825BAF32551D23500C3CDFA /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1825BAF22551D23500C3CDFA /* ProfileViewModel.swift */; };
+		1825BAF52551D83B00C3CDFA /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1825BAF42551D83B00C3CDFA /* GoogleService-Info.plist */; };
 		18B215FB254C75C6008027D1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B215FA254C75C6008027D1 /* AppDelegate.swift */; };
 		18B215FD254C75C6008027D1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B215FC254C75C6008027D1 /* SceneDelegate.swift */; };
 		18B215FF254C75C6008027D1 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B215FE254C75C6008027D1 /* MainViewController.swift */; };
@@ -46,9 +50,13 @@
 
 /* Begin PBXFileReference section */
 		1825BADF25502BC700C3CDFA /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
-		1825BAE12551913600C3CDFA /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		1825BAE72551B1C700C3CDFA /* UserFirebase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserFirebase.swift; sourceTree = "<group>"; };
 		1825BAE92551B1DB00C3CDFA /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
+		1825BAEB2551B56200C3CDFA /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		1825BAED2551BFFC00C3CDFA /* LoginViewController+Animation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LoginViewController+Animation.swift"; sourceTree = "<group>"; };
+		1825BAF02551D1EA00C3CDFA /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		1825BAF22551D23500C3CDFA /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
+		1825BAF42551D83B00C3CDFA /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		18B215F7254C75C6008027D1 /* Wallapobre.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Wallapobre.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		18B215FA254C75C6008027D1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		18B215FC254C75C6008027D1 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -101,7 +109,7 @@
 			isa = PBXGroup;
 			children = (
 				1825BADF25502BC700C3CDFA /* LoginViewController.swift */,
-				1825BAE12551913600C3CDFA /* LoginViewModel.swift */,
+				1825BAED2551BFFC00C3CDFA /* LoginViewController+Animation.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -118,7 +126,7 @@
 		1825BAE42551B11600C3CDFA /* Managers */ = {
 			isa = PBXGroup;
 			children = (
-				1825BAE62551B19F00C3CDFA /* FirebaseAuthorization */,
+				1825BAE62551B19F00C3CDFA /* UserFirebase */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -127,17 +135,27 @@
 			isa = PBXGroup;
 			children = (
 				18C2F7DB254D9B0E00D74E74 /* Product.swift */,
+				1825BAEB2551B56200C3CDFA /* User.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
 		};
-		1825BAE62551B19F00C3CDFA /* FirebaseAuthorization */ = {
+		1825BAE62551B19F00C3CDFA /* UserFirebase */ = {
 			isa = PBXGroup;
 			children = (
 				1825BAE72551B1C700C3CDFA /* UserFirebase.swift */,
 				1825BAE92551B1DB00C3CDFA /* UserManager.swift */,
 			);
-			path = FirebaseAuthorization;
+			path = UserFirebase;
+			sourceTree = "<group>";
+		};
+		1825BAEF2551D16600C3CDFA /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				1825BAF02551D1EA00C3CDFA /* ProfileViewController.swift */,
+				1825BAF22551D23500C3CDFA /* ProfileViewModel.swift */,
+			);
+			path = Profile;
 			sourceTree = "<group>";
 		};
 		18B215EE254C75C6008027D1 = {
@@ -187,6 +205,7 @@
 				18B21603254C75C7008027D1 /* Assets.xcassets */,
 				18B21605254C75C7008027D1 /* LaunchScreen.storyboard */,
 				18B21608254C75C7008027D1 /* Info.plist */,
+				1825BAF42551D83B00C3CDFA /* GoogleService-Info.plist */,
 				18B2161D254C7601008027D1 /* Common */,
 			);
 			path = Resources;
@@ -208,8 +227,7 @@
 				18C2F7CC254C880E00D74E74 /* TabBarProvider.swift */,
 				1825BADE25502BB200C3CDFA /* Login */,
 				18B21621254C7624008027D1 /* Main */,
-				18C2F7CE254CA15A00D74E74 /* Filters */,
-				18C2F7D5254D92F500D74E74 /* Product */,
+				1825BAEF2551D16600C3CDFA /* Profile */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -220,6 +238,8 @@
 				18B215FE254C75C6008027D1 /* MainViewController.swift */,
 				18B21623254C7658008027D1 /* MainViewModel.swift */,
 				18B21622254C7644008027D1 /* Cell */,
+				18C2F7CE254CA15A00D74E74 /* Filters */,
+				18C2F7D5254D92F500D74E74 /* Product */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -354,6 +374,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				18B21607254C75C7008027D1 /* LaunchScreen.storyboard in Resources */,
+				1825BAF52551D83B00C3CDFA /* GoogleService-Info.plist in Resources */,
 				18B21604254C75C7008027D1 /* Assets.xcassets in Resources */,
 				18B21629254C7696008027D1 /* MainCell.xib in Resources */,
 			);
@@ -421,20 +442,23 @@
 				18C2F7D4254D732C00D74E74 /* FiltersViewModel.swift in Sources */,
 				18B21628254C7696008027D1 /* MainCell.swift in Sources */,
 				18C2F7D9254D938200D74E74 /* ProductViewModel.swift in Sources */,
+				1825BAF12551D1EA00C3CDFA /* ProfileViewController.swift in Sources */,
 				18B2162A254C7696008027D1 /* MainCellViewModel.swift in Sources */,
 				18C2F7D7254D936F00D74E74 /* ProductViewController.swift in Sources */,
-				1825BAE22551913600C3CDFA /* LoginViewModel.swift in Sources */,
+				1825BAEE2551BFFC00C3CDFA /* LoginViewController+Animation.swift in Sources */,
 				18B215FF254C75C6008027D1 /* MainViewController.swift in Sources */,
 				18B215FB254C75C6008027D1 /* AppDelegate.swift in Sources */,
 				18C2F7E2254EFE0400D74E74 /* Extensions.swift in Sources */,
 				18C2F7CD254C880E00D74E74 /* TabBarProvider.swift in Sources */,
 				18C2F7D0254CA19100D74E74 /* FiltersViewController.swift in Sources */,
+				1825BAF32551D23500C3CDFA /* ProfileViewModel.swift in Sources */,
 				1825BAE025502BC700C3CDFA /* LoginViewController.swift in Sources */,
 				18B215FD254C75C6008027D1 /* SceneDelegate.swift in Sources */,
 				1825BAE82551B1C700C3CDFA /* UserFirebase.swift in Sources */,
 				18C2F7E4254F5E0900D74E74 /* ProductViewController+Input.swift in Sources */,
 				1825BAEA2551B1DB00C3CDFA /* UserManager.swift in Sources */,
 				18C2F7DC254D9B0E00D74E74 /* Product.swift in Sources */,
+				1825BAEC2551B56200C3CDFA /* User.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

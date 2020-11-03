@@ -44,3 +44,5 @@ enum Category: String {
     case sports = "Deporte y Ocio"
     case services = "Servicios"
 }
+
+public typealias ErrorClosure = (Error) -> Void

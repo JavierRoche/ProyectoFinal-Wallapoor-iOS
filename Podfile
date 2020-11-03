@@ -6,5 +6,6 @@ target 'Wallapobre' do
     
   pod 'MessageKit', '~> 3.0.0'
   pod 'Firebase/Auth'
+  pod 'Firebase/Analytics'
 
 end
