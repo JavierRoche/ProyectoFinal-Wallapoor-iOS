@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1825BAE025502BC700C3CDFA /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1825BADF25502BC700C3CDFA /* LoginViewController.swift */; };
+		1825BAE22551913600C3CDFA /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1825BAE12551913600C3CDFA /* LoginViewModel.swift */; };
+		1825BAE82551B1C700C3CDFA /* UserFirebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1825BAE72551B1C700C3CDFA /* UserFirebase.swift */; };
+		1825BAEA2551B1DB00C3CDFA /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1825BAE92551B1DB00C3CDFA /* UserManager.swift */; };
 		18B215FB254C75C6008027D1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B215FA254C75C6008027D1 /* AppDelegate.swift */; };
 		18B215FD254C75C6008027D1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B215FC254C75C6008027D1 /* SceneDelegate.swift */; };
 		18B215FF254C75C6008027D1 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B215FE254C75C6008027D1 /* MainViewController.swift */; };
@@ -41,6 +45,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1825BADF25502BC700C3CDFA /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		1825BAE12551913600C3CDFA /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
+		1825BAE72551B1C700C3CDFA /* UserFirebase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserFirebase.swift; sourceTree = "<group>"; };
+		1825BAE92551B1DB00C3CDFA /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
 		18B215F7254C75C6008027D1 /* Wallapobre.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Wallapobre.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		18B215FA254C75C6008027D1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		18B215FC254C75C6008027D1 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -89,6 +97,49 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1825BADE25502BB200C3CDFA /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				1825BADF25502BC700C3CDFA /* LoginViewController.swift */,
+				1825BAE12551913600C3CDFA /* LoginViewModel.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		1825BAE32551B06600C3CDFA /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				1825BAE52551B12100C3CDFA /* Models */,
+				1825BAE42551B11600C3CDFA /* Managers */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		1825BAE42551B11600C3CDFA /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				1825BAE62551B19F00C3CDFA /* FirebaseAuthorization */,
+			);
+			path = Managers;
+			sourceTree = "<group>";
+		};
+		1825BAE52551B12100C3CDFA /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				18C2F7DB254D9B0E00D74E74 /* Product.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		1825BAE62551B19F00C3CDFA /* FirebaseAuthorization */ = {
+			isa = PBXGroup;
+			children = (
+				1825BAE72551B1C700C3CDFA /* UserFirebase.swift */,
+				1825BAE92551B1DB00C3CDFA /* UserManager.swift */,
+			);
+			path = FirebaseAuthorization;
+			sourceTree = "<group>";
+		};
 		18B215EE254C75C6008027D1 = {
 			isa = PBXGroup;
 			children = (
@@ -114,9 +165,9 @@
 			children = (
 				18B215FA254C75C6008027D1 /* AppDelegate.swift */,
 				18B215FC254C75C6008027D1 /* SceneDelegate.swift */,
-				18C2F7DA254D9A9E00D74E74 /* Model */,
 				18B2161C254C75E2008027D1 /* Resources */,
 				18B21620254C761B008027D1 /* UI */,
+				1825BAE32551B06600C3CDFA /* Network */,
 			);
 			path = Wallapobre;
 			sourceTree = "<group>";
@@ -155,6 +206,7 @@
 			isa = PBXGroup;
 			children = (
 				18C2F7CC254C880E00D74E74 /* TabBarProvider.swift */,
+				1825BADE25502BB200C3CDFA /* Login */,
 				18B21621254C7624008027D1 /* Main */,
 				18C2F7CE254CA15A00D74E74 /* Filters */,
 				18C2F7D5254D92F500D74E74 /* Product */,
@@ -199,14 +251,6 @@
 				18C2F7D8254D938200D74E74 /* ProductViewModel.swift */,
 			);
 			path = Product;
-			sourceTree = "<group>";
-		};
-		18C2F7DA254D9A9E00D74E74 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				18C2F7DB254D9B0E00D74E74 /* Product.swift */,
-			);
-			path = Model;
 			sourceTree = "<group>";
 		};
 		3070265EEAD97980AD23F4AF /* Frameworks */ = {
@@ -379,13 +423,17 @@
 				18C2F7D9254D938200D74E74 /* ProductViewModel.swift in Sources */,
 				18B2162A254C7696008027D1 /* MainCellViewModel.swift in Sources */,
 				18C2F7D7254D936F00D74E74 /* ProductViewController.swift in Sources */,
+				1825BAE22551913600C3CDFA /* LoginViewModel.swift in Sources */,
 				18B215FF254C75C6008027D1 /* MainViewController.swift in Sources */,
 				18B215FB254C75C6008027D1 /* AppDelegate.swift in Sources */,
 				18C2F7E2254EFE0400D74E74 /* Extensions.swift in Sources */,
 				18C2F7CD254C880E00D74E74 /* TabBarProvider.swift in Sources */,
 				18C2F7D0254CA19100D74E74 /* FiltersViewController.swift in Sources */,
+				1825BAE025502BC700C3CDFA /* LoginViewController.swift in Sources */,
 				18B215FD254C75C6008027D1 /* SceneDelegate.swift in Sources */,
+				1825BAE82551B1C700C3CDFA /* UserFirebase.swift in Sources */,
 				18C2F7E4254F5E0900D74E74 /* ProductViewController+Input.swift in Sources */,
+				1825BAEA2551B1DB00C3CDFA /* UserManager.swift in Sources */,
 				18C2F7DC254D9B0E00D74E74 /* Product.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

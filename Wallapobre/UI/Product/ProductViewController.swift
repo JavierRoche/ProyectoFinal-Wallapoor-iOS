@@ -314,23 +314,23 @@ class ProductViewController: UIViewController {
         ])
         
         NSLayoutConstraint.activate([
-            self.photo1Image.widthAnchor.constraint(equalToConstant: 100),
-            self.photo1Image.heightAnchor.constraint(equalToConstant: 100)
+            self.photo1Image.widthAnchor.constraint(equalToConstant: 100.0),
+            self.photo1Image.heightAnchor.constraint(equalToConstant: 100.0)
         ])
         
         NSLayoutConstraint.activate([
-            self.photo2Image.widthAnchor.constraint(equalToConstant: 100),
-            self.photo2Image.heightAnchor.constraint(equalToConstant: 100)
+            self.photo2Image.widthAnchor.constraint(equalToConstant: 100.0),
+            self.photo2Image.heightAnchor.constraint(equalToConstant: 100.0)
         ])
         
         NSLayoutConstraint.activate([
-            self.photo3Image.widthAnchor.constraint(equalToConstant: 100),
-            self.photo3Image.heightAnchor.constraint(equalToConstant: 100)
+            self.photo3Image.widthAnchor.constraint(equalToConstant: 100.0),
+            self.photo3Image.heightAnchor.constraint(equalToConstant: 100.0)
         ])
         
         NSLayoutConstraint.activate([
-            self.photo4Image.widthAnchor.constraint(equalToConstant: 100),
-            self.photo4Image.heightAnchor.constraint(equalToConstant: 100)
+            self.photo4Image.widthAnchor.constraint(equalToConstant: 100.0),
+            self.photo4Image.heightAnchor.constraint(equalToConstant: 100.0)
         ])
         
         

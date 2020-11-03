@@ -5,5 +5,6 @@ inhibit_all_warnings!
 target 'Wallapobre' do
     
   pod 'MessageKit', '~> 3.0.0'
+  pod 'Firebase/Auth'
 
 end
