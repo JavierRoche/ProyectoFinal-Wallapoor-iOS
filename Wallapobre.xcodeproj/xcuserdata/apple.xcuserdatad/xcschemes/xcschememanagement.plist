@@ -7,7 +7,20 @@
 		<key>Wallapobre.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>17</integer>
+			<integer>24</integer>
+		</dict>
+	</dict>
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>18B215F6254C75C6008027D1</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>18B2160C254C75C7008027D1</key>
+		<dict>
+			<key>primary</key>
+			<true/>
 		</dict>
 	</dict>
 </dict>

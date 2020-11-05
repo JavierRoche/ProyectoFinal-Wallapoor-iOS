@@ -8,10 +8,9 @@
 
 import UIKit
 
-// MARK: UITextView / UITextField Delegates (Hiding Keyboard)
+// MARK: CAAnimationDelegate Delegate
 
 extension LoginViewController: CAAnimationDelegate {
-    
     func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
         if registerInterface == false {
             registerInterface = true

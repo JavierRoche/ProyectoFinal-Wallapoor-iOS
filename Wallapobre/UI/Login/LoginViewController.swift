@@ -8,6 +8,7 @@
 
 import UIKit
 
+
 class LoginViewController: UIViewController {
     lazy var backgroundView: UIView = {
         let view: UIView = UIView(frame: self.view.bounds)
@@ -60,6 +61,7 @@ class LoginViewController: UIViewController {
         textField.autocorrectionType = UITextAutocorrectionType.no
         textField.keyboardType = UIKeyboardType.default
         textField.returnKeyType = UIReturnKeyType.done
+        textField.isSecureTextEntry = true
         textField.clearButtonMode = UITextField.ViewMode.whileEditing
         //textField.delegate = (self as! UITextFieldDelegate)
         textField.translatesAutoresizingMaskIntoConstraints = false
@@ -130,6 +132,17 @@ class LoginViewController: UIViewController {
         return button
     }()
     
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    lazy var logoutButton: UIButton = {
+        let button: UIButton = UIButton(type: UIButton.ButtonType.system)
+        button.setTitle("Logout", for: .normal)
+        button.tintColor = UIColor.black
+        button.addTarget(self, action: #selector (tapOnLogout), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
     lazy var registerAnimation: CABasicAnimation = {
         let animation: CABasicAnimation = CABasicAnimation(keyPath: "position")
         animation.duration = 1.5
@@ -152,24 +165,34 @@ class LoginViewController: UIViewController {
     lazy var registerPosition: CGPoint = CGPoint(x: 0, y: 0)
     lazy var loginPosition: CGPoint = CGPoint(x: 0, y: 0)
     var registerInterface: Bool = false
+    lazy var viewModel = LoginViewModel()
     
     
     // MARK: Life Cycle
 
     override func loadView() {
-        setViewsHierarchy()
-        setConstraints()
+        self.setViewsHierarchy()
+        self.setConstraints()
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        /// Obtenemos la geolocalizacion del user antes de guardarle en BD
+        Managers.managerUserLocation!.handleAuthorizationStatus()
+        Managers.managerUserLocation!.requestLocation()
 
-        let manager: UserFirebase = UserFirebase()
-        manager.isLogged(onSuccess: { (user) in
-            if let _ = user {
-                // TOO: NAVIGATE
+        Managers.managerUserAuthoritation!.isLogged(onSuccess: { (user) in
+            if let user = user {
+                self.viewModel.getUserLogged(user: user, onSuccess: { (user) in
+                    self.createScene(user: user)
+                    
+                }) { (error) in
+                    self.showAlert(title: "Error", message: error.localizedDescription)
+                }
             }
         }, onError: nil)
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -182,14 +205,7 @@ class LoginViewController: UIViewController {
     // MARK: User Interactions
     
     @objc func tapOnLogin(sender: UIButton!) {
-        /// Accedemos a la WindowScene de la App para la navegacion
-        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-              let sceneDelegate = windowScene.delegate as? SceneDelegate else { return }
-        /// Creamos el TabBar con las pestañas de la App
-        let tabBar: TabBarProvider = TabBarProvider.init()
-        sceneDelegate.window?.rootViewController = tabBar.activeTab()
-        /// Eliminamos el controlador del login
-        self.dismiss(animated: true, completion: nil)
+        login()
     }
     
     @objc func tapOnRegister(sender: UIButton!) {
@@ -226,123 +242,124 @@ class LoginViewController: UIViewController {
         view.addSubview(registerButton)
         view.addSubview(hideButton)
         view.addSubview(recoverButton)
+        
+        view.addSubview(logoutButton)
     }
     
     fileprivate func setConstraints() {
         NSLayoutConstraint.activate([
-            self.backgroundView.topAnchor.constraint(equalTo: view.topAnchor),
-            self.backgroundView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            self.backgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            self.backgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+            backgroundView.topAnchor.constraint(equalTo: view.topAnchor),
+            backgroundView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            backgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            backgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
         
         NSLayoutConstraint.activate([
-            self.emailLabel.bottomAnchor.constraint(equalTo: emailTextField.topAnchor, constant: -8.0),
-            self.emailLabel.leadingAnchor.constraint(equalTo: emailTextField.leadingAnchor),
-            self.passwordLabel.trailingAnchor.constraint(equalTo: emailTextField.trailingAnchor)
+            emailLabel.bottomAnchor.constraint(equalTo: emailTextField.topAnchor, constant: -8.0),
+            emailLabel.leadingAnchor.constraint(equalTo: emailTextField.leadingAnchor),
+            passwordLabel.trailingAnchor.constraint(equalTo: emailTextField.trailingAnchor)
         ])
         
         NSLayoutConstraint.activate([
-            self.emailTextField.bottomAnchor.constraint(equalTo: passwordLabel.topAnchor, constant: -32.0),
-            self.emailTextField.leadingAnchor.constraint(equalTo: passwordLabel.leadingAnchor),
-            self.emailTextField.trailingAnchor.constraint(equalTo: passwordLabel.trailingAnchor)
+            emailTextField.bottomAnchor.constraint(equalTo: passwordLabel.topAnchor, constant: -32.0),
+            emailTextField.leadingAnchor.constraint(equalTo: passwordLabel.leadingAnchor),
+            emailTextField.trailingAnchor.constraint(equalTo: passwordLabel.trailingAnchor)
         ])
         
         NSLayoutConstraint.activate([
-            self.passwordLabel.bottomAnchor.constraint(equalTo: passwordTextField.topAnchor, constant: -8.0),
-            self.passwordLabel.leadingAnchor.constraint(equalTo: passwordTextField.leadingAnchor),
-            self.passwordLabel.trailingAnchor.constraint(equalTo: passwordTextField.trailingAnchor)
+            passwordLabel.bottomAnchor.constraint(equalTo: passwordTextField.topAnchor, constant: -8.0),
+            passwordLabel.leadingAnchor.constraint(equalTo: passwordTextField.leadingAnchor),
+            passwordLabel.trailingAnchor.constraint(equalTo: passwordTextField.trailingAnchor)
         ])
         
         NSLayoutConstraint.activate([
-            self.passwordTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 64),
-            self.passwordTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            self.passwordTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -64),
-            self.passwordTextField.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            passwordTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 64),
+            passwordTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            passwordTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -64),
+            passwordTextField.centerYAnchor.constraint(equalTo: view.centerYAnchor),
         ])
         
         NSLayoutConstraint.activate([
-            self.usernameLabel.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 32.0),
-            self.usernameLabel.leadingAnchor.constraint(equalTo: passwordTextField.leadingAnchor),
-            self.usernameLabel.trailingAnchor.constraint(equalTo: passwordTextField.trailingAnchor)
+            usernameLabel.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 32.0),
+            usernameLabel.leadingAnchor.constraint(equalTo: passwordTextField.leadingAnchor),
+            usernameLabel.trailingAnchor.constraint(equalTo: passwordTextField.trailingAnchor)
         ])
         
         NSLayoutConstraint.activate([
-            self.usernameTextField.topAnchor.constraint(equalTo: usernameLabel.bottomAnchor, constant: 8),
-            self.usernameTextField.leadingAnchor.constraint(equalTo: usernameLabel.leadingAnchor),
-            self.usernameTextField.trailingAnchor.constraint(equalTo: usernameLabel.trailingAnchor)
+            usernameTextField.topAnchor.constraint(equalTo: usernameLabel.bottomAnchor, constant: 8),
+            usernameTextField.leadingAnchor.constraint(equalTo: usernameLabel.leadingAnchor),
+            usernameTextField.trailingAnchor.constraint(equalTo: usernameLabel.trailingAnchor)
         ])
         
         NSLayoutConstraint.activate([
-            self.loginButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 26.0),
-            self.loginButton.trailingAnchor.constraint(equalTo: passwordTextField.trailingAnchor)
+            loginButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 26.0),
+            loginButton.trailingAnchor.constraint(equalTo: passwordTextField.trailingAnchor)
         ])
         
         NSLayoutConstraint.activate([
-            self.hideButton.topAnchor.constraint(equalTo: usernameTextField.bottomAnchor, constant: 26.0),
-            self.hideButton.trailingAnchor.constraint(equalTo: usernameTextField.trailingAnchor)
+            hideButton.topAnchor.constraint(equalTo: usernameTextField.bottomAnchor, constant: 26.0),
+            hideButton.trailingAnchor.constraint(equalTo: usernameTextField.trailingAnchor)
         ])
         
         NSLayoutConstraint.activate([
-            self.registerButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 26.0),
-            self.registerButton.leadingAnchor.constraint(equalTo: passwordTextField.leadingAnchor)
+            registerButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 26.0),
+            registerButton.leadingAnchor.constraint(equalTo: passwordTextField.leadingAnchor)
         ])
         
         NSLayoutConstraint.activate([
-            self.recoverButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -64.0),
-            self.recoverButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 64.0)
+            recoverButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -64.0),
+            recoverButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 64.0)
+        ])
+        ////////////////////////////////
+        NSLayoutConstraint.activate([
+            logoutButton.bottomAnchor.constraint(equalTo: recoverButton.topAnchor, constant: -32.0),
+            logoutButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 64.0)
         ])
     }
     
     fileprivate func openRegisterInterface() {
-        /// Creamos una posicion inicial y una final aplicando una traslacion en vertical
+        /// Creamos posicion inicial y final aplicando traslacion vertical para botones de registro y login
         var startPosition: CGPoint = CGPoint(x: registerPosition.x, y: registerPosition.y)
         registerAnimation.fromValue = startPosition
         registerAnimation.toValue = startPosition.applying(.init(translationX: 0.0, y: 90))
-        
-        /// Al ser una animacion de Core Animation se incluye en la layer de la vista, no en la vista
         registerButton.layer.add(registerAnimation, forKey: "position")
         
-        /// Creamos una posicion inicial y una final aplicando una traslacion en vertical
         startPosition = CGPoint(x: loginPosition.x, y: loginPosition.y)
         loginAnimation.fromValue = startPosition
         loginAnimation.toValue = startPosition.applying(.init(translationX: 0.0, y: 90))
-        
-        /// Al ser una animacion de Core Animation se incluye en la layer de la vista, no en la vista
         loginButton.layer.add(loginAnimation, forKey: "position")
     }
     
     fileprivate func closeRegisterInterface() {
-        /// Creamos una posicion inicial y una final aplicando una traslacion en vertical
+        /// Creamos posicion inicial y final aplicando traslacion vertical para botones de registro y login
         var startPosition: CGPoint = CGPoint(x: registerPosition.x, y: registerPosition.y)
         registerAnimation.fromValue = startPosition
         registerAnimation.toValue = startPosition.applying(.init(translationX: 0.0, y: -90))
-        
-        /// Al ser una animacion de Core Animation se incluye en la layer de la vista, no en la vista
         registerButton.layer.add(registerAnimation, forKey: "position")
         
-        /// Creamos una posicion inicial y una final aplicando una traslacion en vertical
         startPosition = CGPoint(x: loginPosition.x, y: loginPosition.y)
         loginAnimation.fromValue = startPosition
         loginAnimation.toValue = startPosition.applying(.init(translationX: 0.0, y: -90))
-        
-        /// Al ser una animacion de Core Animation se incluye en la layer de la vista, no en la vista
         loginButton.layer.add(loginAnimation, forKey: "position")
     }
     
     fileprivate func login() {
         /// Comprobamos que el usuario ha introducido un email y un pass
-        guard let email = emailTextField.text, let password = passwordTextField.text else {
+        guard let email = emailTextField.text?.lowercased(), let password = passwordTextField.text else {
             self.showAlert(title: "Warning", message: "Missing data")
             return
         }
         
         /// Inicializamos un User con los datos introducidos por el usuario
         let user: User = User.init(id: "", email: email, password: password)
-        let manager: UserFirebase = UserFirebase()
         /// Obtenemos el manager del interactor y hacemos el login
-        manager.login(user: user, onSuccess: { (user) in
-            // TODO: Navigate donde sea
+        Managers.managerUserAuthoritation!.login(user: user, onSuccess: { (user) in
+            
+            self.viewModel.getUserLogged(user: user, onSuccess: { (user) in
+                self.createScene(user: user)
+            }) { (error) in
+                self.showAlert(title: "Error", message: error.localizedDescription)
+            }
             
         }) { (error) in
             self.showAlert(title: "Error", message: error.localizedDescription)
@@ -351,16 +368,21 @@ class LoginViewController: UIViewController {
     
     fileprivate func register() {
         /// Comprobamos que el usuario ha introducido un email y un pass
-        guard let email = emailTextField.text, let password = passwordTextField.text else {
+        guard let email = emailTextField.text?.lowercased(), let password = passwordTextField.text, let username = usernameTextField.text else {
             self.showAlert(title: "Warning", message: "Missing data")
             return
         }
         
         /// Inicializamos un User con los datos introducidos por el usuario
         let user: User = User.init(id: "", email: email, password: password)
-        let manager: UserFirebase = UserFirebase()
-        manager.register(user: user, onSuccess: { (user) in
-            // TODO: Navigate donde sea
+        Managers.managerUserAuthoritation!.register(user: user, onSuccess: { (user) in
+            user.username = username
+            self.viewModel.getUserLogged(user: user, onSuccess: { (user) in
+                self.createScene(user: user)
+                
+            }) { (error) in
+                self.showAlert(title: "Error", message: error.localizedDescription)
+            }
             
         }) { (error) in
             self.showAlert(title: "Error", message: error.localizedDescription)
@@ -376,11 +398,30 @@ class LoginViewController: UIViewController {
         
         /// Inicializamos un User con los datos introducidos por el usuario
         let user = User.init(id: "", email: email, password: nil)
-        let manager: UserFirebase = UserFirebase()
-        manager.recoverPassword(user: user, onSuccess: { (user) in
+        Managers.managerUserAuthoritation!.recoverPassword(user: user, onSuccess: { (user) in
             self.showAlert(title: "Password", message: "Password recovered")
             
         }) { (error) in
+            self.showAlert(title: "Error", message: error.localizedDescription)
+        }
+    }
+    
+    fileprivate func createScene(user: User) {
+        /// Accedemos a la WindowScene de la App para la navegacion
+        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+              let sceneDelegate = windowScene.delegate as? SceneDelegate else { return }
+        /// Creamos el TabBar con las pestañas de la App
+        let tabBar: TabBarProvider = TabBarProvider.init()
+        sceneDelegate.window?.rootViewController = tabBar.activeTab()
+        /// Eliminamos el controlador del login
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    @objc func tapOnLogout() {
+        Managers.managerUserAuthoritation!.logout(onSuccess: {
+            self.showAlert(title: "Logout", message: "User log out")
+        }) { (error) in
+            print(error)
             self.showAlert(title: "Error", message: error.localizedDescription)
         }
     }

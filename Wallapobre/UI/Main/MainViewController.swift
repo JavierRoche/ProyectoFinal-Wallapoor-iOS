@@ -29,7 +29,7 @@ class MainViewController: UIViewController {
         let search: UISearchController = UISearchController()
         search.searchBar.searchTextField.clearButtonMode = .never
         search.searchBar.showsBookmarkButton = true
-        search.searchBar.setImage(UIImage.init(systemName: "tag"), for: .bookmark, state: .normal)
+        search.searchBar.setImage(UIImage.init(systemName: "line.horizontal.3.decrease"), for: .bookmark, state: .normal)
         search.searchBar.delegate = self
         search.obscuresBackgroundDuringPresentation = false
         search.automaticallyShowsCancelButton = true

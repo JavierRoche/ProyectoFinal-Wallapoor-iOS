@@ -37,7 +37,7 @@ class ProductViewController: UIViewController {
         textField.keyboardType = UIKeyboardType.default
         textField.returnKeyType = UIReturnKeyType.done
         textField.clearButtonMode = UITextField.ViewMode.whileEditing
-        textField.delegate = (self as! UITextFieldDelegate)
+        textField.delegate = self
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
@@ -59,7 +59,7 @@ class ProductViewController: UIViewController {
         textField.textColor = UIColor.black
         textField.borderStyle = UITextField.BorderStyle.roundedRect
         textField.inputView = categoryPicker
-        textField.delegate = (self as! UITextFieldDelegate)
+        textField.delegate = self
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
@@ -92,7 +92,7 @@ class ProductViewController: UIViewController {
         textView.layer.cornerRadius = 5.0;
         textView.autocorrectionType = UITextAutocorrectionType.no
         textView.returnKeyType = UIReturnKeyType.done
-        textView.delegate = (self as! UITextViewDelegate)
+        textView.delegate = self
         textView.translatesAutoresizingMaskIntoConstraints = false
         return textView
     }()
@@ -117,7 +117,7 @@ class ProductViewController: UIViewController {
         textField.keyboardType = UIKeyboardType.numbersAndPunctuation
         textField.returnKeyType = UIReturnKeyType.done
         textField.clearButtonMode = UITextField.ViewMode.whileEditing
-        textField.delegate = (self as! UITextFieldDelegate)
+        textField.delegate = self
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
