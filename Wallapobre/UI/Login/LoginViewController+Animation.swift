@@ -25,7 +25,7 @@ extension LoginViewController: CAAnimationDelegate {
             registerPosition = CGPoint(x: registerPosition.x, y: registerPosition.y + 90)
             loginPosition = CGPoint(x: loginPosition.x, y: loginPosition.y + 90)
             /// Movemos la view tras la animacion para trasladar los Gestures
-            registerButton.frame.origin = registerPosition
+            registerButton.layer.position = registerPosition
             
         } else {
             registerInterface = false
@@ -34,7 +34,7 @@ extension LoginViewController: CAAnimationDelegate {
             registerPosition = CGPoint(x: registerPosition.x, y: registerPosition.y + -90)
             loginPosition = CGPoint(x: loginPosition.x, y: loginPosition.y + -90)
             /// Movemos la view tras la animacion para trasladar los Gestures
-            registerButton.frame.origin = registerPosition
+            registerButton.layer.position = registerPosition
         }
     }
     

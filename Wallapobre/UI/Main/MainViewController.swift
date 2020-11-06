@@ -49,7 +49,7 @@ class MainViewController: UIViewController {
         button.setTitle("+", for: .normal)
         button.tintColor = UIColor.black
         button.backgroundColor = UIColor.black
-        //button.layer.cornerRadius = button.frame.size.height / 2
+        button.layer.masksToBounds = true
         button.addTarget(self, action: #selector (tapOnNewProduct), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -90,7 +90,9 @@ class MainViewController: UIViewController {
         
         NSLayoutConstraint.activate([
             newProductButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            newProductButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20.0)
+            newProductButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20.0),
+            newProductButton.widthAnchor.constraint(equalToConstant: 64.0),
+            newProductButton.heightAnchor.constraint(equalToConstant: 64.0)
         ])
     }
 
@@ -103,15 +105,20 @@ class MainViewController: UIViewController {
         self.configureUI()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        newProductButton.layer.cornerRadius = newProductButton.frame.size.height / 2
+    }
+    
     
     // MARK: Functions
     
     fileprivate func configureUI() {
-        /// Asignacion del UISearchController y atributos del navigationController
+        /// Asignacion del UISearchController
         self.navigationItem.searchController = searchController
-        
-        
     }
+    
+    
+    // MARK: User Interactions
     
     @objc func tapOnNewProduct(sender: UIButton!) {
         let productViewModel: ProductViewModel = ProductViewModel()

@@ -182,7 +182,7 @@ class LoginViewController: UIViewController {
         Managers.managerUserLocation!.handleAuthorizationStatus()
         Managers.managerUserLocation!.requestLocation()
 
-        Managers.managerUserAuthoritation!.isLogged(onSuccess: { (user) in
+        /*Managers.managerUserAuthoritation!.isLogged(onSuccess: { (user) in
             if let user = user {
                 self.viewModel.getUserLogged(user: user, onSuccess: { (user) in
                     self.createScene(user: user)
@@ -191,7 +191,7 @@ class LoginViewController: UIViewController {
                     self.showAlert(title: "Error", message: error.localizedDescription)
                 }
             }
-        }, onError: nil)
+        }, onError: nil)*/
         
     }
     
@@ -369,6 +369,11 @@ class LoginViewController: UIViewController {
     fileprivate func register() {
         /// Comprobamos que el usuario ha introducido un email y un pass
         guard let email = emailTextField.text?.lowercased(), let password = passwordTextField.text, let username = usernameTextField.text else {
+            self.showAlert(title: "Warning", message: "Missing data")
+            return
+        }
+        
+        if email.isEmpty || password.isEmpty || username.isEmpty {
             self.showAlert(title: "Warning", message: "Missing data")
             return
         }
