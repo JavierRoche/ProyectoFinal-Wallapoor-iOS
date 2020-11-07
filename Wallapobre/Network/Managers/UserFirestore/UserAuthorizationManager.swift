@@ -8,7 +8,7 @@
 
 import Foundation
 
-public protocol UserAuthorizationManager {
+protocol UserAuthorizationManager {
     func register(user: User, onSuccess: @escaping (User) -> Void, onError: ErrorClosure?)
     func login(user: User, onSuccess: @escaping (User) -> Void, onError: ErrorClosure?)
     func recoverPassword(user: User, onSuccess: @escaping (User) -> Void, onError: ErrorClosure?)

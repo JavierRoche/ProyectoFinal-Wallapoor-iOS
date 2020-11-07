@@ -21,10 +21,10 @@ class LoginViewModel {
     // MARK: Public Functions
     
     func getUserLogged(user: User, onSuccess: @escaping (User) -> Void, onError: ErrorClosure?) {
-        Managers.managerUserFirestore!.userCheck(user: user, onSuccess: { (user) in
+        Managers.managerUserFirestore!.userCheck(user: user, onSuccess: { [weak self] user in
             /// El usuario existe en Firestore BD
-            self.user = user
-            onSuccess(self.user!)
+            self?.user = user
+            onSuccess(self?.user! ?? User.init(id: "", email: "", password: ""))
             
         }, onNonexistent: {
             /// El usuario no existe en Firestore BD. Completamos datos e insertamos
@@ -35,8 +35,8 @@ class LoginViewModel {
             
             onSuccess(self.user!)
             
-        }) { (error) in
-            /// Ha habido error rar
+        }) { error in
+            /// Ha habido error raro
             if let retError = onError {
                 retError(error)
             }
@@ -46,7 +46,7 @@ class LoginViewModel {
     fileprivate func insertUser(user: User) {
         Managers.managerUserFirestore!.insertUser(user: user, onSuccess: {
             print("[] User insertado")
-        }) { (error) in
+        }) { error in
             print("[]\(error.localizedDescription)")
         }
     }

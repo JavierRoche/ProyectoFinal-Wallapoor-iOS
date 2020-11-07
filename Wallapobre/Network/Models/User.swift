@@ -10,7 +10,7 @@ import Foundation
 import MessageKit
 import FirebaseFirestore
 
-public class User {
+class User {
     public var sender: Sender
     public var email: String
     public var password: String?

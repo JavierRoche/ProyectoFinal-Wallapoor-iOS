@@ -15,6 +15,11 @@
 		1825BAF12551D1EA00C3CDFA /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1825BAF02551D1EA00C3CDFA /* ProfileViewController.swift */; };
 		1825BAF32551D23500C3CDFA /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1825BAF22551D23500C3CDFA /* ProfileViewModel.swift */; };
 		1825BAF52551D83B00C3CDFA /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1825BAF42551D83B00C3CDFA /* GoogleService-Info.plist */; };
+		185B33372555ADDF00778CE4 /* ProductFirestoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185B33362555ADDF00778CE4 /* ProductFirestoreManager.swift */; };
+		185B33392555ADF200778CE4 /* ProductFirestore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185B33382555ADF200778CE4 /* ProductFirestore.swift */; };
+		185B333D2555B71400778CE4 /* StorageFirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185B333C2555B71400778CE4 /* StorageFirebaseManager.swift */; };
+		185B333F2555B72000778CE4 /* StorageFirebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185B333E2555B72000778CE4 /* StorageFirebase.swift */; };
+		185B33452556ED5E00778CE4 /* TestLocations.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 185B33442556ED5E00778CE4 /* TestLocations.gpx */; };
 		1898179A2552C5970088BFB2 /* UserFirestore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189817992552C5970088BFB2 /* UserFirestore.swift */; };
 		1898179C2552C64B0088BFB2 /* UserFirestoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1898179B2552C64B0088BFB2 /* UserFirestoreManager.swift */; };
 		1898179E2552CD1E0088BFB2 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1898179D2552CD1E0088BFB2 /* LoginViewModel.swift */; };
@@ -62,6 +67,11 @@
 		1825BAF02551D1EA00C3CDFA /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		1825BAF22551D23500C3CDFA /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		1825BAF42551D83B00C3CDFA /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		185B33362555ADDF00778CE4 /* ProductFirestoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductFirestoreManager.swift; sourceTree = "<group>"; };
+		185B33382555ADF200778CE4 /* ProductFirestore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductFirestore.swift; sourceTree = "<group>"; };
+		185B333C2555B71400778CE4 /* StorageFirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageFirebaseManager.swift; sourceTree = "<group>"; };
+		185B333E2555B72000778CE4 /* StorageFirebase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageFirebase.swift; sourceTree = "<group>"; };
+		185B33442556ED5E00778CE4 /* TestLocations.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = TestLocations.gpx; sourceTree = "<group>"; };
 		189817992552C5970088BFB2 /* UserFirestore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserFirestore.swift; sourceTree = "<group>"; };
 		1898179B2552C64B0088BFB2 /* UserFirestoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserFirestoreManager.swift; sourceTree = "<group>"; };
 		1898179D2552CD1E0088BFB2 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
@@ -139,7 +149,9 @@
 			children = (
 				189817A225531BE80088BFB2 /* Managers.swift */,
 				1898179F2552F9600088BFB2 /* UserLocation */,
-				1825BAE62551B19F00C3CDFA /* UserFirebase */,
+				1825BAE62551B19F00C3CDFA /* UserFirestore */,
+				185B333A2555ADFF00778CE4 /* ProductFirestore */,
+				185B333B2555B6BB00778CE4 /* StorageFirebase */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -153,7 +165,7 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		1825BAE62551B19F00C3CDFA /* UserFirebase */ = {
+		1825BAE62551B19F00C3CDFA /* UserFirestore */ = {
 			isa = PBXGroup;
 			children = (
 				1825BAE92551B1DB00C3CDFA /* UserAuthorizationManager.swift */,
@@ -161,7 +173,7 @@
 				1898179B2552C64B0088BFB2 /* UserFirestoreManager.swift */,
 				189817992552C5970088BFB2 /* UserFirestore.swift */,
 			);
-			path = UserFirebase;
+			path = UserFirestore;
 			sourceTree = "<group>";
 		};
 		1825BAEF2551D16600C3CDFA /* Profile */ = {
@@ -171,6 +183,24 @@
 				1825BAF22551D23500C3CDFA /* ProfileViewModel.swift */,
 			);
 			path = Profile;
+			sourceTree = "<group>";
+		};
+		185B333A2555ADFF00778CE4 /* ProductFirestore */ = {
+			isa = PBXGroup;
+			children = (
+				185B33362555ADDF00778CE4 /* ProductFirestoreManager.swift */,
+				185B33382555ADF200778CE4 /* ProductFirestore.swift */,
+			);
+			path = ProductFirestore;
+			sourceTree = "<group>";
+		};
+		185B333B2555B6BB00778CE4 /* StorageFirebase */ = {
+			isa = PBXGroup;
+			children = (
+				185B333C2555B71400778CE4 /* StorageFirebaseManager.swift */,
+				185B333E2555B72000778CE4 /* StorageFirebase.swift */,
+			);
+			path = StorageFirebase;
 			sourceTree = "<group>";
 		};
 		1898179F2552F9600088BFB2 /* UserLocation */ = {
@@ -226,6 +256,7 @@
 			isa = PBXGroup;
 			children = (
 				18B21603254C75C7008027D1 /* Assets.xcassets */,
+				185B33442556ED5E00778CE4 /* TestLocations.gpx */,
 				18B21605254C75C7008027D1 /* LaunchScreen.storyboard */,
 				18B21608254C75C7008027D1 /* Info.plist */,
 				1825BAF42551D83B00C3CDFA /* GoogleService-Info.plist */,
@@ -399,6 +430,7 @@
 				18B21607254C75C7008027D1 /* LaunchScreen.storyboard in Resources */,
 				1825BAF52551D83B00C3CDFA /* GoogleService-Info.plist in Resources */,
 				18B21604254C75C7008027D1 /* Assets.xcassets in Resources */,
+				185B33452556ED5E00778CE4 /* TestLocations.gpx in Resources */,
 				18B21629254C7696008027D1 /* MainCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -465,10 +497,13 @@
 				18B2161F254C7615008027D1 /* PinterestLayout.swift in Sources */,
 				18C2F7D4254D732C00D74E74 /* FiltersViewModel.swift in Sources */,
 				18B21628254C7696008027D1 /* MainCell.swift in Sources */,
+				185B333F2555B72000778CE4 /* StorageFirebase.swift in Sources */,
 				18C2F7D9254D938200D74E74 /* ProductViewModel.swift in Sources */,
+				185B33392555ADF200778CE4 /* ProductFirestore.swift in Sources */,
 				1825BAF12551D1EA00C3CDFA /* ProfileViewController.swift in Sources */,
 				1898179E2552CD1E0088BFB2 /* LoginViewModel.swift in Sources */,
 				18B2162A254C7696008027D1 /* MainCellViewModel.swift in Sources */,
+				185B33372555ADDF00778CE4 /* ProductFirestoreManager.swift in Sources */,
 				18C2F7D7254D936F00D74E74 /* ProductViewController.swift in Sources */,
 				189817A325531BE80088BFB2 /* Managers.swift in Sources */,
 				1825BAEE2551BFFC00C3CDFA /* LoginViewController+Animation.swift in Sources */,
@@ -487,6 +522,7 @@
 				18C2F7DC254D9B0E00D74E74 /* Product.swift in Sources */,
 				1825BAEC2551B56200C3CDFA /* User.swift in Sources */,
 				189817A12552F97E0088BFB2 /* UserLocation.swift in Sources */,
+				185B333D2555B71400778CE4 /* StorageFirebaseManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

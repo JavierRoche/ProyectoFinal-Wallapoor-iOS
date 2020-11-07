@@ -28,7 +28,7 @@ extension ProductViewController: UITextFieldDelegate, UITextViewDelegate, UIPick
         let currentText = descriptionTextView.text ?? ""
         guard let range = Range(range, in: currentText) else { return false }
         let updatedText = currentText.replacingCharacters(in: range, with: text)
-        /// Se permiten 200 caracteres
+        /// Se permiten 200 caracteres para la descripcion
         return updatedText.count < 200
     }
     
@@ -43,14 +43,14 @@ extension ProductViewController: UITextFieldDelegate, UITextViewDelegate, UIPick
             let currentText = titleTextField.text ?? ""
             guard let range = Range(range, in: currentText) else { return false }
             let updatedText = currentText.replacingCharacters(in: range, with: string)
-            /// Se permiten 40 caracteres
+            /// Se permiten 40 caracteres  para el titulo
             return updatedText.count < 40
             
         } else if textField == priceTextField {
             let currentText = priceTextField.text ?? ""
             guard let range = Range(range, in: currentText) else { return false }
             let updatedText = currentText.replacingCharacters(in: range, with: string)
-            /// Se permiten 6 numeros
+            /// Se permiten 6 numeros para el precio
             return updatedText.count < 6
             
         } else if textField == categoryTextField {

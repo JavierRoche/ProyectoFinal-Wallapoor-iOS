@@ -10,9 +10,12 @@ import Foundation
 import FirebaseFirestore
 
 
-public class UserFirestore: UserFirestoreManager {
+class UserFirestore: UserFirestoreManager {
     /// Instancia para acceder al nodo principal de la DB de Firestore
     var db = Firestore.firestore().collection("users")
+    
+    
+    // MARK: Public Functions
     
     public func userCheck(user: User, onSuccess: @escaping (User) -> Void, onNonexistent: @escaping () -> Void, onError: ErrorClosure?) {
         /// Comprobamos la presencia del usuario en BD

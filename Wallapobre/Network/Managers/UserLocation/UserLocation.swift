@@ -10,6 +10,8 @@ import UIKit
 import CoreLocation
 
 class UserLocation: NSObject {
+    /// Usuario logueado que ha entrado en la App
+    private lazy var userLogged = User.init(id: "", email: "", password: "")
     /// Definimos el cerebro de CoreLocation
     lazy var locationManager: CLLocationManager = {
         let manager: CLLocationManager = CLLocationManager()
@@ -49,6 +51,14 @@ class UserLocation: NSObject {
     
     func requestLocation() {
         locationManager.requestLocation()
+    }
+    
+    func saveUserLogged(user: User) {
+        self.userLogged = user
+    }
+    
+    func getUserLogged() -> User {
+        return self.userLogged
     }
 }
 

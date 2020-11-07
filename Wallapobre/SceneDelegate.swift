@@ -14,28 +14,24 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        Managers.managerUserLocation = UserLocation()
-        Managers.managerUserAuthoritation = UserAuthoritation()
-        Managers.managerUserFirestore = UserFirestore()
-        
         /// Obtenemos la escena y la navegacion para la ventana antes de iniciar
         guard let windowScene = (scene as? UIWindowScene) else { return }
-        /*let loginViewController: LoginViewController = LoginViewController()
+        let loginViewController: LoginViewController = LoginViewController()
         let navigationController: UINavigationController = UINavigationController.init(rootViewController: loginViewController)
         navigationController.navigationBar.isHidden = true
         window = UIWindow(windowScene: windowScene)
         window?.rootViewController = navigationController
-        window?.makeKeyAndVisible()*/
+        window?.makeKeyAndVisible()
         
         
         
         // SIN LOGIN
-        let tabBar: TabBarProvider = TabBarProvider.init()
+        /*let tabBar: TabBarProvider = TabBarProvider.init()
         
         window = UIWindow(windowScene: windowScene)
         window?.windowScene = windowScene
         window?.rootViewController = tabBar.activeTab()
-        window?.makeKeyAndVisible()
+        window?.makeKeyAndVisible()*/
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

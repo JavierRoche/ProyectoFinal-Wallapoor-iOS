@@ -7,7 +7,10 @@
 //
 
 import UIKit
-import MessageKit
+
+protocol ProductViewControllerDelegate: class {
+    func productAdded()
+}
 
 class ProductViewController: UIViewController {
     lazy var backgroundView: UIView = {
@@ -15,6 +18,14 @@ class ProductViewController: UIViewController {
         view.backgroundColor = UIColor.white
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
+    }()
+    
+    lazy var activityIndicator: UIActivityIndicatorView = {
+        let indicator: UIActivityIndicatorView = UIActivityIndicatorView()
+        indicator.hidesWhenStopped = true
+        indicator.color = UIColor.orange
+        indicator.style = UIActivityIndicatorView.Style.large
+        return indicator
     }()
     
     lazy var titleLabel: UILabel = {
@@ -114,7 +125,7 @@ class ProductViewController: UIViewController {
         textField.textColor = UIColor.black
         textField.borderStyle = UITextField.BorderStyle.roundedRect
         textField.autocorrectionType = UITextAutocorrectionType.no
-        textField.keyboardType = UIKeyboardType.numbersAndPunctuation
+        textField.keyboardType = UIKeyboardType.numberPad
         textField.returnKeyType = UIReturnKeyType.done
         textField.clearButtonMode = UITextField.ViewMode.whileEditing
         textField.delegate = self
@@ -137,7 +148,6 @@ class ProductViewController: UIViewController {
     
     lazy var photo1Image: UIImageView = {
         let image: UIImageView = UIImageView()
-        image.backgroundColor = UIColor.gray
         image.contentMode = .scaleAspectFit
         image.isUserInteractionEnabled = true
         image.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(pickPhoto)))
@@ -151,7 +161,6 @@ class ProductViewController: UIViewController {
     
     lazy var photo2Image: UIImageView = {
         let image: UIImageView = UIImageView()
-        image.backgroundColor = UIColor.gray
         image.contentMode = .scaleAspectFit
         image.isUserInteractionEnabled = true
         image.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(pickPhoto)))
@@ -165,7 +174,6 @@ class ProductViewController: UIViewController {
     
     lazy var photo3Image: UIImageView = {
         let image: UIImageView = UIImageView()
-        image.backgroundColor = UIColor.gray
         image.contentMode = .scaleAspectFit
         image.isUserInteractionEnabled = true
         image.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(pickPhoto)))
@@ -179,7 +187,6 @@ class ProductViewController: UIViewController {
     
     lazy var photo4Image: UIImageView = {
         let image: UIImageView = UIImageView()
-        image.backgroundColor = UIColor.gray
         image.contentMode = .scaleAspectFit
         image.isUserInteractionEnabled = true
         image.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(pickPhoto)))
@@ -191,13 +198,14 @@ class ProductViewController: UIViewController {
         return image
     }()
     
-    
+    /// Delegado para comunicar la creacion correcta del producto
+    weak var delegate: ProductViewControllerDelegate?
     /// Objeto con el que acceder al manager de Productos
     let viewModel: ProductViewModel
     /// Objetos para almacenar datos de pantalla
     var categories: [String] = [Category.motor.rawValue, Category.textile.rawValue, Category.homes.rawValue, Category.informatic.rawValue, Category.sports.rawValue, Category.services.rawValue]
-    private var imagesList: [UIImage] = []
-    private var lastImageHolderPressed = UIImageView()
+    private var imageHolderPressed = UIImageView()
+    var imagesList: [UIImage] = [UIImage]()
     
     
     // MARK: Inits
@@ -224,176 +232,11 @@ class ProductViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        viewModel.viewWasLoaded()
+        
+        Managers.managerStorageFirebase = StorageFirebase()
+        Managers.managerProductFirestore = ProductFirestore()
+        
         configureUI()
-    }
-    
-    
-    // MARK: Private Functions
-    
-    fileprivate func setViewsHierarchy() {
-        view = UIView()
-        
-        view.addSubview(backgroundView)
-        view.addSubview(titleLabel)
-        view.addSubview(titleTextField)
-        view.addSubview(categoryLabel)
-        view.addSubview(categoryTextField)
-        view.addSubview(descriptionLabel)
-        view.addSubview(descriptionTextView)
-        view.addSubview(priceLabel)
-        view.addSubview(priceTextField)
-        view.addSubview(firstStack)
-        view.addSubview(secondStack)
-        
-        firstStack.addArrangedSubview(photo1Image)
-        firstStack.addArrangedSubview(photo2Image)
-        secondStack.addArrangedSubview(photo3Image)
-        secondStack.addArrangedSubview(photo4Image)
-    }
-    
-    fileprivate func setConstraints() {
-        NSLayoutConstraint.activate([
-            self.backgroundView.topAnchor.constraint(equalTo: view.topAnchor),
-            self.backgroundView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            self.backgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            self.backgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-        ])
-        
-        NSLayoutConstraint.activate([
-            self.titleLabel.topAnchor.constraint(equalTo: backgroundView.topAnchor, constant: 90.0),
-            self.titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32.0)
-        ])
-        
-        NSLayoutConstraint.activate([
-            self.titleTextField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8.0),
-            self.titleTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32.0)
-        ])
-        
-        NSLayoutConstraint.activate([
-            self.categoryLabel.topAnchor.constraint(equalTo: titleTextField.bottomAnchor, constant: 32.0),
-            self.categoryLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32.0)
-        ])
-        
-        NSLayoutConstraint.activate([
-            self.categoryTextField.topAnchor.constraint(equalTo: categoryLabel.bottomAnchor, constant: 8.0),
-            self.categoryTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32.0)
-        ])
-        
-        NSLayoutConstraint.activate([
-            self.descriptionLabel.topAnchor.constraint(equalTo: categoryTextField.bottomAnchor, constant: 32.0),
-            self.descriptionLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32.0)
-        ])
-        
-        NSLayoutConstraint.activate([
-            self.descriptionTextView.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 8.0),
-            self.descriptionTextView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32.0),
-            self.descriptionTextView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -64.0),
-            self.descriptionTextView.heightAnchor.constraint(equalToConstant: 130)
-        ])
-        
-        NSLayoutConstraint.activate([
-            self.priceLabel.topAnchor.constraint(equalTo: descriptionTextView.bottomAnchor, constant: 32.0),
-            self.priceLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32.0)
-        ])
-        
-        NSLayoutConstraint.activate([
-            self.priceTextField.topAnchor.constraint(equalTo: priceLabel.bottomAnchor, constant: 8.0),
-            self.priceTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32.0)
-        ])
-        
-        NSLayoutConstraint.activate([
-            self.firstStack.topAnchor.constraint(equalTo: priceTextField.bottomAnchor, constant: 32.0),
-            self.firstStack.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-        ])
-        
-        NSLayoutConstraint.activate([
-            self.secondStack.topAnchor.constraint(equalTo: firstStack.bottomAnchor, constant: 32.0),
-            self.secondStack.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-        ])
-        
-        NSLayoutConstraint.activate([
-            self.photo1Image.widthAnchor.constraint(equalToConstant: 100.0),
-            self.photo1Image.heightAnchor.constraint(equalToConstant: 100.0)
-        ])
-        
-        NSLayoutConstraint.activate([
-            self.photo2Image.widthAnchor.constraint(equalToConstant: 100.0),
-            self.photo2Image.heightAnchor.constraint(equalToConstant: 100.0)
-        ])
-        
-        NSLayoutConstraint.activate([
-            self.photo3Image.widthAnchor.constraint(equalToConstant: 100.0),
-            self.photo3Image.heightAnchor.constraint(equalToConstant: 100.0)
-        ])
-        
-        NSLayoutConstraint.activate([
-            self.photo4Image.widthAnchor.constraint(equalToConstant: 100.0),
-            self.photo4Image.heightAnchor.constraint(equalToConstant: 100.0)
-        ])
-        
-        
-    }
-    
-    fileprivate func configureUI() {
-        /// Creacion del boton de cancelar y publicar
-        let cancelLeftBarButtonItem: UIBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(tapOnCancel))
-        //cancelLeftBarButtonItem.tintColor = UIColor.tangerine
-        navigationItem.leftBarButtonItem = cancelLeftBarButtonItem
-        navigationItem.leftBarButtonItem?.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.fontStyle17Regular], for: .normal)
-        
-        let postLeftBarButtonItem: UIBarButtonItem = UIBarButtonItem(title: "Upload", style: .plain, target: self, action: #selector(tapOnUpload))
-        //postLeftBarButtonItem.tintColor = UIColor.tangerine
-        navigationItem.rightBarButtonItem = postLeftBarButtonItem
-        navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.fontStyle17SemiBold], for: .normal)
-        
-        
-        /// El interespaciado de los stack hay que definirlo una vez el objeto creado
-        firstStack.setCustomSpacing(32, after: photo1Image)
-        secondStack.setCustomSpacing(32, after: photo3Image)
-    }
-    
-    fileprivate func areDataRight() -> Bool {
-        guard let title = titleTextField.text, let description = descriptionTextView.text, let price = priceTextField.text, let category = categoryTextField.text else {
-            self.showAlert(title: "Warning", message: "Missing data")
-            return false
-        }
-        if title.isEmpty || description.isEmpty || price.isEmpty || category.isEmpty {
-            self.showAlert(title: "Warning", message: "Missing data")
-            return false
-        }
-        guard let _: Int = Int(price) else {
-            self.showAlert(title: "Warning", message: "Price has to be a number")
-            return false
-        }
-        if photo1Image.image != UIImage.init(systemName: "camera.fill") {
-            if let image = photo1Image.image { self.imagesList.append(image) }
-        }
-        if photo2Image.image != UIImage.init(systemName: "camera.fill") {
-            if let image = photo2Image.image { self.imagesList.append(image) }
-        }
-        if photo3Image.image != UIImage.init(systemName: "camera.fill") {
-            if let image = photo3Image.image { self.imagesList.append(image) }
-        }
-        if photo4Image.image != UIImage.init(systemName: "camera.fill") {
-            if let image = photo4Image.image { self.imagesList.append(image) }
-        }
-        if self.imagesList.count == 0 {
-            self.showAlert(title: "Warning", message: "At less 1 photo is required")
-            return false
-        }
-        return true
-    }
-    
-    fileprivate func askUserConfirmation() {
-        let alertConfirmationController = UIAlertController(title: "Upload object", message: "Going to upload a product", preferredStyle: .alert)
-        alertConfirmationController.addAction(UIAlertAction(title: "Accept", style: .default, handler: { (action) in
-            /// TODO: Subir imagenes, Recuperar urls, Guardar Producto, Limpiar contenedores
-        }))
-        alertConfirmationController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        present(alertConfirmationController, animated: true, completion: nil)
-        
     }
     
     
@@ -407,13 +250,21 @@ class ProductViewController: UIViewController {
     @objc private func tapOnUpload() {
         /// Chequeo de datos y confirmacion de usuario
         if areDataRight() {
-            askUserConfirmation()
+            self.askUserConfirmation(onAcept: {
+                /// Iniciamos la animacion de waiting y bloqueamos la pantalla
+                self.activityIndicator.center = self.view.center
+                self.activityIndicator.startAnimating()
+                self.view.addSubview(self.activityIndicator)
+                self.view.isUserInteractionEnabled = false
+                
+                self.processProduct()
+            })
         }
     }
     
     @objc private func pickPhoto(_ sender: UITapGestureRecognizer) {
         /// Recibimos el ultimo imageHolder pulsado y guardamos la imagen en su posicion en la lista
-        lastImageHolderPressed = sender.view as! UIImageView
+        self.imageHolderPressed = sender.view as! UIImageView
         
         /// Abrimos el controlador de seleccion de imagenes de la libreria
         let imagePicker = UIImagePickerController()
@@ -442,6 +293,205 @@ class ProductViewController: UIViewController {
             break
         }
     }
+    
+    
+    // MARK: Private Functions
+    
+    fileprivate func setViewsHierarchy() {
+        view = UIView()
+        
+        view.addSubview(backgroundView)
+        view.addSubview(titleLabel)
+        view.addSubview(titleTextField)
+        view.addSubview(categoryLabel)
+        view.addSubview(categoryTextField)
+        view.addSubview(descriptionLabel)
+        view.addSubview(descriptionTextView)
+        view.addSubview(priceLabel)
+        view.addSubview(priceTextField)
+        view.addSubview(firstStack)
+        view.addSubview(secondStack)
+        
+        firstStack.addArrangedSubview(photo1Image)
+        firstStack.addArrangedSubview(photo2Image)
+        secondStack.addArrangedSubview(photo3Image)
+        secondStack.addArrangedSubview(photo4Image)
+    }
+    
+    fileprivate func setConstraints() {
+        NSLayoutConstraint.activate([
+            backgroundView.topAnchor.constraint(equalTo: view.topAnchor),
+            backgroundView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            backgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            backgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ])
+        
+        NSLayoutConstraint.activate([
+            titleLabel.topAnchor.constraint(equalTo: backgroundView.topAnchor, constant: 90.0),
+            titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32.0)
+        ])
+        
+        NSLayoutConstraint.activate([
+            titleTextField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8.0),
+            titleTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32.0)
+        ])
+        
+        NSLayoutConstraint.activate([
+            categoryLabel.topAnchor.constraint(equalTo: titleTextField.bottomAnchor, constant: 32.0),
+            categoryLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32.0)
+        ])
+        
+        NSLayoutConstraint.activate([
+            categoryTextField.topAnchor.constraint(equalTo: categoryLabel.bottomAnchor, constant: 8.0),
+            categoryTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32.0)
+        ])
+        
+        NSLayoutConstraint.activate([
+            descriptionLabel.topAnchor.constraint(equalTo: categoryTextField.bottomAnchor, constant: 32.0),
+            descriptionLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32.0)
+        ])
+        
+        NSLayoutConstraint.activate([
+            descriptionTextView.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 8.0),
+            descriptionTextView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32.0),
+            descriptionTextView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -64.0),
+            descriptionTextView.heightAnchor.constraint(equalToConstant: 130)
+        ])
+        
+        NSLayoutConstraint.activate([
+            priceLabel.topAnchor.constraint(equalTo: descriptionTextView.bottomAnchor, constant: 32.0),
+            priceLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32.0)
+        ])
+        
+        NSLayoutConstraint.activate([
+            priceTextField.topAnchor.constraint(equalTo: priceLabel.bottomAnchor, constant: 8.0),
+            priceTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32.0)
+        ])
+        
+        NSLayoutConstraint.activate([
+            firstStack.topAnchor.constraint(equalTo: priceTextField.bottomAnchor, constant: 32.0),
+            firstStack.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+        ])
+        
+        NSLayoutConstraint.activate([
+            secondStack.topAnchor.constraint(equalTo: firstStack.bottomAnchor, constant: 32.0),
+            secondStack.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+        ])
+        
+        NSLayoutConstraint.activate([
+            photo1Image.widthAnchor.constraint(equalToConstant: 100.0),
+            photo1Image.heightAnchor.constraint(equalToConstant: 100.0)
+        ])
+        
+        NSLayoutConstraint.activate([
+            photo2Image.widthAnchor.constraint(equalToConstant: 100.0),
+            photo2Image.heightAnchor.constraint(equalToConstant: 100.0)
+        ])
+        
+        NSLayoutConstraint.activate([
+            photo3Image.widthAnchor.constraint(equalToConstant: 100.0),
+            photo3Image.heightAnchor.constraint(equalToConstant: 100.0)
+        ])
+        
+        NSLayoutConstraint.activate([
+            photo4Image.widthAnchor.constraint(equalToConstant: 100.0),
+            photo4Image.heightAnchor.constraint(equalToConstant: 100.0)
+        ])
+    }
+    
+    fileprivate func configureUI() {
+        /// Creacion del boton de cancelar y publicar
+        let cancelLeftBarButtonItem: UIBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(tapOnCancel))
+        //cancelLeftBarButtonItem.tintColor = UIColor.tangerine
+        navigationItem.leftBarButtonItem = cancelLeftBarButtonItem
+        navigationItem.leftBarButtonItem?.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.fontStyle17Regular], for: .normal)
+        
+        let postLeftBarButtonItem: UIBarButtonItem = UIBarButtonItem(title: "Upload", style: .plain, target: self, action: #selector(tapOnUpload))
+        //postLeftBarButtonItem.tintColor = UIColor.tangerine
+        navigationItem.rightBarButtonItem = postLeftBarButtonItem
+        navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.fontStyle17SemiBold], for: .normal)
+        
+        /// El interespaciado de los stack hay que definirlo una vez el objeto creado
+        firstStack.setCustomSpacing(32, after: photo1Image)
+        secondStack.setCustomSpacing(32, after: photo3Image)
+    }
+    
+    fileprivate func areDataRight() -> Bool {
+        guard let title = titleTextField.text, let description = descriptionTextView.text, let price = priceTextField.text, let category = categoryTextField.text else {
+            self.showAlert(title: "Warning", message: "Missing data")
+            return false
+        }
+        if title.isEmpty || description.isEmpty || price.isEmpty || category.isEmpty {
+            self.showAlert(title: "Warning", message: "Missing data")
+            return false
+        }
+        guard let _: Int = Int(price) else {
+            self.showAlert(title: "Warning", message: "Price has to be a number")
+            return false
+        }
+        if photo1Image.image != UIImage.init(systemName: "camera.fill") {
+            if let image = photo1Image.image { imagesList.append(image) }
+        }
+        if photo2Image.image != UIImage.init(systemName: "camera.fill") {
+            if let image = photo2Image.image { imagesList.append(image) }
+        }
+        if photo3Image.image != UIImage.init(systemName: "camera.fill") {
+            if let image = photo3Image.image { imagesList.append(image) }
+        }
+        if photo4Image.image != UIImage.init(systemName: "camera.fill") {
+            if let image = photo4Image.image { imagesList.append(image) }
+        }
+        if imagesList.count == 0 {
+            self.showAlert(title: "Warning", message: "At less 1 photo is required")
+            return false
+        }
+        return true
+    }
+    
+    fileprivate func askUserConfirmation(onAcept: @escaping () -> Void) {
+        /// Se crea un UIAlertController y se presenta
+        let alertConfirmationController = UIAlertController(title: "Upload object", message: "Going to upload a product", preferredStyle: .alert)
+        alertConfirmationController.addAction(UIAlertAction(title: "Accept", style: .default, handler: { action in
+            onAcept()
+        }))
+        alertConfirmationController.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        present(alertConfirmationController, animated: true, completion: nil)
+    }
+    
+    fileprivate func processProduct() {
+        /// Subimos las imagenes al Cloud Firebase y esperamos recibir la lista de urls
+        self.viewModel.uploadImages(images: self.imagesList, onSuccess: { [weak self] urlList in
+            let product: Product = Product.init(seller: Managers.managerUserLocation!.getUserLogged().sender.id,
+                                                title: (self?.titleTextField.text!)!,
+                                                category: (self?.categoryTextField.text!)!,
+                                                description: (self?.descriptionTextView.text!)!,
+                                                price: Int((self?.priceTextField.text!)!)!, photos: urlList)
+            /// Guardamos el producto en Firestore
+            self?.viewModel.insertProduct(product: product, onSuccess: {
+                //self?.productAdded()
+                self?.dismiss(animated: true, completion: nil)
+                
+                self?.delegate?.productAdded()
+                /*self?.showAlert(title: "Info", message: "Product uploaded")
+                self?.activityIndicator.stopAnimating()
+                self?.dismiss(animated: true, completion: nil)*/
+                
+            }, onError: { error in
+                self?.showAlert(title: "Error", message: error.localizedDescription)
+            })
+            
+            
+        }) { [weak self] error in
+            self?.showAlert(title: "Error", message: error.localizedDescription)
+        }
+    }
+    
+    fileprivate func productAdded() {
+        self.activityIndicator.stopAnimating()
+        self.dismiss(animated: true, completion: nil)
+        
+        delegate?.productAdded()
+    }
 }
 
 
@@ -452,7 +502,7 @@ extension ProductViewController: UIImagePickerControllerDelegate, UINavigationCo
         dismiss(animated: true, completion: {
             /// Si se ha seleccionado foto la ubicamos en el hueco selecionado
             if let pickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
-                self.lastImageHolderPressed.image = pickedImage
+                self.imageHolderPressed.image = pickedImage
             }
         })
     }

@@ -8,6 +8,7 @@
 
 import Foundation
 
-public protocol UserFirestoreManager {
+protocol UserFirestoreManager {
     func userCheck(user: User, onSuccess: @escaping (User) -> Void, onNonexistent: @escaping () -> Void, onError: ErrorClosure?)
+    func insertUser(user: User, onSuccess: @escaping () -> Void, onError: ErrorClosure?)
 }

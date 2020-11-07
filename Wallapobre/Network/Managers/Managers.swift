@@ -10,7 +10,9 @@ import Foundation
 
 class Managers {
     /// Objeto de la clase
-    static var managerUserLocation: UserLocation?
     static var managerUserAuthoritation: UserAuthoritation?
     static var managerUserFirestore: UserFirestore?
+    static var managerUserLocation: UserLocation?
+    static var managerStorageFirebase: StorageFirebase?
+    static var managerProductFirestore: ProductFirestore?
 }

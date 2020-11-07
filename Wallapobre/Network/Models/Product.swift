@@ -9,10 +9,10 @@
 import Foundation
 import MessageKit
 
-public class Product {
-    
-    public var sender: SenderType
+class Product {
     public var productId: String
+    public var seller: String
+    public var state: ProductState
     public var title: String
     public var category: String
     public var description: String
@@ -20,10 +20,21 @@ public class Product {
     public var sentDate: Date
     public var photos: [String]
     
-    public init(sender: Sender, productId: String, title: String, category: String,
-                description: String, price: Int, sentDate: Date, photos: [String]){
-        self.sender = sender
+    
+    // MARK: Inits
+    
+    public init(productId: String,
+                seller: String,
+                state: ProductState,
+                title: String,
+                category: String,
+                description: String,
+                price: Int,
+                sentDate: Date,
+                photos: [String]){
         self.productId = productId
+        self.seller = seller
+        self.state = state
         self.title = title
         self.category = category
         self.description = description
@@ -32,12 +43,70 @@ public class Product {
         self.photos = photos
     }
     
-    convenience init(sender: Sender, title: String, category: String, description: String, price: Int, photos: [String]){
-        self.init(sender: sender, productId: UUID().uuidString, title: title, category: category,
-                  description: description, price: price, sentDate: Date(), photos: photos)
+    convenience init(seller: String,
+                     title: String,
+                     category: String,
+                     description: String,
+                     price: Int,
+                     photos: [String]){
+        self.init(productId: UUID().uuidString,
+                  seller: seller,
+                  state: ProductState.selling,
+                  title: title,
+                  category: category,
+                  description: description,
+                  price: price,
+                  sentDate: Date(),
+                  photos: photos)
     }
     
+    
+    // MARK: Static Class Functions
+    
+    class func toSnapshot(product: Product) -> [String: Any] {
+        /// Creamos el objeto QueryDocumentSnapshot de Firestore y lo devolvemos
+        var snapshot = [String: Any]()
+        
+        snapshot["productid"] = product.productId
+        snapshot["seller"] = product.seller
+        snapshot["state"] = product.state.hashValue
+        snapshot["title"] = product.title
+        snapshot["category"] = product.category
+        snapshot["description"] = product.description
+        snapshot["price"] = product.price
+        snapshot["sentdate"] = product.sentDate
+        snapshot["photo1"] = product.photos[0]
+        
+        switch product.photos.count {
+        case 1:
+            snapshot["photo2"] = ""
+            snapshot["photo3"] = ""
+            snapshot["photo4"] = ""
+        case 2:
+            snapshot["photo2"] = product.photos[1]
+            snapshot["photo3"] = ""
+            snapshot["photo4"] = ""
+            
+        case 3:
+            snapshot["photo2"] = product.photos[1]
+            snapshot["photo3"] = product.photos[2]
+            snapshot["photo4"] = ""
+            
+        case 4:
+            snapshot["photo2"] = product.photos[1]
+            snapshot["photo3"] = product.photos[2]
+            snapshot["photo4"] = product.photos[3]
+            
+        default:
+            break
+        }
+        
+        return snapshot
+    }
 }
+
+
+
 
 
 /*extension Product {

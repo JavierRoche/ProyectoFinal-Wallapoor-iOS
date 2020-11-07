@@ -132,17 +132,6 @@ class LoginViewController: UIViewController {
         return button
     }()
     
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    lazy var logoutButton: UIButton = {
-        let button: UIButton = UIButton(type: UIButton.ButtonType.system)
-        button.setTitle("Logout", for: .normal)
-        button.tintColor = UIColor.black
-        button.addTarget(self, action: #selector (tapOnLogout), for: .touchUpInside)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    
     lazy var registerAnimation: CABasicAnimation = {
         let animation: CABasicAnimation = CABasicAnimation(keyPath: "position")
         animation.duration = 1.5
@@ -179,19 +168,23 @@ class LoginViewController: UIViewController {
         super.viewDidLoad()
         
         /// Obtenemos la geolocalizacion del user antes de guardarle en BD
+        Managers.managerUserLocation = UserLocation()
+        Managers.managerUserAuthoritation = UserAuthoritation()
+        Managers.managerUserFirestore = UserFirestore()
         Managers.managerUserLocation!.handleAuthorizationStatus()
         Managers.managerUserLocation!.requestLocation()
 
-        /*Managers.managerUserAuthoritation!.isLogged(onSuccess: { (user) in
+        Managers.managerUserAuthoritation!.isLogged(onSuccess: { [weak self] user in
             if let user = user {
-                self.viewModel.getUserLogged(user: user, onSuccess: { (user) in
-                    self.createScene(user: user)
+                self?.viewModel.getUserLogged(user: user, onSuccess: { user in
+                    Managers.managerUserLocation?.saveUserLogged(user: user)
+                    self?.createScene()
                     
                 }) { (error) in
-                    self.showAlert(title: "Error", message: error.localizedDescription)
+                    self?.showAlert(title: "Error", message: error.localizedDescription)
                 }
             }
-        }, onError: nil)*/
+        }, onError: nil)
         
     }
     
@@ -242,8 +235,6 @@ class LoginViewController: UIViewController {
         view.addSubview(registerButton)
         view.addSubview(hideButton)
         view.addSubview(recoverButton)
-        
-        view.addSubview(logoutButton)
     }
     
     fileprivate func setConstraints() {
@@ -310,11 +301,6 @@ class LoginViewController: UIViewController {
             recoverButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -64.0),
             recoverButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 64.0)
         ])
-        ////////////////////////////////
-        NSLayoutConstraint.activate([
-            logoutButton.bottomAnchor.constraint(equalTo: recoverButton.topAnchor, constant: -32.0),
-            logoutButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 64.0)
-        ])
     }
     
     fileprivate func openRegisterInterface() {
@@ -353,16 +339,18 @@ class LoginViewController: UIViewController {
         /// Inicializamos un User con los datos introducidos por el usuario
         let user: User = User.init(id: "", email: email, password: password)
         /// Obtenemos el manager del interactor y hacemos el login
-        Managers.managerUserAuthoritation!.login(user: user, onSuccess: { (user) in
+        Managers.managerUserAuthoritation!.login(user: user, onSuccess: { [weak self] user in
             
-            self.viewModel.getUserLogged(user: user, onSuccess: { (user) in
-                self.createScene(user: user)
+            self?.viewModel.getUserLogged(user: user, onSuccess: { (user) in
+                Managers.managerUserLocation?.saveUserLogged(user: user)
+                self?.createScene()
+                
             }) { (error) in
-                self.showAlert(title: "Error", message: error.localizedDescription)
+                self?.showAlert(title: "Error", message: error.localizedDescription)
             }
             
-        }) { (error) in
-            self.showAlert(title: "Error", message: error.localizedDescription)
+        }) { [weak self] error in
+            self?.showAlert(title: "Error", message: error.localizedDescription)
         }
     }
     
@@ -380,17 +368,19 @@ class LoginViewController: UIViewController {
         
         /// Inicializamos un User con los datos introducidos por el usuario
         let user: User = User.init(id: "", email: email, password: password)
-        Managers.managerUserAuthoritation!.register(user: user, onSuccess: { (user) in
+        Managers.managerUserAuthoritation!.register(user: user, onSuccess: { [weak self] user in
+            
             user.username = username
-            self.viewModel.getUserLogged(user: user, onSuccess: { (user) in
-                self.createScene(user: user)
+            self?.viewModel.getUserLogged(user: user, onSuccess: { (user) in
+                Managers.managerUserLocation?.saveUserLogged(user: user)
+                self?.createScene()
                 
             }) { (error) in
-                self.showAlert(title: "Error", message: error.localizedDescription)
+                self?.showAlert(title: "Error", message: error.localizedDescription)
             }
             
-        }) { (error) in
-            self.showAlert(title: "Error", message: error.localizedDescription)
+        }) { [weak self] error in
+            self?.showAlert(title: "Error", message: error.localizedDescription)
         }
     }
     
@@ -403,15 +393,19 @@ class LoginViewController: UIViewController {
         
         /// Inicializamos un User con los datos introducidos por el usuario
         let user = User.init(id: "", email: email, password: nil)
-        Managers.managerUserAuthoritation!.recoverPassword(user: user, onSuccess: { (user) in
-            self.showAlert(title: "Password", message: "Password recovered")
+        Managers.managerUserAuthoritation!.recoverPassword(user: user, onSuccess: { [weak self] user in
+            self?.showAlert(title: "Password", message: "Password recovered")
             
-        }) { (error) in
-            self.showAlert(title: "Error", message: error.localizedDescription)
+        }) { [weak self] error in
+            self?.showAlert(title: "Error", message: error.localizedDescription)
         }
     }
     
-    fileprivate func createScene(user: User) {
+    fileprivate func createScene() {
+        /// Liberamos memoria
+        Managers.managerUserAuthoritation = nil
+        Managers.managerUserFirestore = nil
+        
         /// Accedemos a la WindowScene de la App para la navegacion
         guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
               let sceneDelegate = windowScene.delegate as? SceneDelegate else { return }
@@ -422,12 +416,5 @@ class LoginViewController: UIViewController {
         self.dismiss(animated: true, completion: nil)
     }
     
-    @objc func tapOnLogout() {
-        Managers.managerUserAuthoritation!.logout(onSuccess: {
-            self.showAlert(title: "Logout", message: "User log out")
-        }) { (error) in
-            print(error)
-            self.showAlert(title: "Error", message: error.localizedDescription)
-        }
-    }
+    
 }

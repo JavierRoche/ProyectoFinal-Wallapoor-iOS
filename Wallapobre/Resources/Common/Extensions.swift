@@ -45,4 +45,9 @@ enum Category: String {
     case services = "Servicios"
 }
 
+enum ProductState: Int {
+    case selling = 0
+    case sold
+}
+
 public typealias ErrorClosure = (Error) -> Void

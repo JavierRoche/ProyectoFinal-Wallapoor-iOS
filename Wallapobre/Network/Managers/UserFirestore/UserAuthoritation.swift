@@ -10,7 +10,7 @@ import Foundation
 import FirebaseAuth
 import FirebaseFirestore
 
-public class UserAuthoritation: UserAuthorizationManager {
+class UserAuthoritation: UserAuthorizationManager {
     
     /// Metodo para el login que recibe un usuario y devuelve un usuario o un error
     public func login(user: User, onSuccess: @escaping (User) -> Void, onError: ErrorClosure?) {

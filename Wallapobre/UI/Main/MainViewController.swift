@@ -123,6 +123,7 @@ class MainViewController: UIViewController {
     @objc func tapOnNewProduct(sender: UIButton!) {
         let productViewModel: ProductViewModel = ProductViewModel()
         let productViewController: ProductViewController = ProductViewController(viewModel: productViewModel)
+        productViewController.delegate = self
         let navigationController: UINavigationController = UINavigationController.init(rootViewController: productViewController)
         navigationController.modalPresentationStyle = UIDevice.current.userInterfaceIdiom == .pad ? .formSheet : .automatic
         self.present(navigationController, animated: true, completion: nil)
@@ -196,7 +197,6 @@ extension MainViewController: UISearchBarDelegate  {
     }
     
     func searchBarBookmarkButtonClicked(_ searchBar: UISearchBar) {
-        print("searchBarBookmarkButtonClicked")
         /// Presentamos el modal con las opciones de filtrado
         let filtersViewModel: FiltersViewModel = FiltersViewModel()
         let filtersViewController: FiltersViewController = FiltersViewController(viewModel: filtersViewModel)
@@ -221,5 +221,14 @@ extension MainViewController: UISearchBarDelegate  {
 extension MainViewController: PinterestLayoutDelegate {
     func collectionView(_ collectionView: UICollectionView, heightForCellAtIndexPath indexPath: IndexPath) -> CGFloat {
         return viewModel.viewModel(at: indexPath).image.size.height
+    }
+}
+
+
+// MARK: ProductViewController Delegate
+
+extension MainViewController: ProductViewControllerDelegate {
+    func productAdded() {
+        showAlert(title: "Info", message: "Product uploaded")
     }
 }
