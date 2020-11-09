@@ -6,7 +6,6 @@
 //  Copyright © 2020 Javier Roche. All rights reserved.
 //
 
-import Foundation
 import MessageKit
 import FirebaseFirestore
 
@@ -37,8 +36,8 @@ class User {
     
     // MARK: Static Class Functions
     
-    class func mapper(snapshot: QueryDocumentSnapshot) -> User? {
-        let json: [String : Any] = snapshot.data()
+    class func mapper(document: QueryDocumentSnapshot) -> User {
+        let json: [String : Any] = document.data()
         /// Extraemos los valores; como puede venir vacio indicamos un valor por defecto
         let userId = json["userid"] as? String ?? ""
         let email = json["email"] as? String ?? ""

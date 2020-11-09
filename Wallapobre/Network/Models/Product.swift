@@ -6,8 +6,8 @@
 //  Copyright © 2020 Javier Roche. All rights reserved.
 //
 
-import Foundation
 import MessageKit
+import FirebaseFirestore
 
 class Product {
     public var productId: String
@@ -63,13 +63,43 @@ class Product {
     
     // MARK: Static Class Functions
     
+    class func mapper(document: QueryDocumentSnapshot) -> Product {
+        let json: [String : Any] = document.data()
+        /// Extraemos los valores; como puede venir vacio indicamos un valor por defecto
+        let productId = json["productid"] as? String ?? ""
+        let seller = json["seller"] as? String ?? ""
+        let state = json["state"] as? ProductState ?? ProductState(rawValue: ProductState.selling.rawValue)
+        let title = json["title"] as? String ?? ""
+        let category = json["category"] as? String ?? ""
+        let description = json["description"] as? String ?? ""
+        let price = json["price"] as? Int ?? 0
+        let sentDate = json["sentDate"] as? Date ?? Date()
+        let photo2 = json["photo2"] as? String ?? ""
+        let photo3 = json["photo3"] as? String ?? ""
+        let photo4 = json["photo4"] as? String ?? ""
+        var photos: [String] = [String]()
+        photos.append(json["photo1"] as? String ?? "")
+        if !photo2.isEmpty {
+            photos.append(photo2)
+        }
+        if !photo3.isEmpty {
+            photos.append(photo3)
+        }
+        if !photo4.isEmpty {
+            photos.append(photo4)
+        }
+        
+        /// Creamos y devolvemos el objeto Product
+        return Product.init(productId: productId, seller: seller, state: state!, title: title, category: category, description: description, price: price, sentDate: sentDate, photos: photos)
+    }
+    
     class func toSnapshot(product: Product) -> [String: Any] {
         /// Creamos el objeto QueryDocumentSnapshot de Firestore y lo devolvemos
         var snapshot = [String: Any]()
         
         snapshot["productid"] = product.productId
         snapshot["seller"] = product.seller
-        snapshot["state"] = product.state.hashValue
+        snapshot["state"] = product.state.rawValue
         snapshot["title"] = product.title
         snapshot["category"] = product.category
         snapshot["description"] = product.description
@@ -82,6 +112,7 @@ class Product {
             snapshot["photo2"] = ""
             snapshot["photo3"] = ""
             snapshot["photo4"] = ""
+            
         case 2:
             snapshot["photo2"] = product.photos[1]
             snapshot["photo3"] = ""
@@ -104,42 +135,3 @@ class Product {
         return snapshot
     }
 }
-
-
-
-
-
-/*extension Product {
-    /// Funcion de clase estatica, que mapea un snapshot a un Product
-    public class func mapper(json: QueryDocumentSnapshot) -> Product? {
-        let messageId = json["messageId"] as? String ?? ""
-        
-        let senderId = json["senderId"] as? String ?? ""
-        let displayName = json["displayName"] as? String ?? ""
-        let sender = Sender.init(id: senderId, displayName: displayName)
-        
-        let dateString = json["sendDate"] as? String ?? ""
-        let sendDate = Date.fromStringToDate(input: dateString, format: "yyyy-MM-dd HH:mm:ss")
-        
-        let type = json["type"] as? String ?? ""
-        let messageData: MessageKind
-        
-        let value = json["value"] as? String ?? ""
-        
-        switch type {
-        case "text":
-            messageData = MessageKind.text(value)
-        case "image":
-            let placeholder = UIImage.init(named: "diehard")
-            let mediaItem = ImageMediaItem.init(image: placeholder!)
-            messageData = MessageKind.photo(mediaItem)
-        default:
-            messageData = MessageKind.text(value)
-        }
-        
-        let message = Message.init(sender: sender, messageId: messageId, sentDate: sendDate, kind: messageData, type: type, value: value)
-        
-        return message
-    }
-}
-*/

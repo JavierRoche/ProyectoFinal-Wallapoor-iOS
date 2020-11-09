@@ -403,8 +403,8 @@ class LoginViewController: UIViewController {
     
     fileprivate func createScene() {
         /// Liberamos memoria
-        Managers.managerUserAuthoritation = nil
-        Managers.managerUserFirestore = nil
+        //Managers.managerUserAuthoritation = nil
+        //Managers.managerUserFirestore = nil
         
         /// Accedemos a la WindowScene de la App para la navegacion
         guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,

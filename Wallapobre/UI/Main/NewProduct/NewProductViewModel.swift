@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ProductViewModel {
+class NewProductViewModel {
     
     // MARK: Public Functions
     

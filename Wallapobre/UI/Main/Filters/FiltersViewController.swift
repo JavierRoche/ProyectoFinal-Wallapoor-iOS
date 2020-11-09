@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol FiltersDelegate: class {
+protocol FiltersViewControllerDelegate: class {
     func filterCreated(filter: Filter)
 }
 
@@ -176,7 +176,7 @@ class FiltersViewController: UIViewController {
     /// Objeto del modelo que contiene las imagenes
     let viewModel: FiltersViewModel
     /// Delegado para comunicar la creacion del filtro
-    weak var delegate: FiltersDelegate?
+    weak var delegate: FiltersViewControllerDelegate?
     
     
     // MARK: Inits

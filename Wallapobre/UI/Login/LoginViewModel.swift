@@ -21,7 +21,7 @@ class LoginViewModel {
     // MARK: Public Functions
     
     func getUserLogged(user: User, onSuccess: @escaping (User) -> Void, onError: ErrorClosure?) {
-        Managers.managerUserFirestore!.userCheck(user: user, onSuccess: { [weak self] user in
+        Managers.managerUserFirestore!.selectUser(user: user, onSuccess: { [weak self] user in
             /// El usuario existe en Firestore BD
             self?.user = user
             onSuccess(self?.user! ?? User.init(id: "", email: "", password: ""))

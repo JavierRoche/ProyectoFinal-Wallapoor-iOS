@@ -15,14 +15,22 @@ class MainViewController: UIViewController {
         return pinterestLayout
     }()
 
+    lazy var flowLayout: UICollectionViewFlowLayout = {
+        let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
+        layout.itemSize = CGSize(width: 160.0, height: 160.0)
+        layout.minimumInteritemSpacing = 16.0
+        layout.sectionInset = UIEdgeInsets(top: 32.0, left: 32.0, bottom: 32.0, right: 32.0)
+        return layout
+    }()
+    
     lazy var collectionView: UICollectionView = {
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: pinterestLayout)
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.backgroundColor = .white
-        collectionView.dataSource = self
-        collectionView.register(UINib(nibName: "MainCell", bundle: nil), forCellWithReuseIdentifier: "MainCell")
-        collectionView.delegate = self
-        return collectionView
+        let collection = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
+        collection.backgroundColor = UIColor.white
+        collection.dataSource = self
+        collection.delegate = self
+        collection.register(ProductCell.self, forCellWithReuseIdentifier: String(describing: ProductCell.self))
+        collection.translatesAutoresizingMaskIntoConstraints = false
+        return collection
     }()
     
     lazy var searchController: UISearchController = {
@@ -57,12 +65,14 @@ class MainViewController: UIViewController {
 
     /// Objeto del modelo que contiene las imagenes
     let viewModel: MainViewModel
+    var productList: [Product] = [Product]()
     
     
     // MARK: Inits
 
     init(viewModel: MainViewModel) {
         self.viewModel = viewModel
+        
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -99,7 +109,10 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        viewModel.viewWasLoaded()
+        Managers.managerProductFirestore = ProductFirestore()
+        
+        self.viewModel.delegate = self
+        self.viewModel.viewWasLoaded()
         
         /// Configuramos la interface y cargamos las fotos en el CollectionView
         self.configureUI()
@@ -121,37 +134,14 @@ class MainViewController: UIViewController {
     // MARK: User Interactions
     
     @objc func tapOnNewProduct(sender: UIButton!) {
-        let productViewModel: ProductViewModel = ProductViewModel()
-        let productViewController: ProductViewController = ProductViewController(viewModel: productViewModel)
+        let productViewModel: NewProductViewModel = NewProductViewModel()
+        let productViewController: NewProductViewController = NewProductViewController(viewModel: productViewModel)
         productViewController.delegate = self
         let navigationController: UINavigationController = UINavigationController.init(rootViewController: productViewController)
         navigationController.modalPresentationStyle = UIDevice.current.userInterfaceIdiom == .pad ? .formSheet : .automatic
         self.present(navigationController, animated: true, completion: nil)
     }
 }
-
-
-// MARK: ViewModel Delegate
-
-extension MainViewController: MainViewModelDelegate {
-    func mainViewModelsCreated() {
-        collectionView.reloadData()
-    }
-}
-
-
-// MARK: FilterViewController Delegate
-
-extension MainViewController: FiltersDelegate {
-    func filterCreated(filter: Filter) {
-        print("filterCreated")
-        let initialFilter = Filter()
-        if filter != initialFilter {
-            // Abrir Controller con lista filtrada
-        }
-    }
-}
-
 
 
 // MARK: UICollectionView Delegate
@@ -165,53 +155,15 @@ extension MainViewController: UICollectionViewDelegate {
 
 extension MainViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.numberOfItems(in: section)
+        return self.productList.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MainCell", for: indexPath) as? MainCell else { fatalError() }
-        cell.viewModel = viewModel.viewModel(at: indexPath)
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProductCell", for: indexPath) as? ProductCell else { fatalError() }
+        cell.configureCell(imageUrl: self.productList[indexPath.row].photos[0], price: self.productList[indexPath.row].price, title: self.productList[indexPath.row].title)
+        //cell.viewModel = viewModel.getCellViewModel(at: indexPath)
+        //collectionView.collectionViewLayout.invalidateLayout()
         return cell
-    }
-}
-
-
-// MARK: UISearchControll / UISearchBar Delegate
-
-extension MainViewController: UISearchBarDelegate  {
-    /// Funcion delegada de UISearchBar para controlar el click en Enter o Buscar
-    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        guard let text: String = self.searchController.searchBar.text?.lowercased() else { return }
-        if text != "" {
-            print("Buscar: \(text)")
-            /// Bloqueamos el uso del searchController y resto de la pantalla para la busqueda actual
-            searchController.searchBar.isUserInteractionEnabled = false
-            self.view.isUserInteractionEnabled = false
-            /// Iniciamos la animacion de waiting
-            self.activityIndicator.center = self.view.center
-            self.activityIndicator.startAnimating()
-            self.view.addSubview(activityIndicator)
-                
-            /// TODO
-        }
-    }
-    
-    func searchBarBookmarkButtonClicked(_ searchBar: UISearchBar) {
-        /// Presentamos el modal con las opciones de filtrado
-        let filtersViewModel: FiltersViewModel = FiltersViewModel()
-        let filtersViewController: FiltersViewController = FiltersViewController(viewModel: filtersViewModel)
-        filtersViewController.delegate = self
-        let navigationController: UINavigationController = UINavigationController.init(rootViewController: filtersViewController)
-        navigationController.modalPresentationStyle = .formSheet
-        navigationController.navigationBar.isHidden = true
-        
-        self.present(navigationController, animated: true, completion: nil)
-    }
-    
-    /// Funcion delegada de UISearchBar para controlar el click en Cancel
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        /// Vaciamos la caja de busqueda porque un funcionamiento que no conozco rellama a searchBarTextDidEndEditing despues de searchBarCancelButtonClicked, y como haya algo escrito pues se pone a hacer la busqueda masiva
-        self.searchController.searchBar.text = ""
     }
 }
 
@@ -220,7 +172,38 @@ extension MainViewController: UISearchBarDelegate  {
 
 extension MainViewController: PinterestLayoutDelegate {
     func collectionView(_ collectionView: UICollectionView, heightForCellAtIndexPath indexPath: IndexPath) -> CGFloat {
-        return viewModel.viewModel(at: indexPath).image.size.height
+        //var totalHeight: CGFloat = 0
+        //totalHeight += viewModel.getCellViewModel(at: indexPath).productImage.image?.size.height ?? 0
+        //totalHeight += viewModel.getCellViewModel(at: indexPath).price.boun
+        //return viewModel.getCellViewModel(at: indexPath).productImage.size.height
+        return 180
+    }
+}
+
+
+// MARK: ViewModel Delegate
+
+extension MainViewController: MainViewModelDelegate {
+    func productListCreated(productList: [Product]) {
+        self.productList = productList
+        collectionView.reloadData()
+    }
+    
+    func productCellViewModelsCreated() {
+        collectionView.reloadData()
+    }
+}
+
+
+// MARK: FilterViewController Delegate
+
+extension MainViewController: FiltersViewControllerDelegate {
+    func filterCreated(filter: Filter) {
+        print("filterCreated")
+        let initialFilter = Filter()
+        if filter != initialFilter {
+            // Abrir Controller con lista filtrada
+        }
     }
 }
 

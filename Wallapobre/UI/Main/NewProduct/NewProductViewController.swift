@@ -12,7 +12,7 @@ protocol ProductViewControllerDelegate: class {
     func productAdded()
 }
 
-class ProductViewController: UIViewController {
+class NewProductViewController: UIViewController {
     lazy var backgroundView: UIView = {
         let view: UIView = UIView(frame: self.view.bounds)
         view.backgroundColor = UIColor.white
@@ -201,7 +201,7 @@ class ProductViewController: UIViewController {
     /// Delegado para comunicar la creacion correcta del producto
     weak var delegate: ProductViewControllerDelegate?
     /// Objeto con el que acceder al manager de Productos
-    let viewModel: ProductViewModel
+    let viewModel: NewProductViewModel
     /// Objetos para almacenar datos de pantalla
     var categories: [String] = [Category.motor.rawValue, Category.textile.rawValue, Category.homes.rawValue, Category.informatic.rawValue, Category.sports.rawValue, Category.services.rawValue]
     private var imageHolderPressed = UIImageView()
@@ -210,9 +210,9 @@ class ProductViewController: UIViewController {
     
     // MARK: Inits
 
-    init(viewModel: ProductViewModel) {
+    init(viewModel: NewProductViewModel) {
         self.viewModel = viewModel
-        super.init(nibName: String(describing: ProductViewController.self), bundle: nil)
+        super.init(nibName: String(describing: NewProductViewController.self), bundle: nil)
         
         self.title = "Nuevo producto"
         UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.font: UIFont.fontStyle17Bold]
@@ -239,6 +239,10 @@ class ProductViewController: UIViewController {
         configureUI()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        Managers.managerStorageFirebase = nil
+        Managers.managerProductFirestore = nil
+    }
     
     // MARK: User Interactors
     
@@ -497,7 +501,7 @@ class ProductViewController: UIViewController {
 
 // MARK: UIImagePicker Delegate
 
-extension ProductViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+extension NewProductViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         dismiss(animated: true, completion: {
             /// Si se ha seleccionado foto la ubicamos en el hueco selecionado

@@ -9,5 +9,6 @@
 import Foundation
 
 protocol ProductFirestoreManager {
+    func selectProducts(onSuccess: @escaping ([Product]) -> Void, onError: ErrorClosure?)
     func insertProduct(product: Product, onSuccess: @escaping () -> Void, onError: ErrorClosure?)
 }

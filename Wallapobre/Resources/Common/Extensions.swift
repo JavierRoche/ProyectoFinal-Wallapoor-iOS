@@ -47,7 +47,7 @@ enum Category: String {
 
 enum ProductState: Int {
     case selling = 0
-    case sold
+    case sold = 1
 }
 
 public typealias ErrorClosure = (Error) -> Void

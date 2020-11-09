@@ -9,7 +9,7 @@
 import UIKit
 import MessageKit
 
-extension ProductViewController: UITextFieldDelegate, UITextViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate {
+extension NewProductViewController: UITextFieldDelegate, UITextViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate {
     
     // MARK: UITextView / UITextField Delegates (Hiding Keyboard)
     

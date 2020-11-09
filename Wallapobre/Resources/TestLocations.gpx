@@ -7,7 +7,7 @@
      Xcode will simulate a route visiting each waypoint.
      -->
     <wpt lat="40.79823" lon="-3.62090">
-        <name>Cupertino</name>
+        <name>Venturada</name>
         
         <!--
          Optionally provide a time element for each waypoint. Xcode will interpolate movement

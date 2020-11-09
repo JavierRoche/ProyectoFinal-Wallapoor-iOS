@@ -17,7 +17,7 @@ class UserFirestore: UserFirestoreManager {
     
     // MARK: Public Functions
     
-    public func userCheck(user: User, onSuccess: @escaping (User) -> Void, onNonexistent: @escaping () -> Void, onError: ErrorClosure?) {
+    public func selectUser(user: User, onSuccess: @escaping (User) -> Void, onNonexistent: @escaping () -> Void, onError: ErrorClosure?) {
         /// Comprobamos la presencia del usuario en BD
         self.db
             .whereField("userid", isEqualTo: user.sender.id)
@@ -30,14 +30,11 @@ class UserFirestore: UserFirestoreManager {
                 /// El usuario existia
                 if let snapshot = snapshot {
                     /// Si no hay ningun user con ese id devolvemos inexistente
-                    guard let snapshot: QueryDocumentSnapshot = snapshot.documents.first else {
+                    guard let document: QueryDocumentSnapshot = snapshot.documents.first else {
                         onNonexistent()
                         return
                     }
-                    guard let user = User.mapper(snapshot: snapshot) else {
-                        fatalError("Error fatal. Usuario existe pero irrecuperable")
-                    }
-                    onSuccess(user)
+                    onSuccess(User.mapper(document: document))
                 }
         }
     }
