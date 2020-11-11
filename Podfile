@@ -12,5 +12,6 @@ target 'Wallapobre' do
   
   pod 'Kingfisher'
   pod 'ImageSlideshow', '~> 1.9.0'
+  pod "ImageSlideshow/Kingfisher"
 
 end

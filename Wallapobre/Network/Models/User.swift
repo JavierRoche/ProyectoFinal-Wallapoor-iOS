@@ -29,6 +29,7 @@ class User {
     convenience init(id: String, email: String, username: String, latitude: Double, longitude: Double) {
         self.init(id: id, email: email, password: "")
         
+        self.username = username
         self.latitude = latitude
         self.longitude = longitude
     }

@@ -17,10 +17,10 @@ class UserFirestore: UserFirestoreManager {
     
     // MARK: Public Functions
     
-    public func selectUser(user: User, onSuccess: @escaping (User) -> Void, onNonexistent: @escaping () -> Void, onError: ErrorClosure?) {
+    public func selectUser(userId: String, onSuccess: @escaping (User) -> Void, onNonexistent: @escaping () -> Void, onError: ErrorClosure?) {
         /// Comprobamos la presencia del usuario en BD
         self.db
-            .whereField("userid", isEqualTo: user.sender.id)
+            .whereField("userid", isEqualTo: userId)
             .getDocuments { (snapshot, error) in
                 /// Raro que devuelva Firestore un error aqui
                 if let error = error, let retError = onError {

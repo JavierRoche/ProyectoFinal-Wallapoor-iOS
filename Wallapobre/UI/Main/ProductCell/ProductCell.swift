@@ -106,8 +106,8 @@ class ProductCell: UICollectionViewCell {
             if let image = image {
                 self.imageView.image = image
             }
-            
         }
+        
         DispatchQueue.main.async {
             self.priceLabel.text = String(price)
             self.titleLabel.text = title

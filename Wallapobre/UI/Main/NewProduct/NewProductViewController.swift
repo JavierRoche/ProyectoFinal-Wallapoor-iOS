@@ -244,6 +244,7 @@ class NewProductViewController: UIViewController {
         Managers.managerProductFirestore = nil
     }
     
+    
     // MARK: User Interactors
     
     @objc private func tapOnCancel() {

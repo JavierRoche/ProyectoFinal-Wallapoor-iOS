@@ -17,6 +17,7 @@ class MainViewController: UIViewController {
 
     lazy var flowLayout: UICollectionViewFlowLayout = {
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
+        //layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
         layout.itemSize = CGSize(width: 160.0, height: 160.0)
         layout.minimumInteritemSpacing = 16.0
         layout.sectionInset = UIEdgeInsets(top: 32.0, left: 32.0, bottom: 32.0, right: 32.0)
@@ -134,11 +135,13 @@ class MainViewController: UIViewController {
     // MARK: User Interactions
     
     @objc func tapOnNewProduct(sender: UIButton!) {
-        let productViewModel: NewProductViewModel = NewProductViewModel()
-        let productViewController: NewProductViewController = NewProductViewController(viewModel: productViewModel)
-        productViewController.delegate = self
-        let navigationController: UINavigationController = UINavigationController.init(rootViewController: productViewController)
-        navigationController.modalPresentationStyle = UIDevice.current.userInterfaceIdiom == .pad ? .formSheet : .automatic
+        let newProductViewModel: NewProductViewModel = NewProductViewModel()
+        let newProductViewController: NewProductViewController = NewProductViewController(viewModel: newProductViewModel)
+        newProductViewController.delegate = self
+        let navigationController: UINavigationController = UINavigationController.init(rootViewController: newProductViewController)
+        navigationController.modalPresentationStyle = .automatic
+        
+        /// Presentamos el ViewController
         self.present(navigationController, animated: true, completion: nil)
     }
 }
@@ -147,7 +150,17 @@ class MainViewController: UIViewController {
 // MARK: UICollectionView Delegate
 
 extension MainViewController: UICollectionViewDelegate {
-    // TODO: Clic en elemento del colection
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let detailProductViewModel: DetailProductViewModel = DetailProductViewModel.init(product: productList[indexPath.row])
+        let detailProductViewController: DetailProductViewController = DetailProductViewController.init(viewModel: detailProductViewModel)
+        //detailProductViewController.delegate = self
+        let navigationController: UINavigationController = UINavigationController.init(rootViewController: detailProductViewController)
+        navigationController.modalPresentationStyle = .fullScreen
+        self.present(navigationController, animated: true, completion: nil)
+        
+        /// Presentamos el ViewController
+        collectionView.deselectItem(at: indexPath, animated: true)
+    }
 }
 
 
