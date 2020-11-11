@@ -25,11 +25,26 @@ class DetailProductViewController: UIViewController {
         return table
     }()
     
+    lazy var footerView: UIView = {
+        let view: UIView = UIView()
+        view.backgroundColor = UIColor.white
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    lazy var chatButton: UIButton = {
+        let button: UIButton = UIButton(type: UIButton.ButtonType.system)
+        button.setTitle("Chat", for: .normal)
+        button.tintColor = UIColor.black
+        button.backgroundColor = UIColor.cyan
+        button.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapOnChat)))
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
     
     /// Objeto del modelo que contiene las imagenes
     let viewModel: DetailProductViewModel
-    /// Objeto con los datos del vendedor del producto
-    var seller: User?
     
     
     // MARK: Inits
@@ -57,12 +72,16 @@ class DetailProductViewController: UIViewController {
         let leftBarButtonItem: UIBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "arrow.left"), style: .plain, target: self, action: #selector(backButtonTapped))
         leftBarButtonItem.tintColor = .black
         navigationItem.leftBarButtonItem = leftBarButtonItem
+        navigationController?.navigationBar.alpha = 0.4
         
         /// Arrancamos el manager y recuperamos el vendedor del producto
         Managers.managerUserFirestore = UserFirestore()
         self.viewModel.getSellerData(viewModel: viewModel, onSuccess: { user in
-            guard let seller = user else { return }
-            self.seller = seller
+            guard let _ = user else {
+                self.showAlert(title: "Error", message: "Missing seller")
+                self.dismiss(animated: true, completion: nil)
+                return
+            }
             self.tableView.reloadData()
             
         }) { (error) in
@@ -82,6 +101,10 @@ class DetailProductViewController: UIViewController {
         dismiss(animated: true, completion: nil)
     }
     
+    @objc private func tapOnChat() {
+        print("chat")
+    }
+    
     
     // MARK: Private Functions
     
@@ -89,14 +112,31 @@ class DetailProductViewController: UIViewController {
         view = UIView()
         
         view.addSubview(tableView)
+        view.addSubview(footerView)
+        view.addSubview(chatButton)
     }
     
     fileprivate func setConstraints() {
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.topAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ])
+        
+        NSLayoutConstraint.activate([
+            //footerView.topAnchor.constraint(equalTo: tableView.bottomAnchor),
+            footerView.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor),
+            footerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            footerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            footerView.heightAnchor.constraint(equalToConstant: 50.0)
+        ])
+        
+        NSLayoutConstraint.activate([
+            chatButton.topAnchor.constraint(equalTo: footerView.topAnchor, constant: 16.0),
+            chatButton.bottomAnchor.constraint(equalTo: footerView.bottomAnchor, constant: -16.0),
+            chatButton.leadingAnchor.constraint(equalTo: footerView.leadingAnchor, constant: 16.0),
+            chatButton.trailingAnchor.constraint(equalTo: footerView.trailingAnchor, constant: -16.0)
         ])
     }
 }

@@ -45,7 +45,7 @@ extension DetailProductViewController: UITableViewDelegate {
 extension DetailProductViewController: UITableViewDataSource {
     /// Funcion delegada del numero de celda de la tabla
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let _ = self.seller else { return 0 }
+        guard let _ = self.viewModel.seller else { return 0 }
         return 4
     }
     
@@ -56,7 +56,7 @@ extension DetailProductViewController: UITableViewDataSource {
             /// Celda con la informacion del producto
             guard let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: ProductImagesCell.self), for: indexPath) as? ProductImagesCell else { fatalError() }
             cell.delegate = self
-            cell.configureCell(source: self.viewModel.urls)
+            cell.configureCell(viewModel: self.viewModel)
             return cell
             
         case 1:
@@ -68,17 +68,17 @@ extension DetailProductViewController: UITableViewDataSource {
         case 2:
             /// Celda con la localizacion y el mapa
             guard let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: ProductMapCell.self), for: indexPath) as? ProductMapCell else { fatalError() }
-            cell.configureCell(seller: self.seller!)
+            cell.configureCell(viewModel: self.viewModel)
             return cell
             
         case 3:
-            /// Celda con la informacion del producto
+            /// Celda con la informacion del vendedor
             guard let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: ProductSellerCell.self), for: indexPath) as? ProductSellerCell else { fatalError() }
-            cell.configureCell(seller: self.seller!)
+            cell.configureCell(viewModel: self.viewModel)
             return cell
             
         case 4:
-            /// Celda con la localizacion y el mapa
+            /// Celda con las opciones de compartir en redes
             guard let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: ProductSocialNetworksCell.self), for: indexPath) as? ProductSocialNetworksCell else { fatalError() }
             //cell.configureCell()
             return cell

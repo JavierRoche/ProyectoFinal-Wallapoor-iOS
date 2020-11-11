@@ -39,10 +39,10 @@ class ProductImagesCell: UITableViewCell {
     
     //MARK: Life Cycle
     
-    public func configureCell(source: [KingfisherSource]) {
+    public func configureCell(viewModel: DetailProductViewModel) {
         self.setViewsHierarchy()
         self.setConstraints()
-        self.setSource(source: source)
+        self.setSource(source: viewModel.urls)
     }
 
     

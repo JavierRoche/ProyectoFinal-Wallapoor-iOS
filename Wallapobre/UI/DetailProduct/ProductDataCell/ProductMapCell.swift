@@ -41,9 +41,11 @@ class ProductMapCell: UITableViewCell {
     
     //MARK: Life Cycle
     
-    public func configureCell(seller: User) {
+    public func configureCell(viewModel: DetailProductViewModel) {
         self.setViewsHierarchy()
         self.setConstraints()
+        
+        guard let seller = viewModel.seller else { return }
         self.setAddress(seller: seller)
         self.setMapLocation(seller: seller)
     }

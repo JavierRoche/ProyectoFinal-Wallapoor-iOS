@@ -11,6 +11,7 @@ import ImageSlideshow
 
 class DetailProductViewModel {
     var product: Product
+    var seller: User?
     var urls = [KingfisherSource]()
     
     
@@ -31,6 +32,7 @@ class DetailProductViewModel {
     
     func getSellerData(viewModel: DetailProductViewModel, onSuccess: @escaping (User?) -> Void, onError: ErrorClosure?) {
         Managers.managerUserFirestore!.selectUser(userId: viewModel.product.seller, onSuccess: { user in
+            self.seller = user
             onSuccess(user)
             
         }, onNonexistent: {
