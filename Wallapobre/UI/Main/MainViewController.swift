@@ -168,12 +168,17 @@ extension MainViewController: UICollectionViewDelegate {
 
 extension MainViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.productList.count
+        return self.viewModel.numberOfItems(in: section)
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProductCell", for: indexPath) as? ProductCell else { fatalError() }
-        cell.configureCell(imageUrl: self.productList[indexPath.row].photos[0], price: self.productList[indexPath.row].price, title: self.productList[indexPath.row].title)
+        
+        let productViewModel: ProductCellViewModel = self.viewModel.getCellViewModel(at: indexPath)
+        
+        cell.configureCell(imageUrl: productViewModel.product.photos[0],
+                           price: productViewModel.product.price,
+                           title: productViewModel.product.title)
         //cell.viewModel = viewModel.getCellViewModel(at: indexPath)
         //collectionView.collectionViewLayout.invalidateLayout()
         return cell

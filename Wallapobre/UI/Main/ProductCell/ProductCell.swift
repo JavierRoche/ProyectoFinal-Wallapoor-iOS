@@ -61,9 +61,9 @@ class ProductCell: UICollectionViewCell {
                     self.imageView.image = image
                 }
             }*/
-            imageView.image = viewModel.productImage
-            priceLabel.text = String(viewModel.price)
-            titleLabel.text = viewModel.title
+            //imageView.image = viewModel.productImage
+            priceLabel.text = String(viewModel.product.price)
+            titleLabel.text = viewModel.product.title
             
             self.setViewsHierarchy()
             self.setConstraints()

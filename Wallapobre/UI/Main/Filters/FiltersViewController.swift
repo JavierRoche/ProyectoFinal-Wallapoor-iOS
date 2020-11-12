@@ -31,7 +31,7 @@ class FiltersViewController: UIViewController {
     }()
     
     lazy var acceptButton: UIButton = {
-        let button: UIButton = UIButton()
+        let button: UIButton = UIButton(type: UIButton.ButtonType.system)
         button.setTitle("Aceptar", for: .normal)
         button.tintColor = UIColor.black
         button.addTarget(self, action: #selector (acceptFilter), for: .touchUpInside)
@@ -203,11 +203,16 @@ class FiltersViewController: UIViewController {
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        let filter: Filter = viewModel.setFilter(motorSwitchValue: motorSwitch.isOn, textileSwitchValue: textileSwitch.isOn,
-                                         homesSwitchValue: homesSwitch.isOn, informaticSwitchValue: informaticSwitch.isOn,
-                                         sportsSwitchValue: sportsSwitch.isOn, servicesSwitchValue: servicesSwitch.isOn,
-                                         slideValue: slider.value)
-        delegate?.filterCreated(filter: filter)
+        let newFilter: Filter = viewModel.setFilter(motorSwitchValue: motorSwitch.isOn,
+                                                    textileSwitchValue: textileSwitch.isOn,
+                                                    homesSwitchValue: homesSwitch.isOn,
+                                                    informaticSwitchValue: informaticSwitch.isOn,
+                                                    sportsSwitchValue: sportsSwitch.isOn,
+                                                    servicesSwitchValue: servicesSwitch.isOn,
+                                                    slideValue: slider.value, text: String())
+        if newFilter != viewModel.filter {
+            delegate?.filterCreated(filter: newFilter)
+        }
     }
     
     
@@ -234,7 +239,6 @@ class FiltersViewController: UIViewController {
         view.addSubview(servicesSwitch)
         view.addSubview(slider)
         view.addSubview(sliderLabel)
-        view.bringSubviewToFront(acceptButton)
     }
     
     fileprivate func setConstraints() {

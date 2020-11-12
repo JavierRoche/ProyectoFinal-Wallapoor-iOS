@@ -14,7 +14,7 @@ final class FiltersViewModel {
     
     // MARK: Inits
     
-    init(motor: Bool, textile: Bool, homes: Bool, informatic: Bool, sports: Bool, services: Bool, distance: Float){
+    init(motor: Bool, textile: Bool, homes: Bool, informatic: Bool, sports: Bool, services: Bool, distance: Float, text: String){
         filter.motor = motor
         filter.textile = textile
         filter.homes = homes
@@ -22,17 +22,18 @@ final class FiltersViewModel {
         filter.sports = sports
         filter.services = services
         filter.distance = distance
+        filter.text = text
     }
     
     convenience init() {
-        self.init(motor: false, textile: false, homes: false, informatic: false, sports: false, services: false, distance: 20.0)
+        self.init(motor: false, textile: false, homes: false, informatic: false, sports: false, services: false, distance: 50.0, text: String())
     }
     
     
     // MARK: Public Functions
     
     func setFilter(motorSwitchValue: Bool, textileSwitchValue: Bool, homesSwitchValue: Bool,
-                   informaticSwitchValue: Bool, sportsSwitchValue: Bool, servicesSwitchValue: Bool, slideValue: Float) -> Filter {
+                   informaticSwitchValue: Bool, sportsSwitchValue: Bool, servicesSwitchValue: Bool, slideValue: Float, text: String) -> Filter {
         filter.motor = motorSwitchValue
         filter.textile = textileSwitchValue
         filter.homes = homesSwitchValue
@@ -40,6 +41,7 @@ final class FiltersViewModel {
         filter.sports = sportsSwitchValue
         filter.services = servicesSwitchValue
         filter.distance = slideValue
+        filter.text = text
         
         return filter
     }
@@ -52,6 +54,7 @@ struct Filter : Equatable {
     var informatic: Bool = false
     var sports: Bool = false
     var services: Bool = false
-    var distance: Float = 20.0
+    var distance: Float = 50.0
+    var text: String = String()
 }
 

@@ -20,29 +20,15 @@ class MainViewModel {
     func viewWasLoaded() {
         //var count: Int = 0
         
-        Managers.managerProductFirestore!.selectProducts(onSuccess: { [weak self] productList in
-            self?.delegate?.productListCreated(productList: productList)
-            /*for product in productList {
-                
-                guard let imageURL = URL(string: product.photos[0]) else { return }
-                
-                /// Comienza la ejecucion concurrente
-                DispatchQueue.global(qos: .userInitiated).async { [weak self] in
-                    /// La clase Data tiene un init con los contenidos de una URL
-                    guard let imageData = try? Data(contentsOf: imageURL) else { return }
-                    let image = UIImage(data: imageData)
-
-                    DispatchQueue.main.async {
-                        self?.originalProductList.append(ProductCellViewModel(product: product, image: image ?? UIImage(systemName: "camera.fill")!))
-                        count += 1
-                        if count == productList.count {
-                            self?.delegate?.productCellViewModelsCreated()
-                        }
-                    }
-                }
-                
-                //self.originalProductList.append(ProductCellViewModel(product: product))
-            }*/
+        Managers.managerProductFirestore!.selectProducts(onSuccess: { [weak self] products in
+            /// Recibimos los productos recuperados por la busqueda inicial
+            self?.originalProductList = products.compactMap({ ProductCellViewModel(product: $0) })
+            
+            
+            
+            self?.delegate?.productCellViewModelsCreated()
+            
+            
             
         }, onError: { error in
             /// Ha habido error raro

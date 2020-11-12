@@ -9,16 +9,18 @@
 import UIKit
 
 class ProductCellViewModel {
-    let productId: String
+    let product: Product
+    /*let productId: String
     let productImage: UIImage
     let price: Int
-    let title: String
+    let title: String*/
 
-    init(product: Product, image: UIImage) {
-        self.productId = product.productId
+    init(product: Product) { //}, image: UIImage) {
+        self.product = product
+        /*self.productId = product.productId
         self.productImage = image
         self.price = product.price
-        self.title = product.title
+        self.title = product.title*/
         
         /*let url = URL.init(string: product.photos[0])
         productImage.kf.setImage(with: url, placeholder: nil, options: nil, progressBlock: nil) { (image,_,_,_) in
