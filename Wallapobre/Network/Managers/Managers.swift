@@ -9,10 +9,18 @@
 import Foundation
 
 class Managers {
-    /// Objeto de la clase
+    /// Manager de autentificacion de usuario
     static var managerUserAuthoritation: UserAuthoritation?
+    /// Manager de tabla de Usuarios en Firestore
     static var managerUserFirestore: UserFirestore?
+    /// Manager de gestion con MapKit
     static var managerUserLocation: UserLocation?
+    /// Manager de manejo de documentos en Cloud Firestore
     static var managerStorageFirebase: StorageFirebase?
+    /// Manager de tabla de Productos en Firestore
     static var managerProductFirestore: ProductFirestore?
+    /// Manager de tabla de Discussion (chat) en Firestore
+    static var managerDiscussionFirestore: DiscussionFirestore?
+    /// Manager de tabla de Messages (chat) en Firestore
+    static var managerMessageFirestore: MessageFirestore?
 }

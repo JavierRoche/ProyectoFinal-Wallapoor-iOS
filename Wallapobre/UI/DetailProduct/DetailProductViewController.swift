@@ -69,11 +69,6 @@ class DetailProductViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let leftBarButtonItem: UIBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "arrow.left"), style: .plain, target: self, action: #selector(backButtonTapped))
-        leftBarButtonItem.tintColor = .black
-        navigationItem.leftBarButtonItem = leftBarButtonItem
-        navigationController?.navigationBar.alpha = 0.4
-        
         /// Arrancamos el manager y recuperamos el vendedor del producto
         Managers.managerUserFirestore = UserFirestore()
         self.viewModel.getSellerData(viewModel: viewModel, onSuccess: { user in
@@ -102,7 +97,13 @@ class DetailProductViewController: UIViewController {
     }
     
     @objc private func tapOnChat() {
-        print("chat")
+        let chatViewModel: ChatViewModel = ChatViewModel.init(product: viewModel.product)
+        let chatViewController: ChatViewController = ChatViewController()
+        chatViewController.viewModel = chatViewModel
+        //detailProductViewController.delegate = self
+        let navigationController: UINavigationController = UINavigationController.init(rootViewController: chatViewController)
+        navigationController.modalPresentationStyle = .fullScreen
+        self.present(navigationController, animated: true, completion: nil)
     }
     
     
@@ -114,6 +115,12 @@ class DetailProductViewController: UIViewController {
         view.addSubview(tableView)
         view.addSubview(footerView)
         view.addSubview(chatButton)
+        
+        /// Boton superior para salir del chat
+        let leftBarButtonItem: UIBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "arrow.left"), style: .plain, target: self, action: #selector(backButtonTapped))
+        leftBarButtonItem.tintColor = .black
+        navigationItem.leftBarButtonItem = leftBarButtonItem
+        navigationController?.navigationBar.alpha = 0.4
     }
     
     fileprivate func setConstraints() {

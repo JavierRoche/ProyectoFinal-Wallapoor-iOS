@@ -20,6 +20,23 @@ class LoginViewModel {
     
     // MARK: Public Functions
     
+    func askForLocationPermissions() {
+        Managers.managerUserLocation!.handleAuthorizationStatus()
+        Managers.managerUserLocation!.requestLocation()
+    }
+    
+    func checkUserLogged(onSuccess: @escaping (User?) -> Void, onError: ErrorClosure?) {
+        /// Chequea usuario logueado en UserAuthoritation
+        Managers.managerUserAuthoritation!.isLogged(onSuccess: { user in
+            onSuccess(user)
+            
+        }) { error in
+            if let retError = onError {
+                retError(error)
+            }
+        }
+    }
+    
     func getUserLogged(user: User, onSuccess: @escaping (User) -> Void, onError: ErrorClosure?) {
         Managers.managerUserFirestore!.selectUser(userId: user.sender.senderId, onSuccess: { [weak self] user in
             /// El usuario existe en Firestore BD
@@ -43,6 +60,49 @@ class LoginViewModel {
         }
     }
     
+    func logUser(user: User, onSuccess: @escaping (User) -> Void, onError: ErrorClosure?) {
+        /// Obtenemos el manager del interactor y hacemos el login
+        Managers.managerUserAuthoritation!.login(user: user, onSuccess: { user in
+            onSuccess(user)
+            
+        }) { error in
+            if let retError = onError {
+                retError(error)
+            }
+        }
+    }
+    
+    func registerUser(user: User, onSuccess: @escaping (User) -> Void, onError: ErrorClosure?) {
+        Managers.managerUserAuthoritation!.register(user: user, onSuccess: { user in
+            onSuccess(user)
+            
+        }) { error in
+            if let retError = onError {
+                retError(error)
+            }
+        }
+    }
+    
+    func recoverUser(user: User, onSuccess: @escaping () -> Void, onError: ErrorClosure?) {
+        Managers.managerUserAuthoritation!.recoverPassword(user: user, onSuccess: { user in
+            onSuccess()
+            
+        }) { error in
+            if let retError = onError {
+                retError(error)
+            }
+        }
+    }
+    
+    func saveUserLogged(user: User) {
+        Managers.managerUserLocation?.saveUserLogged(user: user)
+    }
+    
+    
+    
+    
+    // MARK: Private Functions
+    
     fileprivate func insertUser(user: User) {
         Managers.managerUserFirestore!.insertUser(user: user, onSuccess: {
             print("[] User insertado")
@@ -50,4 +110,5 @@ class LoginViewModel {
             print("[]\(error.localizedDescription)")
         }
     }
+    
 }

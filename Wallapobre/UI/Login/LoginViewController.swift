@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 class LoginViewController: UIViewController {
     lazy var backgroundView: UIView = {
         let view: UIView = UIView(frame: self.view.bounds)
@@ -167,25 +166,27 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        /// Obtenemos la geolocalizacion del user antes de guardarle en BD
-        Managers.managerUserLocation = UserLocation()
+        /// Arrancamos los managers
         Managers.managerUserAuthoritation = UserAuthoritation()
         Managers.managerUserFirestore = UserFirestore()
-        Managers.managerUserLocation!.handleAuthorizationStatus()
-        Managers.managerUserLocation!.requestLocation()
-
-        Managers.managerUserAuthoritation!.isLogged(onSuccess: { [weak self] user in
+        
+        /// Solicitamos permisos de geolocalizacion al usuario
+        viewModel.askForLocationPermissions()
+        /// Obtencion de un usuario logueado
+        viewModel.checkUserLogged(onSuccess: { [weak self] user in
             if let user = user {
                 self?.viewModel.getUserLogged(user: user, onSuccess: { user in
-                    Managers.managerUserLocation?.saveUserLogged(user: user)
+                    self?.viewModel.saveUserLogged(user: user)
                     self?.createScene()
                     
                 }) { (error) in
                     self?.showAlert(title: "Error", message: error.localizedDescription)
                 }
             }
-        }, onError: nil)
-        
+            
+        }) { error in
+            self.showAlert(title: "Error", message: error.localizedDescription)
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -336,13 +337,12 @@ class LoginViewController: UIViewController {
             return
         }
         
-        /// Inicializamos un User con los datos introducidos por el usuario
+        /// Inicializamos un User con los datos introducidos por el usuario y logueamos
         let user: User = User.init(id: "", email: email, password: password)
-        /// Obtenemos el manager del interactor y hacemos el login
-        Managers.managerUserAuthoritation!.login(user: user, onSuccess: { [weak self] user in
-            
+        
+        self.viewModel.logUser(user: user, onSuccess: { [weak self] user in
             self?.viewModel.getUserLogged(user: user, onSuccess: { (user) in
-                Managers.managerUserLocation?.saveUserLogged(user: user)
+                self?.viewModel.saveUserLogged(user: user)
                 self?.createScene()
                 
             }) { (error) in
@@ -366,13 +366,12 @@ class LoginViewController: UIViewController {
             return
         }
         
-        /// Inicializamos un User con los datos introducidos por el usuario
+        /// Inicializamos un User con los datos introducidos por el usuario y registramos
         let user: User = User.init(id: "", email: email, password: password)
-        Managers.managerUserAuthoritation!.register(user: user, onSuccess: { [weak self] user in
-            
+        self.viewModel.registerUser(user: user, onSuccess: { [weak self] user in
             user.username = username
             self?.viewModel.getUserLogged(user: user, onSuccess: { (user) in
-                Managers.managerUserLocation?.saveUserLogged(user: user)
+                self?.viewModel.saveUserLogged(user: user)
                 self?.createScene()
                 
             }) { (error) in
@@ -393,8 +392,8 @@ class LoginViewController: UIViewController {
         
         /// Inicializamos un User con los datos introducidos por el usuario
         let user = User.init(id: "", email: email, password: nil)
-        Managers.managerUserAuthoritation!.recoverPassword(user: user, onSuccess: { [weak self] user in
-            self?.showAlert(title: "Password", message: "Password recovered")
+        self.viewModel.recoverUser(user: user, onSuccess: {
+            self.showAlert(title: "Password", message: "Password recovered")
             
         }) { [weak self] error in
             self?.showAlert(title: "Error", message: error.localizedDescription)
@@ -415,6 +414,4 @@ class LoginViewController: UIViewController {
         /// Eliminamos el controlador del login
         self.dismiss(animated: true, completion: nil)
     }
-    
-    
 }
