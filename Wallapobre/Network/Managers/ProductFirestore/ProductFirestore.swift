@@ -17,13 +17,17 @@ class ProductFirestore: ProductFirestoreManager {
     // MARK: Public Functions
     
     public func selectProducts(onSuccess: @escaping ([Product]) -> Void, onError: ErrorClosure?) {
-        /// Comprobamos la presencia del usuario en BD
+        /// Realizamos la SELECT a Firebase.products
         self.db
-            .getDocuments { (snapshot, error) in
+            /// Ordenamos los productos mas actuales primero
+            .order(by: "sentdate", descending: false)
+            /// Ponemos un listener para que podamos actualizar la lista
+            .addSnapshotListener { (snapshot, error) in
                 /// Raro que devuelva Firestore un error aqui
                 if let error = error, let retError = onError {
                     retError(error)
                 }
+                
                 
                 if let snapshot = snapshot {
                     /// Recorremos los documents de Firestore mapeandolos a una lista de Product

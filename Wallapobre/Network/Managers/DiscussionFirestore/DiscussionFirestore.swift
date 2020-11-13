@@ -14,11 +14,14 @@ class DiscussionFirestore: DiscussionFirestoreManager {
     var db = Firestore.firestore().collection("discussions")
     
     func selectDiscussion(discussion: Discussion, onSuccess: @escaping (Discussion) -> Void, onNonexistent: @escaping () -> Void, onError: ErrorClosure?) {
-        /// Comprobamos la existencia de la discussion en BD
+        
+        /// Realizamos la SELECT a Firebase.discussions
         self.db
+            /// Cada Discussion se guarda por Product - Seller - Buyer
             .whereField("productid", isEqualTo: discussion.productId)
             .whereField("seller", isEqualTo: discussion.seller)
             .whereField("buyer", isEqualTo: discussion.buyer)
+            /// No necesitamos listener y usamos .getDocuments
             .getDocuments { (snapshot, error) in
             /// Raro que devuelva Firestore un error aqui
             if let error = error, let retError = onError {

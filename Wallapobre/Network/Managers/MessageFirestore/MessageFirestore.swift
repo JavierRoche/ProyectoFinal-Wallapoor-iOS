@@ -16,49 +16,27 @@ class MessageFirestore: MessageFirestoreManager {
     
     func selectMessages(discussion: Discussion, onSuccess: @escaping ([Message]) -> Void, onError: ErrorClosure?) {
         
-        /// Comprobamos la existencia de mensajes de la discussion en BD
+        /// Realizamos la SELECT a Firebase.messages
         self.db
+            /// Filtramos los mensajes de esta Discussion
             .whereField("discussionid", isEqualTo: discussion.discussionId)
+            /// Ordenamos los mensajes mas actuales primero
             .order(by: "sentdate", descending: false)
+            /// Ponemos un listener para que podamos actualizar la lista
             .addSnapshotListener { (snapshot, error) in
                 /// Raro que devuelva Firestore un error aqui
                 if let err = error, let retError = onError {
                     retError(err)
                 }
                 
-                
+                /// Existen mensajes
                 if let snapshot = snapshot {
                     let messageList: [Message] = snapshot.documents
                         .compactMap({ Message.mapper(document: $0) })
                     
                     onSuccess(messageList)
                 }
-                
-            }
-        
-        /// Comprobamos la existencia de mensajes de la discussion en BD
-        /*self.db
-            .whereField("discussionid", isEqualTo: discussion.discussionId)
-            .getDocuments { (snapshot, error) in
-                /// Raro que devuelva Firestore un error aqui
-                if let error = error, let retError = onError {
-                    retError(error)
-                }
-                
-                /// Existen mensajes
-                if let snapshot = snapshot {
-                    /// Recorremos los documents de Firestore mapeandolos a una lista de Product
-                    //var messageList: [Message] = [Message]()
-                    /*for document in snapshot.documents {
-                        let message: Message = Message.mapper(document: document)
-                        messageList.append(message)
-                    }*/
-                    let messageList: [Message] = snapshot.documents
-                    .compactMap({ Message.mapper(document: $0) })
-                    onSuccess(messageList)
-                }
-        }*/
-                
+        }
     }
     
     func insertMessage(message: Message, onSuccess: @escaping () -> Void, onError: ErrorClosure?) {
