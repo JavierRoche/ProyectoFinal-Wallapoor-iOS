@@ -71,15 +71,16 @@ extension NewProductViewController: UITextFieldDelegate, UITextViewDelegate, UIP
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return categories.count
+        return self.categories.count
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return categories[row]
+        return self.categories[row].name
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        categoryTextField.text = categories[row]
+        self.viewModel.categoryPicked = Category(rawValue: row)
+        categoryTextField.text = self.categories[row].name
     }
 }
 

@@ -9,6 +9,7 @@
 import UIKit
 
 class NewProductViewModel {
+    var categoryPicked: Category?
     
     // MARK: Public Functions
     

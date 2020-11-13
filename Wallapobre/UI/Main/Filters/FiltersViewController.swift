@@ -9,7 +9,7 @@
 import UIKit
 
 protocol FiltersViewControllerDelegate: class {
-    func filterCreated(filter: Filter)
+    func newFilterCreated(filter: Filter)
 }
 
 class FiltersViewController: UIViewController {
@@ -54,7 +54,7 @@ class FiltersViewController: UIViewController {
         label.font = UIFont.fontStyle18Bold
         label.textColor = UIColor.black
         label.numberOfLines = 1
-        label.text = Category.motor.rawValue
+        label.text = Category.motor.name
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -64,7 +64,7 @@ class FiltersViewController: UIViewController {
         label.font = UIFont.fontStyle18Bold
         label.textColor = UIColor.black
         label.numberOfLines = 1
-        label.text = Category.textile.rawValue
+        label.text = Category.textile.name
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -74,7 +74,7 @@ class FiltersViewController: UIViewController {
         label.font = UIFont.fontStyle18Bold
         label.textColor = UIColor.black
         label.numberOfLines = 1
-        label.text = Category.homes.rawValue
+        label.text = Category.homes.name
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -84,7 +84,7 @@ class FiltersViewController: UIViewController {
         label.font = UIFont.fontStyle18Bold
         label.textColor = UIColor.black
         label.numberOfLines = 1
-        label.text = Category.informatic.rawValue
+        label.text = Category.informatic.name
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -94,7 +94,7 @@ class FiltersViewController: UIViewController {
         label.font = UIFont.fontStyle18Bold
         label.textColor = UIColor.black
         label.numberOfLines = 1
-        label.text = Category.sports.rawValue
+        label.text = Category.sports.name
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -104,49 +104,49 @@ class FiltersViewController: UIViewController {
         label.font = UIFont.fontStyle18Bold
         label.textColor = UIColor.black
         label.numberOfLines = 1
-        label.text = Category.services.rawValue
+        label.text = Category.services.name
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     lazy var motorSwitch: UISwitch = {
         let switchy: UISwitch = UISwitch()
-        switchy.isOn = false
+        //switchy.isOn = true
         switchy.translatesAutoresizingMaskIntoConstraints = false
         return switchy
     }()
     
     lazy var textileSwitch: UISwitch = {
         let switchy: UISwitch = UISwitch()
-        switchy.isOn = false
+        //switchy.isOn = true
         switchy.translatesAutoresizingMaskIntoConstraints = false
         return switchy
     }()
     
     lazy var homesSwitch: UISwitch = {
         let switchy: UISwitch = UISwitch()
-        switchy.isOn = false
+        //switchy.isOn = true
         switchy.translatesAutoresizingMaskIntoConstraints = false
         return switchy
     }()
     
     lazy var informaticSwitch: UISwitch = {
         let switchy: UISwitch = UISwitch()
-        switchy.isOn = false
+        //switchy.isOn = true
         switchy.translatesAutoresizingMaskIntoConstraints = false
         return switchy
     }()
     
     lazy var sportsSwitch: UISwitch = {
         let switchy: UISwitch = UISwitch()
-        switchy.isOn = false
+        //switchy.isOn = true
         switchy.translatesAutoresizingMaskIntoConstraints = false
         return switchy
     }()
     
     lazy var servicesSwitch: UISwitch = {
         let switchy: UISwitch = UISwitch()
-        switchy.isOn = false
+        //switchy.isOn = true
         switchy.translatesAutoresizingMaskIntoConstraints = false
         return switchy
     }()
@@ -155,7 +155,6 @@ class FiltersViewController: UIViewController {
         let slider: UISlider = UISlider()
         slider.maximumValue = 50
         slider.minimumValue = 0
-        slider.value = 50
         slider.isContinuous = true
         slider.addTarget(self, action: #selector (sliderValueDidChange), for: .valueChanged)
         slider.translatesAutoresizingMaskIntoConstraints = false
@@ -199,20 +198,35 @@ class FiltersViewController: UIViewController {
     }
     
     override func viewDidLoad() {
-        
+        motorSwitch.isOn = viewModel.filter.motor
+        textileSwitch.isOn = viewModel.filter.textile
+        homesSwitch.isOn = viewModel.filter.homes
+        informaticSwitch.isOn = viewModel.filter.informatic
+        sportsSwitch.isOn = viewModel.filter.sports
+        servicesSwitch.isOn = viewModel.filter.services
+
+        sliderLabel.text = String(Int(viewModel.filter.distance))
+        slider.value = Float(viewModel.filter.distance)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        let newFilter: Filter = viewModel.setFilter(motorSwitchValue: motorSwitch.isOn,
-                                                    textileSwitchValue: textileSwitch.isOn,
-                                                    homesSwitchValue: homesSwitch.isOn,
-                                                    informaticSwitchValue: informaticSwitch.isOn,
-                                                    sportsSwitchValue: sportsSwitch.isOn,
-                                                    servicesSwitchValue: servicesSwitch.isOn,
-                                                    slideValue: slider.value, text: String())
-        if newFilter != viewModel.filter {
-            delegate?.filterCreated(filter: newFilter)
+        let newFilter: FiltersViewModel = FiltersViewModel.init(motor: motorSwitch.isOn, textile: textileSwitch.isOn, homes: homesSwitch.isOn, informatic: informaticSwitch.isOn, sports: sportsSwitch.isOn, services: servicesSwitch.isOn, distance: Double(slider.value), text: String())
+        /// Si el filtro se ha modificado con respecto al actual
+        if newFilter != self.viewModel {
+            delegate?.newFilterCreated(filter: newFilter.filter)
         }
+    }
+    
+    
+    // MARK: User Interactions
+    
+    @objc func sliderValueDidChange(sender: UISlider!) {
+        sender.value = round(sender.value / 10) * 10
+        sliderLabel.text = String(Int(sender.value))
+    }
+    
+    @objc func acceptFilter(sender: UIButton!) {
+        dismiss(animated: true, completion: nil)
     }
     
     
@@ -334,18 +348,5 @@ class FiltersViewController: UIViewController {
             self.sliderLabel.topAnchor.constraint(equalTo: servicesSwitch.bottomAnchor, constant: 8.0),
             self.sliderLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16.0)
         ])
-        
-    }
-    
-    
-    // MARK: User Interactions
-    
-    @objc func sliderValueDidChange(sender: UISlider!) {
-        sender.value = round(sender.value / 10) * 10
-        sliderLabel.text = String(sender.value)
-    }
-    
-    @objc func acceptFilter(sender: UIButton!) {
-        dismiss(animated: true)
     }
 }

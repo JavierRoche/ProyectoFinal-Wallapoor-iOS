@@ -36,13 +36,30 @@ struct ImageMediaItem: MediaItem {
 }
 
 
-enum Category: String {
-    case motor = "Motor y Accesorios"
-    case textile = "Textil"
-    case homes = "Hogar"
-    case informatic = "Informática y Electrónica"
-    case sports = "Deporte y Ocio"
-    case services = "Servicios"
+enum Category: Int {
+    case motor = 0
+    case textile
+    case homes
+    case informatic
+    case sports
+    case services
+    
+    var name: String {
+        switch self {
+        case .motor:
+            return "Motor y Accesorios"
+        case .textile:
+            return "Textil"
+        case .homes:
+            return "Hogar"
+        case .informatic:
+            return "Informática y Electrónica"
+        case .sports:
+            return "Deporte y Ocio"
+        case .services:
+            return "Servicios"
+        }
+    }
 }
 
 enum ProductState: Int {

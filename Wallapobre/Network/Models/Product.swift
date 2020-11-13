@@ -14,7 +14,7 @@ class Product {
     public var seller: String
     public var state: ProductState
     public var title: String
-    public var category: String
+    public var category: Category
     public var description: String
     public var price: Int
     public var sentDate: Date
@@ -27,7 +27,7 @@ class Product {
                 seller: String,
                 state: ProductState,
                 title: String,
-                category: String,
+                category: Category.RawValue,
                 description: String,
                 price: Int,
                 sentDate: Date,
@@ -36,7 +36,7 @@ class Product {
         self.seller = seller
         self.state = state
         self.title = title
-        self.category = category
+        self.category = Category(rawValue: category)!
         self.description = description
         self.price = price
         self.sentDate = sentDate
@@ -45,7 +45,7 @@ class Product {
     
     convenience init(seller: String,
                      title: String,
-                     category: String,
+                     category: Category,
                      description: String,
                      price: Int,
                      photos: [String]){
@@ -53,7 +53,7 @@ class Product {
                   seller: seller,
                   state: ProductState.selling,
                   title: title,
-                  category: category,
+                  category: category.rawValue,
                   description: description,
                   price: price,
                   sentDate: Date(),
@@ -68,9 +68,9 @@ class Product {
         /// Extraemos los valores; como puede venir vacio indicamos un valor por defecto
         let productId = json["productid"] as? String ?? ""
         let seller = json["seller"] as? String ?? ""
-        let state = json["state"] as? ProductState ?? ProductState(rawValue: ProductState.selling.rawValue)
+        let state = json["state"] as? ProductState.RawValue ?? 0 /// Estado Selling si no puede mapear
         let title = json["title"] as? String ?? ""
-        let category = json["category"] as? String ?? ""
+        let category = json["category"] as? Category.RawValue ?? 2 /// Categoria Hogar si no puede mapear
         let description = json["description"] as? String ?? ""
         let price = json["price"] as? Int ?? 0
         let sentDate = json["sentDate"] as? Date ?? Date()
@@ -90,7 +90,7 @@ class Product {
         }
         
         /// Creamos y devolvemos el objeto Product
-        return Product.init(productId: productId, seller: seller, state: state!, title: title, category: category, description: description, price: price, sentDate: sentDate, photos: photos)
+        return Product.init(productId: productId, seller: seller, state: ProductState(rawValue: state)!, title: title, category: category, description: description, price: price, sentDate: sentDate, photos: photos)
     }
     
     class func toSnapshot(product: Product) -> [String: Any] {
@@ -101,7 +101,7 @@ class Product {
         snapshot["seller"] = product.seller
         snapshot["state"] = product.state.rawValue
         snapshot["title"] = product.title
-        snapshot["category"] = product.category
+        snapshot["category"] = product.category.rawValue
         snapshot["description"] = product.description
         snapshot["price"] = product.price
         snapshot["sentdate"] = product.sentDate

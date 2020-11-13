@@ -31,7 +31,7 @@ extension MainViewController: UISearchBarDelegate  {
     
     func searchBarBookmarkButtonClicked(_ searchBar: UISearchBar) {
         /// Presentamos el modal con las opciones de filtrado
-        let filtersViewModel: FiltersViewModel = FiltersViewModel()
+        let filtersViewModel: FiltersViewModel = FiltersViewModel(filter: self.viewModel.actualFilter)
         let filtersViewController: FiltersViewController = FiltersViewController(viewModel: filtersViewModel)
         filtersViewController.delegate = self
         let navigationController: UINavigationController = UINavigationController.init(rootViewController: filtersViewController)

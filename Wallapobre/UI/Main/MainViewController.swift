@@ -205,16 +205,19 @@ extension MainViewController: MainViewModelDelegate {
     func productCellViewModelsCreated() {
         collectionView.reloadData()
     }
+    
+    func filterApplied() {
+        collectionView.reloadData()
+    }
 }
 
 
 // MARK: FilterViewController Delegate
 
 extension MainViewController: FiltersViewControllerDelegate {
-    func filterCreated(filter: Filter) {
+    func newFilterCreated(filter: Filter) {
         print("filterCreated")
-        //Tushe
-        
+        self.viewModel.applyFilter(filter: filter)
     }
 }
 

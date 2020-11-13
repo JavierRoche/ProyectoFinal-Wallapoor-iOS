@@ -11,12 +11,14 @@ import CoreLocation
 
 protocol MainViewModelDelegate: class {
     func productCellViewModelsCreated()
+    func filterApplied()
 }
 
 class MainViewModel {
     weak var delegate: MainViewModelDelegate?
-    var originalProductList: [ProductCellViewModel] = []
-    var filteredProductList: [ProductCellViewModel] = []
+    private var originalProductList: [ProductCellViewModel] = []
+    private var actualProductList: [ProductCellViewModel] = []
+    var actualFilter: Filter = Filter()
 
     
     // MARK: Public Functions
@@ -25,10 +27,13 @@ class MainViewModel {
         //var count: Int = 0
         
         Managers.managerProductFirestore!.selectProducts(onSuccess: { [weak self] products in
+            /// Habria que aplicar antes el filtro antes de mapear, pero todas las funciones del modelo funcionan con ProductCellViewModel asi que...
+            /// Mapeamos los productos del area inicial al modelo de celda
+            let productCellViewModels = products.compactMap({ ProductCellViewModel(product: $0) })
             /// Aplicamos el filtro de distancia a la lista original descargada
-            self?.filterByDistance(products: products, onSuccess: { products in
-                /// Mapeamos los productos del area inicial al modelo de celda
-                self?.originalProductList = products.compactMap({ ProductCellViewModel(product: $0) })
+            self?.filterByDistance(productCellViewModels: productCellViewModels, onSuccess: { productCellViewModels in
+                self?.originalProductList = productCellViewModels
+                self?.actualProductList = self?.originalProductList ?? []
                 
                 /// Avisamos al controlador de que el modelo de datos se ha creado
                 self?.delegate?.productCellViewModelsCreated()
@@ -44,35 +49,76 @@ class MainViewModel {
     }
 
     func numberOfItems(in section: Int) -> Int {
-        return originalProductList.count
+        return actualProductList.count
     }
 
     func getCellViewModel(at indexPath: IndexPath) -> ProductCellViewModel {
-        return originalProductList[indexPath.row]
+        return actualProductList[indexPath.row]
+    }
+    
+    func applyFilter(filter: Filter) {
+        var productCellViewModels: [ProductCellViewModel] = self.originalProductList
+        
+        if !filter.motor { productCellViewModels = filterByCategory(productCellViewModels: productCellViewModels, category: Category.motor) }
+        if !filter.textile { productCellViewModels = filterByCategory(productCellViewModels: productCellViewModels, category: Category.textile) }
+        if !filter.homes { productCellViewModels = filterByCategory(productCellViewModels: productCellViewModels, category: Category.homes) }
+        if !filter.informatic { productCellViewModels = filterByCategory(productCellViewModels: productCellViewModels, category: Category.informatic) }
+        if !filter.sports { productCellViewModels = filterByCategory(productCellViewModels: productCellViewModels, category: Category.sports) }
+        if !filter.services { productCellViewModels = filterByCategory(productCellViewModels: productCellViewModels, category: Category.services) }
+        /// Podemos llegar aqui con la lista ya vacia
+        if filter.distance != 50.0 && !productCellViewModels.isEmpty {
+            /// Aplicamos el filtro de distancia a la lista original descargada
+            self.filterByDistance(productCellViewModels: productCellViewModels, toDistance: Double(filter.distance * 1000.0), onSuccess: { [weak self] productCellViewModels in
+                self?.updateSituation(productCellViewModels: productCellViewModels, filter: filter)
+            })
+            
+        } else {
+            self.updateSituation(productCellViewModels: productCellViewModels, filter: filter)
+        }
     }
     
     
     // MARK: Private Functions
     
+    fileprivate func filterByCategory(productCellViewModels: [ProductCellViewModel], category: Category) -> [ProductCellViewModel] {
+        var filteredProductList: [ProductCellViewModel] = []
+        filteredProductList = productCellViewModels.compactMap { productCellViewModel in
+            if productCellViewModel.product.category.rawValue != category.rawValue {
+                return productCellViewModel
+            }
+            return nil
+        }
+        return filteredProductList
+        /// Mapeamos los productos del area inicial al modelo de celda
+        /*for productCellViewModel in self.originalProductList {
+            if productCellViewModel.product.category == Category.motor.rawValue {
+                filteredProductList.append(productCellViewModel)
+            }
+        }
+        let filteredProductList3 = self.originalProductList.flatMap( { $0.product.category == Category.motor.rawValue })
+        let filteredProductList2 = self.originalProductList.compactMap { $0.product.category == Category.motor.rawValue }
+        */
+    }
+    
     //comprueba de cada producto la distancia con el usuario
-    fileprivate func filterByDistance(products: [Product], onSuccess: @escaping ([Product]) -> Void) {
+    fileprivate func filterByDistance(productCellViewModels: [ProductCellViewModel], toDistance: Double = 50000.0, onSuccess: @escaping ([ProductCellViewModel]) -> Void) {
         let userLocation: CLLocation = CLLocation(latitude: Managers.managerUserLocation!.getUserLogged().latitude!, longitude: Managers.managerUserLocation!.getUserLogged().longitude!)
-        var filteredProductList: [Product] = [Product]()
+        var filteredProductCellViewModels: [ProductCellViewModel] = [ProductCellViewModel]()
         var count: Int = 1
         
-        for product in products {
-            self.getSellerData(product: product, onSuccess: { user in
+        for productCellViewModel in productCellViewModels {
+            self.getSellerData(product: productCellViewModel.product, onSuccess: { user in
                 /// Comprobamos que el usuario del producto se ha recuperado
                 if let user = user {
                     /// Con locations del producto calculamos la distancia al usuario en metros y linea recta
                     let productLocation = CLLocation(latitude: user.latitude!, longitude: user.longitude!)
                     let distance = productLocation.distance(from: userLocation)
-                    if distance < 50000.0 {
-                        filteredProductList.append(product)
+                    if distance <= toDistance {
+                        filteredProductCellViewModels.append(productCellViewModel)
                     }
                     
-                    if count == products.count {
-                        onSuccess(filteredProductList)
+                    if count == productCellViewModels.count {
+                        onSuccess(filteredProductCellViewModels)
                     }
                     count += 1
                 }
@@ -80,11 +126,6 @@ class MainViewModel {
                 /// El producto se ignora si ha habido error
             }, onError: { _ in })
         }
-        /*products.compactMap({ [weak self] product in
-           
-        })*/
-        
-        
     }
     
     fileprivate func getSellerData(product: Product, onSuccess: @escaping (User?) -> Void, onError: ErrorClosure?) {
@@ -99,5 +140,14 @@ class MainViewModel {
                 retError(error)
             }
         }
+    }
+    
+    fileprivate func updateSituation(productCellViewModels: [ProductCellViewModel], filter: Filter) {
+        /// Mapeamos los productos del area elegida en el filtro al modelo de celda
+        self.actualProductList = productCellViewModels
+        
+        /// Avisamos al controlador de que el modelo de datos se ha creado
+        self.actualFilter = filter
+        self.delegate?.filterApplied()
     }
 }

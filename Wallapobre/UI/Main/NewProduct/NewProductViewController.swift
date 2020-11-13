@@ -203,7 +203,7 @@ class NewProductViewController: UIViewController {
     /// Objeto con el que acceder al manager de Productos
     let viewModel: NewProductViewModel
     /// Objetos para almacenar datos de pantalla
-    var categories: [String] = [Category.motor.rawValue, Category.textile.rawValue, Category.homes.rawValue, Category.informatic.rawValue, Category.sports.rawValue, Category.services.rawValue]
+    var categories = [Category.motor, Category.textile, Category.homes, Category.informatic, Category.sports, Category.services]
     private var imageHolderPressed = UIImageView()
     var imagesList: [UIImage] = [UIImage]()
     
@@ -468,7 +468,7 @@ class NewProductViewController: UIViewController {
         self.viewModel.uploadImages(images: self.imagesList, onSuccess: { [weak self] urlList in
             let product: Product = Product.init(seller: Managers.managerUserLocation!.getUserLogged().sender.id,
                                                 title: (self?.titleTextField.text!)!,
-                                                category: (self?.categoryTextField.text!)!,
+                                                category: self?.viewModel.categoryPicked! ?? Category.homes,
                                                 description: (self?.descriptionTextView.text!)!,
                                                 price: Int((self?.priceTextField.text!)!)!, photos: urlList)
             /// Guardamos el producto en Firestore
