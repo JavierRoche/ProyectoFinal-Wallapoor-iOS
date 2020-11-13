@@ -153,9 +153,9 @@ class FiltersViewController: UIViewController {
     
     lazy var slider: UISlider = {
         let slider: UISlider = UISlider()
-        slider.maximumValue = 40
+        slider.maximumValue = 50
         slider.minimumValue = 0
-        slider.value = 20
+        slider.value = 50
         slider.isContinuous = true
         slider.addTarget(self, action: #selector (sliderValueDidChange), for: .valueChanged)
         slider.translatesAutoresizingMaskIntoConstraints = false
@@ -167,7 +167,7 @@ class FiltersViewController: UIViewController {
         label.font = UIFont.fontStyle18Bold
         label.textColor = UIColor.black
         label.numberOfLines = 1
-        label.text = "20"
+        label.text = "50"
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()

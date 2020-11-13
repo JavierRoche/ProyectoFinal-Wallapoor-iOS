@@ -151,7 +151,7 @@ class MainViewController: UIViewController {
 
 extension MainViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let detailProductViewModel: DetailProductViewModel = DetailProductViewModel.init(product: productList[indexPath.row])
+        let detailProductViewModel: DetailProductViewModel = DetailProductViewModel.init(product: viewModel.getCellViewModel(at: indexPath).product)
         let detailProductViewController: DetailProductViewController = DetailProductViewController.init(viewModel: detailProductViewModel)
         //detailProductViewController.delegate = self
         let navigationController: UINavigationController = UINavigationController.init(rootViewController: detailProductViewController)
@@ -202,11 +202,6 @@ extension MainViewController: PinterestLayoutDelegate {
 // MARK: ViewModel Delegate
 
 extension MainViewController: MainViewModelDelegate {
-    func productListCreated(productList: [Product]) {
-        self.productList = productList
-        collectionView.reloadData()
-    }
-    
     func productCellViewModelsCreated() {
         collectionView.reloadData()
     }
@@ -218,10 +213,8 @@ extension MainViewController: MainViewModelDelegate {
 extension MainViewController: FiltersViewControllerDelegate {
     func filterCreated(filter: Filter) {
         print("filterCreated")
-        let initialFilter = Filter()
-        if filter != initialFilter {
-            // Abrir Controller con lista filtrada
-        }
+        //Tushe
+        
     }
 }
 

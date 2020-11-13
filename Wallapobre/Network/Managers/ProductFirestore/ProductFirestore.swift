@@ -27,11 +27,8 @@ class ProductFirestore: ProductFirestoreManager {
                 
                 if let snapshot = snapshot {
                     /// Recorremos los documents de Firestore mapeandolos a una lista de Product
-                    var productList: [Product] = [Product]()
-                    for document in snapshot.documents {
-                        let product: Product = Product.mapper(document: document)
-                        productList.append(product)
-                    }
+                    let productList: [Product] = snapshot.documents
+                        .compactMap({ Product.mapper(document: $0) })
                     onSuccess(productList)
                 }
         }
