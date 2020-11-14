@@ -22,6 +22,7 @@ class MainViewModel {
     private var auxiliarProductList: [ProductCellViewModel] = []
     /// Es la lista de la que tira el Collection View principal
     private var actualProductList: [ProductCellViewModel] = []
+    var originalFilter: Filter = Filter()
     var actualFilter: Filter = Filter()
 
     
@@ -105,6 +106,10 @@ class MainViewModel {
         self.actualFilter.text = String()
     }
     
+    func showUpSaveSearch() -> Bool {
+        return self.actualFilter == self.originalFilter
+    }
+    
     
     // MARK: Private Functions
     
@@ -184,6 +189,7 @@ class MainViewModel {
         /// Avisamos al controlador de que el modelo de datos se ha creado
         if initialSituation {
             self.delegate?.productCellViewModelsCreated()
+            self.originalFilter = filter
         } else {
             self.delegate?.filterApplied()
         }

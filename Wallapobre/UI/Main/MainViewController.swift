@@ -63,6 +63,18 @@ class MainViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
+    
+    lazy var saveSearchButton: UIButton = {
+        let button: UIButton = UIButton()
+        button.setImage(UIImage(systemName: "star.fill"), for: .normal)
+        button.tintColor = UIColor.black
+        button.backgroundColor = UIColor.yellow
+        button.layer.masksToBounds = true
+        button.isHidden = true
+        button.addTarget(self, action: #selector (tapOnSaveSearch), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
 
     /// Objeto del modelo que contiene las imagenes
     let viewModel: MainViewModel
@@ -89,7 +101,7 @@ class MainViewController: UIViewController {
 
         view.addSubview(collectionView)
         view.addSubview(newProductButton)
-        view.bringSubviewToFront(newProductButton)
+        view.addSubview(saveSearchButton)
         
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: view.topAnchor),
@@ -101,8 +113,17 @@ class MainViewController: UIViewController {
         NSLayoutConstraint.activate([
             newProductButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             newProductButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20.0),
+            //newProductButton.trailingAnchor.constraint(equalTo: saveSearchButton.leadingAnchor, constant: 32.0),
             newProductButton.widthAnchor.constraint(equalToConstant: 64.0),
             newProductButton.heightAnchor.constraint(equalToConstant: 64.0)
+        ])
+        
+        NSLayoutConstraint.activate([
+            //saveSearchButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            saveSearchButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20.0),
+            saveSearchButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16.0),
+            saveSearchButton.widthAnchor.constraint(equalToConstant: 64.0),
+            saveSearchButton.heightAnchor.constraint(equalToConstant: 64.0)
         ])
     }
 
@@ -120,6 +141,7 @@ class MainViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         newProductButton.layer.cornerRadius = newProductButton.frame.size.height / 2
+        saveSearchButton.layer.cornerRadius = saveSearchButton.frame.size.height / 2
     }
     
     
@@ -142,6 +164,9 @@ class MainViewController: UIViewController {
         
         /// Presentamos el ViewController
         self.present(navigationController, animated: true, completion: nil)
+    }
+    
+    @objc func tapOnSaveSearch(sender: UIButton!) {
     }
 }
 
@@ -207,6 +232,7 @@ extension MainViewController: MainViewModelDelegate {
     
     func filterApplied() {
         collectionView.reloadData()
+        saveSearchButton.isHidden = self.viewModel.showUpSaveSearch()
     }
 }
 
