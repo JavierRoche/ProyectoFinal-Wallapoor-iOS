@@ -16,7 +16,11 @@ protocol MainViewModelDelegate: class {
 
 class MainViewModel {
     weak var delegate: MainViewModelDelegate?
+    /// Lista original con todos los productos descargados de Firebase DB
     private var originalProductList: [ProductCellViewModel] = []
+    /// Es la foto tras volver de la scena de seleccion de filtros
+    private var auxiliarProductList: [ProductCellViewModel] = []
+    /// Es la lista de la que tira el Collection View principal
     private var actualProductList: [ProductCellViewModel] = []
     var actualFilter: Filter = Filter()
 
@@ -33,10 +37,12 @@ class MainViewModel {
             /// Aplicamos el filtro de distancia a la lista original descargada
             self?.filterByDistance(productCellViewModels: productCellViewModels, onSuccess: { productCellViewModels in
                 self?.originalProductList = productCellViewModels
-                self?.actualProductList = self?.originalProductList ?? []
+                self?.updateSituation(initialSituation: true, productCellViewModels: productCellViewModels)
+                
+                /*self?.actualProductList = productCellViewModels
                 
                 /// Avisamos al controlador de que el modelo de datos se ha creado
-                self?.delegate?.productCellViewModelsCreated()
+                self?.delegate?.productCellViewModelsCreated()*/
             })
             
         }, onError: { error in
@@ -69,12 +75,34 @@ class MainViewModel {
         if filter.distance != 50.0 && !productCellViewModels.isEmpty {
             /// Aplicamos el filtro de distancia a la lista original descargada
             self.filterByDistance(productCellViewModels: productCellViewModels, toDistance: Double(filter.distance * 1000.0), onSuccess: { [weak self] productCellViewModels in
-                self?.updateSituation(productCellViewModels: productCellViewModels, filter: filter)
+                self?.updateSituation(initialSituation: false, productCellViewModels: productCellViewModels, filter: filter)
             })
             
         } else {
-            self.updateSituation(productCellViewModels: productCellViewModels, filter: filter)
+            self.updateSituation(initialSituation: false, productCellViewModels: productCellViewModels, filter: filter)
         }
+    }
+    
+    func filterByText(text: String){
+        var filteredProductList: [ProductCellViewModel] = []
+        /// Por cada producto comprobamos si su title contiene la cadena buscada
+        filteredProductList = self.auxiliarProductList.compactMap { productCellViewModel in
+            if productCellViewModel.product.title.lowercased().contains(text) {
+                return productCellViewModel
+            }
+            return nil
+        }
+        
+        /// Para no cargarme la que tiene el filtro principal
+        //self.auxiliarProductList = self.actualProductList
+        self.actualProductList = filteredProductList
+        /// Tambien tenemos que actualizar el filtro actual
+        self.actualFilter.text = text
+    }
+    
+    func cancelFilterByText() {
+        self.actualProductList = self.auxiliarProductList
+        self.actualFilter.text = String()
     }
     
     
@@ -102,7 +130,10 @@ class MainViewModel {
     
     //comprueba de cada producto la distancia con el usuario
     fileprivate func filterByDistance(productCellViewModels: [ProductCellViewModel], toDistance: Double = 50000.0, onSuccess: @escaping ([ProductCellViewModel]) -> Void) {
+        /// Obtenemos la localizacion del usuario logueado
         let userLocation: CLLocation = CLLocation(latitude: Managers.managerUserLocation!.getUserLogged().latitude!, longitude: Managers.managerUserLocation!.getUserLogged().longitude!)
+        
+        /// Inicializamos valores para el algoritmo que buscara por cada usuario si esta en rango con el user logueado
         var filteredProductCellViewModels: [ProductCellViewModel] = [ProductCellViewModel]()
         var count: Int = 1
         
@@ -142,12 +173,19 @@ class MainViewModel {
         }
     }
     
-    fileprivate func updateSituation(productCellViewModels: [ProductCellViewModel], filter: Filter) {
+    fileprivate func updateSituation(initialSituation: Bool, productCellViewModels: [ProductCellViewModel], filter: Filter = Filter()) {
+        /// Guardamos la foto tras volver de la seleccion de categorias
+        self.auxiliarProductList = productCellViewModels
         /// Mapeamos los productos del area elegida en el filtro al modelo de celda
         self.actualProductList = productCellViewModels
+        /// Actualizamos o inicializamos el filtro segun si viene informado
+        self.actualFilter = filter
         
         /// Avisamos al controlador de que el modelo de datos se ha creado
-        self.actualFilter = filter
-        self.delegate?.filterApplied()
+        if initialSituation {
+            self.delegate?.productCellViewModelsCreated()
+        } else {
+            self.delegate?.filterApplied()
+        }
     }
 }

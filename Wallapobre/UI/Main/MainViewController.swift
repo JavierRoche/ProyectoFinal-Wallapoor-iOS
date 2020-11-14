@@ -66,7 +66,6 @@ class MainViewController: UIViewController {
 
     /// Objeto del modelo que contiene las imagenes
     let viewModel: MainViewModel
-    var productList: [Product] = [Product]()
     
     
     // MARK: Inits
@@ -216,7 +215,6 @@ extension MainViewController: MainViewModelDelegate {
 
 extension MainViewController: FiltersViewControllerDelegate {
     func newFilterCreated(filter: Filter) {
-        print("filterCreated")
         self.viewModel.applyFilter(filter: filter)
     }
 }

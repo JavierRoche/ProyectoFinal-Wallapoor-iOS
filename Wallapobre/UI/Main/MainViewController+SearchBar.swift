@@ -12,6 +12,34 @@ import UIKit
 // MARK: UISearchControll / UISearchBar Delegate
 
 extension MainViewController: UISearchBarDelegate  {
+    /// Funcion delegada de UISearchBar para controlar cada caracter introducido
+    func searchBar(_ searchBar: UISearchBar, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if text == "\n" {
+            searchBar.resignFirstResponder()
+            return false
+        }
+        
+        /// Aplicamos el filtro textual a la lista ACTUAL, NO a la original que tiene todo
+        guard var storedText: String = self.searchController.searchBar.text?.lowercased() else { return false }
+        /// Si ha pulsado DELETE quitamos un caracter al acumulado
+        if text.count == 0 && range.length > 0 {
+            storedText = String(storedText.dropLast())
+        }
+        
+        if storedText.isEmpty && text.isEmpty {
+            /// Volvemos a cargar todas las imagenes previas al filtrado textual
+            self.viewModel.cancelFilterByText()
+            //QUITAR BOTON GUARDAR BUSQUEDA
+        } else {
+            /// Lanzamos la busqueda con el texto acumulado mas lo pulsado
+            self.viewModel.filterByText(text: (storedText + text).lowercased())
+        }
+
+        collectionView.reloadData()
+        return true
+    }
+    
+    
     /// Funcion delegada de UISearchBar para controlar el click en Enter o Buscar
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
         guard let text: String = self.searchController.searchBar.text?.lowercased() else { return }
@@ -25,25 +53,37 @@ extension MainViewController: UISearchBarDelegate  {
             self.activityIndicator.startAnimating()
             self.view.addSubview(activityIndicator)
                 
-            /// TODO
+            /// Aplicamos el filtro textual a la lista ACTUAL, NO a la original que tiene todo
+            self.viewModel.filterByText(text: text)
+            collectionView.reloadData()
+            
+            /// Paramos la animacion y liberamos el uso del searchController y del resto de la interface
+            self.searchController.searchBar.isUserInteractionEnabled = true
+            self.view.isUserInteractionEnabled = true
+            self.activityIndicator.stopAnimating()
         }
     }
     
+    /// Funcion delegada para controlar el tap en la imagen de Bookmark
     func searchBarBookmarkButtonClicked(_ searchBar: UISearchBar) {
-        /// Presentamos el modal con las opciones de filtrado
+        /// Creamos la escena con el modelo de Filter del ultimo Filter almacenado
         let filtersViewModel: FiltersViewModel = FiltersViewModel(filter: self.viewModel.actualFilter)
         let filtersViewController: FiltersViewController = FiltersViewController(viewModel: filtersViewModel)
         filtersViewController.delegate = self
         let navigationController: UINavigationController = UINavigationController.init(rootViewController: filtersViewController)
         navigationController.modalPresentationStyle = .formSheet
         navigationController.navigationBar.isHidden = true
-        
+        /// Presentamos el modal con las ultimas opciones de filtrado almacenadas
         self.present(navigationController, animated: true, completion: nil)
     }
     
     /// Funcion delegada de UISearchBar para controlar el click en Cancel
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        /// Vaciamos la caja de busqueda porque un funcionamiento que no conozco rellama a searchBarTextDidEndEditing despues de searchBarCancelButtonClicked, y como haya algo escrito pues se pone a hacer la busqueda masiva
+        /// Vaciar la caja de busqueda evita problemas
         self.searchController.searchBar.text = ""
+        
+        /// Volvemos a cargar todas las imagenes previas al filtrado textual
+        self.viewModel.cancelFilterByText()
+        collectionView.reloadData()
     }
 }
