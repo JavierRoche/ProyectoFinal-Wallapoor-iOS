@@ -33,14 +33,14 @@ class NewProductViewController: UIViewController {
         label.font = UIFont.fontStyle14Regular
         label.textColor = UIColor.black
         label.numberOfLines = 1
-        label.text = "TITLE"
+        label.text = Constants.TITLE
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     lazy var titleTextField: UITextField = {
         let textField: UITextField = UITextField()
-        textField.placeholder = "Producto nuevo"
+        textField.placeholder = Constants.NewProduct
         textField.font = UIFont.fontStyle16Regular
         textField.textColor = UIColor.black
         textField.borderStyle = UITextField.BorderStyle.roundedRect
@@ -58,14 +58,14 @@ class NewProductViewController: UIViewController {
         label.font = UIFont.fontStyle14Regular
         label.textColor = UIColor.black
         label.numberOfLines = 1
-        label.text = "CATEGORY"
+        label.text = Constants.CATEGORY
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     lazy var categoryTextField: UITextField = {
         let textField: UITextField = UITextField()
-        textField.placeholder = "Select category"
+        textField.placeholder = Constants.SelectCategory
         textField.font = UIFont.fontStyle16Regular
         textField.textColor = UIColor.black
         textField.borderStyle = UITextField.BorderStyle.roundedRect
@@ -87,7 +87,7 @@ class NewProductViewController: UIViewController {
         label.font = UIFont.fontStyle14Regular
         label.textColor = UIColor.black
         label.numberOfLines = 1
-        label.text = "DESCRIPTION"
+        label.text = Constants.DESCRIPTION
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -113,14 +113,14 @@ class NewProductViewController: UIViewController {
         label.font = UIFont.fontStyle14Regular
         label.textColor = UIColor.black
         label.numberOfLines = 1
-        label.text = "PRICE"
+        label.text = Constants.PRICE
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     lazy var priceTextField: UITextField = {
         let textField: UITextField = UITextField()
-        textField.placeholder = "00.00"
+        textField.placeholder = Constants.price0000
         textField.font = UIFont.fontStyle16Regular
         textField.textColor = UIColor.black
         textField.borderStyle = UITextField.BorderStyle.roundedRect
@@ -152,7 +152,7 @@ class NewProductViewController: UIViewController {
         image.isUserInteractionEnabled = true
         image.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(pickPhoto)))
         image.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(deletePhoto)))
-        image.image = UIImage.init(systemName: "camera.fill")
+        image.image = UIImage.init(systemName: Constants.cameraIcon)
         image.layer.masksToBounds = true
         image.layer.cornerRadius = 8.0
         image.translatesAutoresizingMaskIntoConstraints = false
@@ -165,7 +165,7 @@ class NewProductViewController: UIViewController {
         image.isUserInteractionEnabled = true
         image.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(pickPhoto)))
         image.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(deletePhoto)))
-        image.image = UIImage.init(systemName: "camera.fill")
+        image.image = UIImage.init(systemName: Constants.cameraIcon)
         image.layer.masksToBounds = true
         image.layer.cornerRadius = 8.0
         image.translatesAutoresizingMaskIntoConstraints = false
@@ -178,7 +178,7 @@ class NewProductViewController: UIViewController {
         image.isUserInteractionEnabled = true
         image.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(pickPhoto)))
         image.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(deletePhoto)))
-        image.image = UIImage.init(systemName: "camera.fill")
+        image.image = UIImage.init(systemName: Constants.cameraIcon)
         image.layer.masksToBounds = true
         image.layer.cornerRadius = 8.0
         image.translatesAutoresizingMaskIntoConstraints = false
@@ -191,7 +191,7 @@ class NewProductViewController: UIViewController {
         image.isUserInteractionEnabled = true
         image.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(pickPhoto)))
         image.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(deletePhoto)))
-        image.image = UIImage.init(systemName: "camera.fill")
+        image.image = UIImage.init(systemName: Constants.cameraIcon)
         image.layer.masksToBounds = true
         image.layer.cornerRadius = 8.0
         image.translatesAutoresizingMaskIntoConstraints = false
@@ -214,7 +214,7 @@ class NewProductViewController: UIViewController {
         self.viewModel = viewModel
         super.init(nibName: String(describing: NewProductViewController.self), bundle: nil)
         
-        self.title = "Nuevo producto"
+        self.title = Constants.NewProduct
         UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.font: UIFont.fontStyle17Bold]
     }
 
@@ -255,7 +255,7 @@ class NewProductViewController: UIViewController {
     @objc private func tapOnUpload() {
         /// Chequeo de datos y confirmacion de usuario
         if areDataRight() {
-            self.askUserConfirmation(onAcept: {
+            self.showAlert(forInput: false, onlyAccept: false, title: Constants.UploadProduct, message: Constants.GoingToUpload) { _ in
                 /// Iniciamos la animacion de waiting y bloqueamos la pantalla
                 self.activityIndicator.center = self.view.center
                 self.activityIndicator.startAnimating()
@@ -263,7 +263,7 @@ class NewProductViewController: UIViewController {
                 self.view.isUserInteractionEnabled = false
                 
                 self.processProduct()
-            })
+            }
         }
     }
     
@@ -283,16 +283,16 @@ class NewProductViewController: UIViewController {
         let imageView: UIImageView = sender.view as! UIImageView
         switch imageView {
         case photo1Image:
-            photo1Image.image = UIImage.init(systemName: "camera.fill")
+            photo1Image.image = UIImage.init(systemName: Constants.cameraIcon)
             break
         case photo2Image:
-            photo2Image.image = UIImage.init(systemName: "camera.fill")
+            photo2Image.image = UIImage.init(systemName: Constants.cameraIcon)
             break
         case photo3Image:
-            photo3Image.image = UIImage.init(systemName: "camera.fill")
+            photo3Image.image = UIImage.init(systemName: Constants.cameraIcon)
             break
         case photo4Image:
-            photo4Image.image = UIImage.init(systemName: "camera.fill")
+            photo4Image.image = UIImage.init(systemName: Constants.cameraIcon)
             break
         default:
             break
@@ -406,12 +406,12 @@ class NewProductViewController: UIViewController {
     
     fileprivate func configureUI() {
         /// Creacion del boton de cancelar y publicar
-        let cancelLeftBarButtonItem: UIBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(tapOnCancel))
+        let cancelLeftBarButtonItem: UIBarButtonItem = UIBarButtonItem(title: Constants.Cancel, style: .plain, target: self, action: #selector(tapOnCancel))
         //cancelLeftBarButtonItem.tintColor = UIColor.tangerine
         navigationItem.leftBarButtonItem = cancelLeftBarButtonItem
         navigationItem.leftBarButtonItem?.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.fontStyle17Regular], for: .normal)
         
-        let postLeftBarButtonItem: UIBarButtonItem = UIBarButtonItem(title: "Upload", style: .plain, target: self, action: #selector(tapOnUpload))
+        let postLeftBarButtonItem: UIBarButtonItem = UIBarButtonItem(title: Constants.Upload, style: .plain, target: self, action: #selector(tapOnUpload))
         //postLeftBarButtonItem.tintColor = UIColor.tangerine
         navigationItem.rightBarButtonItem = postLeftBarButtonItem
         navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.fontStyle17SemiBold], for: .normal)
@@ -423,44 +423,34 @@ class NewProductViewController: UIViewController {
     
     fileprivate func areDataRight() -> Bool {
         guard let title = titleTextField.text, let description = descriptionTextView.text, let price = priceTextField.text, let category = categoryTextField.text else {
-            self.showAlert(title: "Warning", message: "Missing data")
+            self.showAlert(title: Constants.Warning, message: Constants.MissingData)
             return false
         }
         if title.isEmpty || description.isEmpty || price.isEmpty || category.isEmpty {
-            self.showAlert(title: "Warning", message: "Missing data")
+            self.showAlert(title: Constants.Warning, message: Constants.MissingData)
             return false
         }
         guard let _: Int = Int(price) else {
-            self.showAlert(title: "Warning", message: "Price has to be a number")
+            self.showAlert(title: Constants.Warning, message: Constants.PriceHasToBe)
             return false
         }
-        if photo1Image.image != UIImage.init(systemName: "camera.fill") {
+        if photo1Image.image != UIImage.init(systemName: Constants.cameraIcon) {
             if let image = photo1Image.image { imagesList.append(image) }
         }
-        if photo2Image.image != UIImage.init(systemName: "camera.fill") {
+        if photo2Image.image != UIImage.init(systemName: Constants.cameraIcon) {
             if let image = photo2Image.image { imagesList.append(image) }
         }
-        if photo3Image.image != UIImage.init(systemName: "camera.fill") {
+        if photo3Image.image != UIImage.init(systemName: Constants.cameraIcon) {
             if let image = photo3Image.image { imagesList.append(image) }
         }
-        if photo4Image.image != UIImage.init(systemName: "camera.fill") {
+        if photo4Image.image != UIImage.init(systemName: Constants.cameraIcon) {
             if let image = photo4Image.image { imagesList.append(image) }
         }
         if imagesList.count == 0 {
-            self.showAlert(title: "Warning", message: "At less 1 photo is required")
+            self.showAlert(title: Constants.Warning, message: Constants.OnePhotoAtLess)
             return false
         }
         return true
-    }
-    
-    fileprivate func askUserConfirmation(onAcept: @escaping () -> Void) {
-        /// Se crea un UIAlertController y se presenta
-        let alertConfirmationController = UIAlertController(title: "Upload object", message: "Going to upload a product", preferredStyle: .alert)
-        alertConfirmationController.addAction(UIAlertAction(title: "Accept", style: .default, handler: { action in
-            onAcept()
-        }))
-        alertConfirmationController.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-        present(alertConfirmationController, animated: true, completion: nil)
     }
     
     fileprivate func processProduct() {
@@ -473,29 +463,20 @@ class NewProductViewController: UIViewController {
                                                 price: Int((self?.priceTextField.text!)!)!, photos: urlList)
             /// Guardamos el producto en Firestore
             self?.viewModel.insertProduct(product: product, onSuccess: {
-                //self?.productAdded()
+                /// Paramos la animacion y avisamoa la controlador para informar al usuario
+                self?.activityIndicator.stopAnimating()
+                self?.delegate?.productAdded()
+                
                 self?.dismiss(animated: true, completion: nil)
                 
-                self?.delegate?.productAdded()
-                /*self?.showAlert(title: "Info", message: "Product uploaded")
-                self?.activityIndicator.stopAnimating()
-                self?.dismiss(animated: true, completion: nil)*/
-                
             }, onError: { error in
-                self?.showAlert(title: "Error", message: error.localizedDescription)
+                self?.showAlert(title: Constants.Error, message: error.localizedDescription)
             })
             
             
         }) { [weak self] error in
-            self?.showAlert(title: "Error", message: error.localizedDescription)
+            self?.showAlert(title: Constants.Error, message: error.localizedDescription)
         }
-    }
-    
-    fileprivate func productAdded() {
-        self.activityIndicator.stopAnimating()
-        self.dismiss(animated: true, completion: nil)
-        
-        delegate?.productAdded()
     }
 }
 

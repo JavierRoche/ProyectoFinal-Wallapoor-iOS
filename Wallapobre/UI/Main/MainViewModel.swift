@@ -22,8 +22,8 @@ class MainViewModel {
     private var auxiliarProductList: [ProductCellViewModel] = []
     /// Es la lista de la que tira el Collection View principal
     private var actualProductList: [ProductCellViewModel] = []
-    var originalFilter: Filter = Filter()
-    var actualFilter: Filter = Filter()
+    private var originalFilter: Filter = Filter()
+    private var actualFilter: Filter = Filter()
 
     
     // MARK: Public Functions
@@ -61,6 +61,14 @@ class MainViewModel {
 
     func getCellViewModel(at indexPath: IndexPath) -> ProductCellViewModel {
         return actualProductList[indexPath.row]
+    }
+    
+    func showUpSaveSearchButton() -> Bool {
+        return self.actualFilter == self.originalFilter
+    }
+    
+    func getActualFilter() -> Filter {
+        return self.actualFilter
     }
     
     func applyFilter(filter: Filter) {
@@ -106,10 +114,19 @@ class MainViewModel {
         self.actualFilter.text = String()
     }
     
-    func showUpSaveSearch() -> Bool {
-        return self.actualFilter == self.originalFilter
-    }
     
+    
+    func insertSearch(search: Search, onSuccess: @escaping () -> Void, onError: ErrorClosure?) {
+        Managers.managerSearchFirestore = SearchFirestore()
+        Managers.managerSearchFirestore!.insertSearch(search: search, onSuccess: {
+            onSuccess()
+            
+        }) { error in
+            if let retError = onError {
+                retError(error)
+            }
+        }
+    }
     
     // MARK: Private Functions
     
@@ -122,15 +139,6 @@ class MainViewModel {
             return nil
         }
         return filteredProductList
-        /// Mapeamos los productos del area inicial al modelo de celda
-        /*for productCellViewModel in self.originalProductList {
-            if productCellViewModel.product.category == Category.motor.rawValue {
-                filteredProductList.append(productCellViewModel)
-            }
-        }
-        let filteredProductList3 = self.originalProductList.flatMap( { $0.product.category == Category.motor.rawValue })
-        let filteredProductList2 = self.originalProductList.compactMap { $0.product.category == Category.motor.rawValue }
-        */
     }
     
     //comprueba de cada producto la distancia con el usuario

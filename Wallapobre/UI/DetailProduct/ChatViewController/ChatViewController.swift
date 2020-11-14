@@ -28,7 +28,7 @@ class ChatViewController: MessagesViewController {
         //self.setStyle()
         self.fetchMessages()
         
-        let leftBarButtonItem: UIBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "arrow.left"), style: .plain, target: self, action: #selector(backButtonTapped))
+        let leftBarButtonItem: UIBarButtonItem = UIBarButtonItem(image: UIImage(systemName: Constants.arrowIcon), style: .plain, target: self, action: #selector(backButtonTapped))
         leftBarButtonItem.tintColor = .black
         navigationItem.leftBarButtonItem = leftBarButtonItem
     }
@@ -55,7 +55,7 @@ extension ChatViewController: MessagesDataSource {
             self.messagesCollectionView.scrollToBottom()
             
         }) { error in
-            self.showAlert(title: "Error", message: error.localizedDescription)
+            self.showAlert(title: Constants.Error, message: error.localizedDescription)
         }
     }
     
@@ -118,7 +118,7 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
                     //self.viewModel.appendMessageToModel(message: message)
                     
                 }) { error in
-                    self.showAlert(title: "Error", message: error.localizedDescription)
+                    self.showAlert(title: Constants.Error, message: error.localizedDescription)
                 }
             }
         }

@@ -12,10 +12,54 @@ import MessageKit
 // MARK: UIViewController Personal Utilities
 extension UIViewController {
     /// Mensajes de alerta informativos
-    func showAlert(title: String, message: String) {
-        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-        present(alertController, animated: true, completion: nil)
+    /*func showAlert(input: Bool, title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Accept", style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
+    }*/
+    
+    
+    func showAlert(forInput: Bool = false, onlyAccept: Bool = true,
+                   title: String? = nil, message: String? = nil, actionTitle: String? = "Accept",
+                   cancelTitle: String? = "Cancel", inputPlaceholder: String? = nil,
+                   inputKeyboardType: UIKeyboardType = UIKeyboardType.alphabet,
+                   cancelHandler: ((UIAlertAction) -> Swift.Void)? = nil,
+                   actionHandler: ((_ text: String?) -> Void)? = nil) {
+
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        
+        /// Si es para solicitar un texto al user
+        if forInput {
+            alert.addTextField { (textField:UITextField) in
+                textField.placeholder = inputPlaceholder
+                textField.keyboardType = inputKeyboardType
+            }
+            
+            alert.addAction(UIAlertAction(title: actionTitle, style: .default, handler: { action in
+                guard let textField =  alert.textFields?.first else {
+                    actionHandler?(nil)
+                    return
+                }
+                actionHandler?(textField.text)
+            }))
+            alert.addAction(UIAlertAction(title: cancelTitle, style: .cancel, handler: nil))
+        
+        } else {
+            
+            /// Si es para aceptar o cancelar
+            if !onlyAccept {
+                alert.addAction(UIAlertAction(title: actionTitle, style: .default, handler: { action in
+                    actionHandler?(nil)
+                }))
+                alert.addAction(UIAlertAction(title: cancelTitle, style: .cancel, handler: nil))
+                
+            } else {
+                /// Solo informativo
+                alert.addAction(UIAlertAction(title: actionTitle, style: .default, handler: nil))
+            }
+        }
+        
+        self.present(alert, animated: true, completion: nil)
     }
 }
 

@@ -18,7 +18,7 @@ class ProfileViewController: UIViewController {
     
     lazy var logoutButton: UIButton = {
         let button: UIButton = UIButton(type: UIButton.ButtonType.system)
-        button.setTitle("Logout", for: .normal)
+        button.setTitle(Constants.Logout, for: .normal)
         button.tintColor = UIColor.black
         button.addTarget(self, action: #selector (tapOnLogout), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -53,10 +53,10 @@ class ProfileViewController: UIViewController {
     
     @objc func tapOnLogout() {
         Managers.managerUserAuthoritation!.logout(onSuccess: {
-            self.showAlert(title: "Logout", message: "User log out")
+            self.showAlert(title: Constants.Logout, message: Constants.UserLogout)
         }) { [weak self] error in
             print(error)
-            self?.showAlert(title: "Error", message: error.localizedDescription)
+            self?.showAlert(title: Constants.Error, message: error.localizedDescription)
         }
     }
     

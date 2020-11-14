@@ -31,7 +31,6 @@ class ProductCell: UICollectionViewCell {
         label.font = UIFont.fontStyle17Bold
         label.textColor = UIColor.black
         label.numberOfLines = 1
-        label.text = "Pricelabel"
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -41,7 +40,6 @@ class ProductCell: UICollectionViewCell {
         label.font = UIFont.fontStyle14Regular
         label.textColor = UIColor.black
         label.numberOfLines = 2
-        label.text = "Titlelabel"
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()

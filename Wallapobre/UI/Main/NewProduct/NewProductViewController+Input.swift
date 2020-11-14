@@ -20,12 +20,12 @@ extension NewProductViewController: UITextFieldDelegate, UITextViewDelegate, UIP
 
     /// Control del numero de caracteres en UITextView
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        if text == "\n" {
+        if text == Constants.NewParagraph {
             textView.resignFirstResponder()
             return false
         }
         
-        let currentText = descriptionTextView.text ?? ""
+        let currentText = descriptionTextView.text ?? String()
         guard let range = Range(range, in: currentText) else { return false }
         let updatedText = currentText.replacingCharacters(in: range, with: text)
         /// Se permiten 200 caracteres para la descripcion
@@ -34,27 +34,27 @@ extension NewProductViewController: UITextFieldDelegate, UITextViewDelegate, UIP
     
     /// Control del numero de caracteres en UITextField
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if string == "\n" {
+        if string == Constants.NewParagraph {
             textField.resignFirstResponder()
             return false
         }
         
         if textField == titleTextField {
-            let currentText = titleTextField.text ?? ""
+            let currentText = titleTextField.text ?? String()
             guard let range = Range(range, in: currentText) else { return false }
             let updatedText = currentText.replacingCharacters(in: range, with: string)
             /// Se permiten 40 caracteres  para el titulo
             return updatedText.count < 40
             
         } else if textField == priceTextField {
-            let currentText = priceTextField.text ?? ""
+            let currentText = priceTextField.text ?? String()
             guard let range = Range(range, in: currentText) else { return false }
             let updatedText = currentText.replacingCharacters(in: range, with: string)
             /// Se permiten 6 numeros para el precio
             return updatedText.count < 6
             
         } else if textField == categoryTextField {
-            let currentText = categoryTextField.text ?? ""
+            let currentText = categoryTextField.text ?? String()
             guard let range = Range(range, in: currentText) else { return false }
             let updatedText = currentText.replacingCharacters(in: range, with: string)
             /// No se permite escribir, solo seleccionar

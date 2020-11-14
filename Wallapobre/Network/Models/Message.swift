@@ -10,8 +10,7 @@ import Foundation
 import MessageKit
 import FirebaseFirestore
 
-public class Message: MessageType {
-    
+public class Message: MessageType { 
     public var sender: SenderType
     public var discussionId: String
     public var messageId: String
@@ -43,11 +42,11 @@ public class Message: MessageType {
     class func mapper(document: QueryDocumentSnapshot) -> Message {
         let json: [String : Any] = document.data()
         /// Extraemos los valores; como puede venir vacio indicamos un valor por defecto
-        let senderId = json["senderid"] as? String ?? ""
-        let discussionId = json["discussionid"] as? String ?? ""
-        let messageId = json["messageid"] as? String ?? ""
+        let senderId = json["senderid"] as? String ?? String()
+        let discussionId = json["discussionid"] as? String ?? String()
+        let messageId = json["messageid"] as? String ?? String()
         let sentDate = json["sentdate"] as? Date ?? Date()
-        let value = json["value"] as? String ?? ""
+        let value = json["value"] as? String ?? String()
         
         /// Creamos y devolvemos el objeto Product
         return Message.init(senderId: senderId, discussionId: discussionId, messageId: messageId, sentDate: sentDate, kind: MessageKind.text(value), value: value)

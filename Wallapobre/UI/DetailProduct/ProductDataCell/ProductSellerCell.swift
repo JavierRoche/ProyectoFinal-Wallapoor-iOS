@@ -11,7 +11,7 @@ import UIKit
 class ProductSellerCell: UITableViewCell {
     lazy var avatarImageView: UIImageView = {
         let image: UIImageView = UIImageView()
-        image.image = UIImage(systemName: "faceid")
+        image.image = UIImage(systemName: Constants.faceIcon)
         image.tintColor = UIColor.black
         image.layer.cornerRadius = 8.0
         image.translatesAutoresizingMaskIntoConstraints = false
@@ -23,7 +23,6 @@ class ProductSellerCell: UITableViewCell {
         label.font = UIFont.fontStyle16SemiBold
         label.textColor = UIColor.black
         label.numberOfLines = 1
-        label.text = "UsernameLabel"
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()

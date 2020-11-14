@@ -14,7 +14,7 @@ import UIKit
 extension MainViewController: UISearchBarDelegate  {
     /// Funcion delegada de UISearchBar para controlar cada caracter introducido
     func searchBar(_ searchBar: UISearchBar, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        if text == "\n" {
+        if text == Constants.NewParagraph {
             searchBar.resignFirstResponder()
             return false
         }
@@ -35,7 +35,7 @@ extension MainViewController: UISearchBarDelegate  {
         }
 
         collectionView.reloadData()
-        saveSearchButton.isHidden = self.viewModel.showUpSaveSearch()
+        saveSearchButton.isHidden = self.viewModel.showUpSaveSearchButton()
         return true
     }
     
@@ -43,11 +43,11 @@ extension MainViewController: UISearchBarDelegate  {
     /// Funcion delegada de UISearchBar para controlar el click en Enter o Buscar
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
         guard let text: String = self.searchController.searchBar.text?.lowercased() else { return }
-        if text != "" {
-            print("Buscar: \(text)")
+        if text != String() {
             /// Bloqueamos el uso del searchController y resto de la pantalla para la busqueda actual
             searchController.searchBar.isUserInteractionEnabled = false
             self.view.isUserInteractionEnabled = false
+            
             /// Iniciamos la animacion de waiting
             self.activityIndicator.center = self.view.center
             self.activityIndicator.startAnimating()
@@ -56,7 +56,7 @@ extension MainViewController: UISearchBarDelegate  {
             /// Aplicamos el filtro textual a la lista ACTUAL, NO a la original que tiene todo
             self.viewModel.filterByText(text: text)
             collectionView.reloadData()
-            saveSearchButton.isHidden = self.viewModel.showUpSaveSearch()
+            saveSearchButton.isHidden = self.viewModel.showUpSaveSearchButton()
             
             /// Paramos la animacion y liberamos el uso del searchController y del resto de la interface
             self.searchController.searchBar.isUserInteractionEnabled = true
@@ -68,12 +68,13 @@ extension MainViewController: UISearchBarDelegate  {
     /// Funcion delegada para controlar el tap en la imagen de Bookmark
     func searchBarBookmarkButtonClicked(_ searchBar: UISearchBar) {
         /// Creamos la escena con el modelo de Filter del ultimo Filter almacenado
-        let filtersViewModel: FiltersViewModel = FiltersViewModel(filter: self.viewModel.actualFilter)
+        let filtersViewModel: FiltersViewModel = FiltersViewModel(filter: self.viewModel.getActualFilter())
         let filtersViewController: FiltersViewController = FiltersViewController(viewModel: filtersViewModel)
         filtersViewController.delegate = self
         let navigationController: UINavigationController = UINavigationController.init(rootViewController: filtersViewController)
         navigationController.modalPresentationStyle = .formSheet
         navigationController.navigationBar.isHidden = true
+        
         /// Presentamos el modal con las ultimas opciones de filtrado almacenadas
         self.present(navigationController, animated: true, completion: nil)
     }
@@ -81,11 +82,11 @@ extension MainViewController: UISearchBarDelegate  {
     /// Funcion delegada de UISearchBar para controlar el click en Cancel
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         /// Vaciar la caja de busqueda evita problemas
-        self.searchController.searchBar.text = ""
+        self.searchController.searchBar.text = String()
         
         /// Volvemos a cargar todas las imagenes previas al filtrado textual
         self.viewModel.cancelFilterByText()
         collectionView.reloadData()
-        saveSearchButton.isHidden = self.viewModel.showUpSaveSearch()
+        saveSearchButton.isHidden = self.viewModel.showUpSaveSearchButton()
     }
 }

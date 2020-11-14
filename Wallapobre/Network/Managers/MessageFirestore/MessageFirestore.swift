@@ -11,7 +11,7 @@ import FirebaseFirestore
 
 class MessageFirestore: MessageFirestoreManager {
     /// Instancia para acceder al nodo principal de la DB de Firestore
-    var db = Firestore.firestore().collection("messages")
+    var db = Firestore.firestore().collection(Constants.messagesFirebase)
     
     
     func selectMessages(discussion: Discussion, onSuccess: @escaping ([Message]) -> Void, onError: ErrorClosure?) {
@@ -31,10 +31,10 @@ class MessageFirestore: MessageFirestoreManager {
                 
                 /// Existen mensajes
                 if let snapshot = snapshot {
-                    let messageList: [Message] = snapshot.documents
+                    let messages: [Message] = snapshot.documents
                         .compactMap({ Message.mapper(document: $0) })
                     
-                    onSuccess(messageList)
+                    onSuccess(messages)
                 }
         }
     }

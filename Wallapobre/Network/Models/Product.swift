@@ -6,7 +6,6 @@
 //  Copyright © 2020 Javier Roche. All rights reserved.
 //
 
-import MessageKit
 import FirebaseFirestore
 
 class Product {
@@ -66,19 +65,20 @@ class Product {
     class func mapper(document: QueryDocumentSnapshot) -> Product {
         let json: [String : Any] = document.data()
         /// Extraemos los valores; como puede venir vacio indicamos un valor por defecto
-        let productId = json["productid"] as? String ?? ""
-        let seller = json["seller"] as? String ?? ""
+        let productId = json["productid"] as? String ?? String()
+        let seller = json["seller"] as? String ?? String()
         let state = json["state"] as? ProductState.RawValue ?? 0 /// Estado Selling si no puede mapear
-        let title = json["title"] as? String ?? ""
+        let title = json["title"] as? String ?? String()
         let category = json["category"] as? Category.RawValue ?? 2 /// Categoria Hogar si no puede mapear
-        let description = json["description"] as? String ?? ""
+        let description = json["description"] as? String ?? String()
         let price = json["price"] as? Int ?? 0
         let sentDate = json["sentDate"] as? Date ?? Date()
-        let photo2 = json["photo2"] as? String ?? ""
-        let photo3 = json["photo3"] as? String ?? ""
-        let photo4 = json["photo4"] as? String ?? ""
+        let photo2 = json["photo2"] as? String ?? String()
+        let photo3 = json["photo3"] as? String ?? String()
+        let photo4 = json["photo4"] as? String ?? String()
+        
         var photos: [String] = [String]()
-        photos.append(json["photo1"] as? String ?? "")
+        photos.append(json["photo1"] as? String ?? String())
         if !photo2.isEmpty {
             photos.append(photo2)
         }
@@ -109,19 +109,19 @@ class Product {
         
         switch product.photos.count {
         case 1:
-            snapshot["photo2"] = ""
-            snapshot["photo3"] = ""
-            snapshot["photo4"] = ""
+            snapshot["photo2"] = String()
+            snapshot["photo3"] = String()
+            snapshot["photo4"] = String()
             
         case 2:
             snapshot["photo2"] = product.photos[1]
-            snapshot["photo3"] = ""
-            snapshot["photo4"] = ""
+            snapshot["photo3"] = String()
+            snapshot["photo4"] = String()
             
         case 3:
             snapshot["photo2"] = product.photos[1]
             snapshot["photo3"] = product.photos[2]
-            snapshot["photo4"] = ""
+            snapshot["photo4"] = String()
             
         case 4:
             snapshot["photo2"] = product.photos[1]

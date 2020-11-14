@@ -25,14 +25,14 @@ class FiltersViewController: UIViewController {
         label.font = UIFont.fontStyle22Bold
         label.textColor = UIColor.black
         label.numberOfLines = 1
-        label.text = "Filtros"
+        label.text = Constants.Filtros
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     lazy var acceptButton: UIButton = {
         let button: UIButton = UIButton(type: UIButton.ButtonType.system)
-        button.setTitle("Aceptar", for: .normal)
+        button.setTitle(Constants.Accept, for: .normal)
         button.tintColor = UIColor.black
         button.addTarget(self, action: #selector (acceptFilter), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -44,7 +44,7 @@ class FiltersViewController: UIViewController {
         label.font = UIFont.fontStyle18Bold
         label.textColor = UIColor.black
         label.numberOfLines = 1
-        label.text = "CATEGORÍAS"
+        label.text = Constants.CATEGORIES
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -166,7 +166,7 @@ class FiltersViewController: UIViewController {
         label.font = UIFont.fontStyle18Bold
         label.textColor = UIColor.black
         label.numberOfLines = 1
-        label.text = "50"
+        label.text = Constants.number50
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()

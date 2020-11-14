@@ -41,7 +41,7 @@ class LoginViewModel {
         Managers.managerUserFirestore!.selectUser(userId: user.sender.senderId, onSuccess: { [weak self] user in
             /// El usuario existe en Firestore BD
             self?.user = user
-            onSuccess(self?.user! ?? User.init(id: "", email: "", password: ""))
+            onSuccess(self?.user! ?? User.init(id: String(), email: String(), password: String()))
             
         }, onNonexistent: {
             /// El usuario no existe en Firestore BD. Completamos datos e insertamos

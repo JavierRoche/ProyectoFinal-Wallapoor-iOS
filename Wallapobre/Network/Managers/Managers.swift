@@ -23,4 +23,6 @@ class Managers {
     static var managerDiscussionFirestore: DiscussionFirestore?
     /// Manager de tabla de Messages (chat) en Firestore
     static var managerMessageFirestore: MessageFirestore?
+    /// Manager de tabla de Busquedas en Firestore
+    static var managerSearchFirestore: SearchFirestore?
 }

@@ -12,7 +12,7 @@ import MapKit
 class ProductMapCell: UITableViewCell {
     lazy var iconImage: UIImageView = {
         let image: UIImageView = UIImageView()
-        image.image = UIImage(systemName: "location.circle")
+        image.image = UIImage(systemName: Constants.locationIcon)
         image.tintColor = UIColor.black
         //image.contentMode = .scaleAspectFit
         image.translatesAutoresizingMaskIntoConstraints = false
@@ -24,7 +24,6 @@ class ProductMapCell: UITableViewCell {
         label.font = UIFont.fontStyle16Regular
         label.textColor = UIColor.black
         label.numberOfLines = 1
-        label.text = "LocationLabel"
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -108,8 +107,8 @@ class ProductMapCell: UITableViewCell {
             }
             
             /// Extraemos la informacion, la formateamos y la pintamos
-            let postalCode = placemark.postalCode ?? ""
-            let locality = placemark.locality ?? ""
+            let postalCode = placemark.postalCode ?? String()
+            let locality = placemark.locality ?? String()
             let address = ("\(postalCode), \(locality)")
             self?.locationLabel.text = address
         }

@@ -21,14 +21,14 @@ class LoginViewController: UIViewController {
         label.font = UIFont.fontStyle14Regular
         label.textColor = UIColor.black
         label.numberOfLines = 1
-        label.text = "EMAIL"
+        label.text = Constants.EMAIL
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     lazy var emailTextField: UITextField = {
         let textField: UITextField = UITextField()
-        textField.placeholder = "Type an email"
+        textField.placeholder = Constants.TypeAnEmail
         textField.font = UIFont.fontStyle16Regular
         textField.textColor = UIColor.black
         textField.borderStyle = UITextField.BorderStyle.roundedRect
@@ -46,14 +46,14 @@ class LoginViewController: UIViewController {
         label.font = UIFont.fontStyle14Regular
         label.textColor = UIColor.black
         label.numberOfLines = 1
-        label.text = "PASSWORD"
+        label.text = Constants.Password.uppercased()
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     lazy var passwordTextField: UITextField = {
         let textField: UITextField = UITextField()
-        textField.placeholder = "Type a password"
+        textField.placeholder = Constants.TypeAnPassword
         textField.font = UIFont.fontStyle16Regular
         textField.textColor = UIColor.black
         textField.borderStyle = UITextField.BorderStyle.roundedRect
@@ -73,7 +73,7 @@ class LoginViewController: UIViewController {
         label.font = UIFont.fontStyle14Regular
         label.textColor = UIColor.black
         label.numberOfLines = 1
-        label.text = "USERNAME"
+        label.text = Constants.USERNAME
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -81,7 +81,7 @@ class LoginViewController: UIViewController {
     lazy var usernameTextField: UITextField = {
         let textField: UITextField = UITextField()
         textField.isHidden = true
-        textField.placeholder = "Type an username"
+        textField.placeholder = Constants.TypeAnUsername
         textField.font = UIFont.fontStyle16Regular
         textField.textColor = UIColor.black
         textField.borderStyle = UITextField.BorderStyle.roundedRect
@@ -96,7 +96,7 @@ class LoginViewController: UIViewController {
     
     lazy var loginButton: UIButton = {
         let button: UIButton = UIButton(type: UIButton.ButtonType.system)
-        button.setTitle("Login", for: .normal)
+        button.setTitle(Constants.Login, for: .normal)
         button.tintColor = UIColor.black
         button.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapOnLogin)))
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -105,7 +105,7 @@ class LoginViewController: UIViewController {
     
     lazy var hideButton: UIButton = {
         let button: UIButton = UIButton(type: UIButton.ButtonType.system)
-        button.setImage(UIImage(systemName: "chevron.up"), for: .normal)
+        button.setImage(UIImage(systemName: Constants.upIcon), for: .normal)
         button.tintColor = UIColor.black
         button.isHidden = true
         button.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapOnHideUsername)))
@@ -115,7 +115,7 @@ class LoginViewController: UIViewController {
     
     lazy var registerButton: UIButton = {
         let button: UIButton = UIButton(type: UIButton.ButtonType.system)
-        button.setTitle("Register", for: .normal)
+        button.setTitle(Constants.Register, for: .normal)
         button.tintColor = UIColor.black
         button.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapOnRegister)))
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -124,7 +124,7 @@ class LoginViewController: UIViewController {
     
     lazy var recoverButton: UIButton = {
         let button: UIButton = UIButton(type: UIButton.ButtonType.system)
-        button.setTitle("Recover password", for: .normal)
+        button.setTitle(Constants.RecoverPassword, for: .normal)
         button.tintColor = UIColor.black
         button.addTarget(self, action: #selector (tapOnRecover), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -132,7 +132,7 @@ class LoginViewController: UIViewController {
     }()
     
     lazy var registerAnimation: CABasicAnimation = {
-        let animation: CABasicAnimation = CABasicAnimation(keyPath: "position")
+        let animation: CABasicAnimation = CABasicAnimation(keyPath: Constants.keyPathPosition)
         animation.duration = 1.5
         animation.fillMode = CAMediaTimingFillMode.forwards
         animation.isRemovedOnCompletion = false
@@ -142,7 +142,7 @@ class LoginViewController: UIViewController {
     }()
     
     lazy var loginAnimation: CABasicAnimation = {
-        let animation: CABasicAnimation = CABasicAnimation(keyPath: "position")
+        let animation: CABasicAnimation = CABasicAnimation(keyPath: Constants.keyPathPosition)
         animation.duration = 1.5
         animation.fillMode = CAMediaTimingFillMode.forwards
         animation.isRemovedOnCompletion = false
@@ -180,12 +180,12 @@ class LoginViewController: UIViewController {
                     self?.createScene()
                     
                 }) { (error) in
-                    self?.showAlert(title: "Error", message: error.localizedDescription)
+                    self?.showAlert(title: Constants.Error, message: error.localizedDescription)
                 }
             }
             
         }) { error in
-            self.showAlert(title: "Error", message: error.localizedDescription)
+            self.showAlert(title: Constants.Error, message: error.localizedDescription)
         }
     }
     
@@ -309,12 +309,12 @@ class LoginViewController: UIViewController {
         var startPosition: CGPoint = CGPoint(x: registerPosition.x, y: registerPosition.y)
         registerAnimation.fromValue = startPosition
         registerAnimation.toValue = startPosition.applying(.init(translationX: 0.0, y: 90))
-        registerButton.layer.add(registerAnimation, forKey: "position")
+        registerButton.layer.add(registerAnimation, forKey: Constants.keyPathPosition)
         
         startPosition = CGPoint(x: loginPosition.x, y: loginPosition.y)
         loginAnimation.fromValue = startPosition
         loginAnimation.toValue = startPosition.applying(.init(translationX: 0.0, y: 90))
-        loginButton.layer.add(loginAnimation, forKey: "position")
+        loginButton.layer.add(loginAnimation, forKey: Constants.keyPathPosition)
     }
     
     fileprivate func closeRegisterInterface() {
@@ -322,23 +322,23 @@ class LoginViewController: UIViewController {
         var startPosition: CGPoint = CGPoint(x: registerPosition.x, y: registerPosition.y)
         registerAnimation.fromValue = startPosition
         registerAnimation.toValue = startPosition.applying(.init(translationX: 0.0, y: -90))
-        registerButton.layer.add(registerAnimation, forKey: "position")
+        registerButton.layer.add(registerAnimation, forKey: Constants.keyPathPosition)
         
         startPosition = CGPoint(x: loginPosition.x, y: loginPosition.y)
         loginAnimation.fromValue = startPosition
         loginAnimation.toValue = startPosition.applying(.init(translationX: 0.0, y: -90))
-        loginButton.layer.add(loginAnimation, forKey: "position")
+        loginButton.layer.add(loginAnimation, forKey: Constants.keyPathPosition)
     }
     
     fileprivate func login() {
         /// Comprobamos que el usuario ha introducido un email y un pass
         guard let email = emailTextField.text?.lowercased(), let password = passwordTextField.text else {
-            self.showAlert(title: "Warning", message: "Missing data")
+            self.showAlert(title: Constants.Warning, message: Constants.MissingData)
             return
         }
         
         /// Inicializamos un User con los datos introducidos por el usuario y logueamos
-        let user: User = User.init(id: "", email: email, password: password)
+        let user: User = User.init(id: String(), email: email, password: password)
         
         self.viewModel.logUser(user: user, onSuccess: { [weak self] user in
             self?.viewModel.getUserLogged(user: user, onSuccess: { (user) in
@@ -346,23 +346,23 @@ class LoginViewController: UIViewController {
                 self?.createScene()
                 
             }) { (error) in
-                self?.showAlert(title: "Error", message: error.localizedDescription)
+                self?.showAlert(title: Constants.Error, message: error.localizedDescription)
             }
             
         }) { [weak self] error in
-            self?.showAlert(title: "Error", message: error.localizedDescription)
+            self?.showAlert(title: Constants.Error, message: error.localizedDescription)
         }
     }
     
     fileprivate func register() {
         /// Comprobamos que el usuario ha introducido un email y un pass
         guard let email = emailTextField.text?.lowercased(), let password = passwordTextField.text, let username = usernameTextField.text else {
-            self.showAlert(title: "Warning", message: "Missing data")
+            self.showAlert(title: Constants.Warning, message: Constants.MissingData)
             return
         }
         
         if email.isEmpty || password.isEmpty || username.isEmpty {
-            self.showAlert(title: "Warning", message: "Missing data")
+            self.showAlert(title: Constants.Warning, message: Constants.MissingData)
             return
         }
         
@@ -375,28 +375,28 @@ class LoginViewController: UIViewController {
                 self?.createScene()
                 
             }) { (error) in
-                self?.showAlert(title: "Error", message: error.localizedDescription)
+                self?.showAlert(title: Constants.Error, message: error.localizedDescription)
             }
             
         }) { [weak self] error in
-            self?.showAlert(title: "Error", message: error.localizedDescription)
+            self?.showAlert(title: Constants.Error, message: error.localizedDescription)
         }
     }
     
     fileprivate func recover() {
         /// Comprobamos que el usuario ha introducido un email
         guard let email = emailTextField.text else {
-            self.showAlert(title: "Warning", message: "Missing data")
+            self.showAlert(title: Constants.Warning, message: Constants.MissingData)
             return
         }
         
         /// Inicializamos un User con los datos introducidos por el usuario
-        let user = User.init(id: "", email: email, password: nil)
+        let user = User.init(id: String(), email: email, password: nil)
         self.viewModel.recoverUser(user: user, onSuccess: {
-            self.showAlert(title: "Password", message: "Password recovered")
+            self.showAlert(title: Constants.Password, message: Constants.PasswordRecovered)
             
         }) { [weak self] error in
-            self?.showAlert(title: "Error", message: error.localizedDescription)
+            self?.showAlert(title: Constants.Error, message: error.localizedDescription)
         }
     }
     

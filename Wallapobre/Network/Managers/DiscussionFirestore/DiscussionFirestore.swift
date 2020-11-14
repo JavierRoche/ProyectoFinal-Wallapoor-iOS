@@ -11,7 +11,7 @@ import FirebaseFirestore
 
 class DiscussionFirestore: DiscussionFirestoreManager {
     /// Instancia para acceder al nodo principal de la DB de Firestore
-    var db = Firestore.firestore().collection("discussions")
+    var db = Firestore.firestore().collection(Constants.discussionsFirebase)
     
     func selectDiscussion(discussion: Discussion, onSuccess: @escaping (Discussion) -> Void, onNonexistent: @escaping () -> Void, onError: ErrorClosure?) {
         

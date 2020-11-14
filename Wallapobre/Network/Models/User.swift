@@ -27,7 +27,7 @@ class User {
     }
     
     convenience init(id: String, email: String, username: String, latitude: Double, longitude: Double) {
-        self.init(id: id, email: email, password: "")
+        self.init(id: id, email: email, password: String())
         
         self.username = username
         self.latitude = latitude
@@ -40,9 +40,9 @@ class User {
     class func mapper(document: QueryDocumentSnapshot) -> User {
         let json: [String : Any] = document.data()
         /// Extraemos los valores; como puede venir vacio indicamos un valor por defecto
-        let userId = json["userid"] as? String ?? ""
-        let email = json["email"] as? String ?? ""
-        let username = json["username"] as? String ?? ""
+        let userId = json["userid"] as? String ?? String()
+        let email = json["email"] as? String ?? String()
+        let username = json["username"] as? String ?? String()
         let latitude = json["latitude"] as? Double ?? 0.0
         let longitude = json["longitude"] as? Double ?? 0.0
         

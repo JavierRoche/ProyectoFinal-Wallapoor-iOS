@@ -22,8 +22,8 @@ class TabBarProvider {
         let profileViewModel = ProfileViewModel()
         let profileViewController: ProfileViewController = ProfileViewController(viewModel: profileViewModel)
         
-        mainViewController.tabBarItem = UITabBarItem.init(title: "Productos", image: UIImage.init(systemName: "star.fill"), tag: 0)
-        profileViewController.tabBarItem = UITabBarItem.init(title: "Perfil", image: UIImage.init(systemName: "star.fill"), tag: 2)
+        mainViewController.tabBarItem = UITabBarItem.init(title: Constants.Accept, image: UIImage.init(systemName: Constants.starIcon), tag: 0)
+        profileViewController.tabBarItem = UITabBarItem.init(title: Constants.Perfil, image: UIImage.init(systemName: Constants.starIcon), tag: 2)
 
         let mainNavigationController: UINavigationController = UINavigationController.init(rootViewController: mainViewController)
         let profileNavigationController: UINavigationController = UINavigationController.init(rootViewController: profileViewController)

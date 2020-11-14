@@ -11,7 +11,7 @@ import FirebaseFirestore
 
 class ProductFirestore: ProductFirestoreManager {
     /// Instancia para acceder al nodo principal de la DB de Firestore
-    var db = Firestore.firestore().collection("products")
+    var db = Firestore.firestore().collection(Constants.productsFirebase)
     
     
     // MARK: Public Functions

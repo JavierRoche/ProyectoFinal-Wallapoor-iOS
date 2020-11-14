@@ -38,7 +38,7 @@ class MainViewController: UIViewController {
         let search: UISearchController = UISearchController()
         search.searchBar.searchTextField.clearButtonMode = .never
         search.searchBar.showsBookmarkButton = true
-        search.searchBar.setImage(UIImage.init(systemName: "line.horizontal.3.decrease"), for: .bookmark, state: .normal)
+        search.searchBar.setImage(UIImage.init(systemName: Constants.filterIcon), for: .bookmark, state: .normal)
         search.searchBar.delegate = self
         search.obscuresBackgroundDuringPresentation = false
         search.automaticallyShowsCancelButton = true
@@ -55,7 +55,7 @@ class MainViewController: UIViewController {
     
     lazy var newProductButton: UIButton = {
         let button: UIButton = UIButton()
-        button.setTitle("+", for: .normal)
+        button.setTitle(Constants.plusIcon, for: .normal)
         button.tintColor = UIColor.black
         button.backgroundColor = UIColor.black
         button.layer.masksToBounds = true
@@ -66,7 +66,7 @@ class MainViewController: UIViewController {
     
     lazy var saveSearchButton: UIButton = {
         let button: UIButton = UIButton()
-        button.setImage(UIImage(systemName: "star.fill"), for: .normal)
+        button.setImage(UIImage(systemName: Constants.starIcon), for: .normal)
         button.tintColor = UIColor.black
         button.backgroundColor = UIColor.yellow
         button.layer.masksToBounds = true
@@ -96,13 +96,73 @@ class MainViewController: UIViewController {
     // MARK: Life Cycle
 
     override func loadView() {
+        self.setViewsHierarchy()
+        self.setConstraints()
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        Managers.managerProductFirestore = ProductFirestore()
+        
+        self.viewModel.delegate = self
+        self.viewModel.viewWasLoaded()
+        
+        /// Configuramos la interface y cargamos las fotos en el CollectionView
+        self.configureUI()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        newProductButton.layer.cornerRadius = newProductButton.frame.size.height / 2
+        saveSearchButton.layer.cornerRadius = saveSearchButton.frame.size.height / 2
+    }
+    
+    
+    // MARK: User Interactions
+    
+    @objc func tapOnNewProduct(sender: UIButton!) {
+        let newProductViewModel: NewProductViewModel = NewProductViewModel()
+        let newProductViewController: NewProductViewController = NewProductViewController(viewModel: newProductViewModel)
+        newProductViewController.delegate = self
+        let navigationController: UINavigationController = UINavigationController.init(rootViewController: newProductViewController)
+        navigationController.modalPresentationStyle = .automatic
+        
+        /// Presentamos el ViewController
+        self.present(navigationController, animated: true, completion: nil)
+    }
+    
+    @objc func tapOnSaveSearch(sender: UIButton!) {
+        self.showAlert(forInput: true, onlyAccept: false, title: Constants.SaveSearch, message: Constants.NameForPersonal, inputKeyboardType: UIKeyboardType.alphabet) { [weak self] inputText in
+            /// Nos aseguramos de que el usuario ha introducido un nombre
+            guard let text = inputText else { return }
+            /// Creamos la Search actual
+            let actualSearch: Search = Search.init(title: text, filter: self!.viewModel.getActualFilter())
+            
+            /// Guardamos el producto en Firestore
+            self?.viewModel.insertSearch(search: actualSearch, onSuccess: {
+                self?.showAlert(forInput: false, onlyAccept: true, title: Constants.Success, message: Constants.PersonalSearchSaved)
+                Managers.managerSearchFirestore = nil
+                
+            }, onError: { error in
+                self?.showAlert(title: Constants.Error, message: error.localizedDescription)
+                Managers.managerSearchFirestore = nil
+            })
+        }
+    }
+    
+    
+    // MARK: Private Functions
+    
+    fileprivate func setViewsHierarchy() {
         view = UIView()
         view.backgroundColor = .white
 
         view.addSubview(collectionView)
         view.addSubview(newProductButton)
         view.addSubview(saveSearchButton)
-        
+    }
+    
+    fileprivate func setConstraints() {
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: view.topAnchor),
             collectionView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -6.0),
@@ -126,47 +186,10 @@ class MainViewController: UIViewController {
             saveSearchButton.heightAnchor.constraint(equalToConstant: 64.0)
         ])
     }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        Managers.managerProductFirestore = ProductFirestore()
-        
-        self.viewModel.delegate = self
-        self.viewModel.viewWasLoaded()
-        
-        /// Configuramos la interface y cargamos las fotos en el CollectionView
-        self.configureUI()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        newProductButton.layer.cornerRadius = newProductButton.frame.size.height / 2
-        saveSearchButton.layer.cornerRadius = saveSearchButton.frame.size.height / 2
-    }
-    
-    
-    // MARK: Functions
     
     fileprivate func configureUI() {
         /// Asignacion del UISearchController
         self.navigationItem.searchController = searchController
-    }
-    
-    
-    // MARK: User Interactions
-    
-    @objc func tapOnNewProduct(sender: UIButton!) {
-        let newProductViewModel: NewProductViewModel = NewProductViewModel()
-        let newProductViewController: NewProductViewController = NewProductViewController(viewModel: newProductViewModel)
-        newProductViewController.delegate = self
-        let navigationController: UINavigationController = UINavigationController.init(rootViewController: newProductViewController)
-        navigationController.modalPresentationStyle = .automatic
-        
-        /// Presentamos el ViewController
-        self.present(navigationController, animated: true, completion: nil)
-    }
-    
-    @objc func tapOnSaveSearch(sender: UIButton!) {
     }
 }
 
@@ -196,7 +219,7 @@ extension MainViewController: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProductCell", for: indexPath) as? ProductCell else { fatalError() }
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: ProductCell.self), for: indexPath) as? ProductCell else { fatalError() }
         
         let productViewModel: ProductCellViewModel = self.viewModel.getCellViewModel(at: indexPath)
         
@@ -232,7 +255,7 @@ extension MainViewController: MainViewModelDelegate {
     
     func filterApplied() {
         collectionView.reloadData()
-        saveSearchButton.isHidden = self.viewModel.showUpSaveSearch()
+        saveSearchButton.isHidden = self.viewModel.showUpSaveSearchButton()
     }
 }
 
@@ -250,6 +273,6 @@ extension MainViewController: FiltersViewControllerDelegate {
 
 extension MainViewController: ProductViewControllerDelegate {
     func productAdded() {
-        showAlert(title: "Info", message: "Product uploaded")
+        showAlert(title: Constants.Info, message: Constants.ProductUploaded)
     }
 }

@@ -59,6 +59,11 @@
 		18C2F7DC254D9B0E00D74E74 /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C2F7DB254D9B0E00D74E74 /* Product.swift */; };
 		18C2F7E2254EFE0400D74E74 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C2F7E1254EFE0400D74E74 /* Extensions.swift */; };
 		18C2F7E4254F5E0900D74E74 /* NewProductViewController+Input.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C2F7E3254F5E0900D74E74 /* NewProductViewController+Input.swift */; };
+		18E26C3A255FF52400A64CD9 /* SearchFirestore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E26C39255FF52400A64CD9 /* SearchFirestore.swift */; };
+		18E26C3C255FF52F00A64CD9 /* SearchFirestoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E26C3B255FF52F00A64CD9 /* SearchFirestoreManager.swift */; };
+		18E26C3E255FF82400A64CD9 /* Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E26C3D255FF82400A64CD9 /* Search.swift */; };
+		18E26C4025604B1B00A64CD9 /* UIStringAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E26C3F25604B1B00A64CD9 /* UIStringAdditions.swift */; };
+		18E26C4225604B6B00A64CD9 /* UIColorAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E26C4125604B6B00A64CD9 /* UIColorAdditions.swift */; };
 		18FE78CA255AC12E00BA0A64 /* DetailProductViewController+Source.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18FE78C9255AC12E00BA0A64 /* DetailProductViewController+Source.swift */; };
 		18FE78CC255ADB8F00BA0A64 /* ProductImagesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18FE78CB255ADB8F00BA0A64 /* ProductImagesCell.swift */; };
 		E33C6DF8F83D266FED073840 /* Pods_Wallapobre.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5865EC59FCBAD982E90D4B8 /* Pods_Wallapobre.framework */; };
@@ -131,6 +136,11 @@
 		18C2F7DB254D9B0E00D74E74 /* Product.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
 		18C2F7E1254EFE0400D74E74 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		18C2F7E3254F5E0900D74E74 /* NewProductViewController+Input.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NewProductViewController+Input.swift"; sourceTree = "<group>"; };
+		18E26C39255FF52400A64CD9 /* SearchFirestore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFirestore.swift; sourceTree = "<group>"; };
+		18E26C3B255FF52F00A64CD9 /* SearchFirestoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFirestoreManager.swift; sourceTree = "<group>"; };
+		18E26C3D255FF82400A64CD9 /* Search.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Search.swift; sourceTree = "<group>"; };
+		18E26C3F25604B1B00A64CD9 /* UIStringAdditions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIStringAdditions.swift; sourceTree = "<group>"; };
+		18E26C4125604B6B00A64CD9 /* UIColorAdditions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorAdditions.swift; sourceTree = "<group>"; };
 		18FE78C9255AC12E00BA0A64 /* DetailProductViewController+Source.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DetailProductViewController+Source.swift"; sourceTree = "<group>"; };
 		18FE78CB255ADB8F00BA0A64 /* ProductImagesCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductImagesCell.swift; sourceTree = "<group>"; };
 		A1BBCCC49968A907DAEA6061 /* Pods-Wallapobre.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Wallapobre.debug.xcconfig"; path = "Target Support Files/Pods-Wallapobre/Pods-Wallapobre.debug.xcconfig"; sourceTree = "<group>"; };
@@ -186,6 +196,7 @@
 				185B333B2555B6BB00778CE4 /* StorageFirebase */,
 				18B63DFD255C230000831053 /* DiscussionFirestore */,
 				18B63E02255C2AB500831053 /* MessageFirestore */,
+				18E26C36255FF43000A64CD9 /* SearchFirestore */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -197,6 +208,7 @@
 				1825BAEB2551B56200C3CDFA /* User.swift */,
 				18B63DF6255C08F300831053 /* Discussion.swift */,
 				18B63DF8255C09ED00831053 /* Message.swift */,
+				18E26C3D255FF82400A64CD9 /* Search.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -339,6 +351,8 @@
 			children = (
 				18B2161E254C7615008027D1 /* PinterestLayout.swift */,
 				18C2F7D1254CA6E000D74E74 /* UIFontAdditions.swift */,
+				18E26C3F25604B1B00A64CD9 /* UIStringAdditions.swift */,
+				18E26C4125604B6B00A64CD9 /* UIColorAdditions.swift */,
 				18C2F7E1254EFE0400D74E74 /* Extensions.swift */,
 			);
 			path = Common;
@@ -413,6 +427,15 @@
 				18C2F7D8254D938200D74E74 /* NewProductViewModel.swift */,
 			);
 			path = NewProduct;
+			sourceTree = "<group>";
+		};
+		18E26C36255FF43000A64CD9 /* SearchFirestore */ = {
+			isa = PBXGroup;
+			children = (
+				18E26C3B255FF52F00A64CD9 /* SearchFirestoreManager.swift */,
+				18E26C39255FF52400A64CD9 /* SearchFirestore.swift */,
+			);
+			path = SearchFirestore;
 			sourceTree = "<group>";
 		};
 		3070265EEAD97980AD23F4AF /* Frameworks */ = {
@@ -589,8 +612,10 @@
 				185B333F2555B72000778CE4 /* StorageFirebase.swift in Sources */,
 				182C9A1E2559BCB20074C9E9 /* ProductSocialNetworksCell.swift in Sources */,
 				18C2F7D9254D938200D74E74 /* NewProductViewModel.swift in Sources */,
+				18E26C4225604B6B00A64CD9 /* UIColorAdditions.swift in Sources */,
 				18B63DF9255C09ED00831053 /* Message.swift in Sources */,
 				185B33392555ADF200778CE4 /* ProductFirestore.swift in Sources */,
+				18E26C3E255FF82400A64CD9 /* Search.swift in Sources */,
 				1825BAF12551D1EA00C3CDFA /* ProfileViewController.swift in Sources */,
 				1898179E2552CD1E0088BFB2 /* LoginViewModel.swift in Sources */,
 				185B33372555ADDF00778CE4 /* ProductFirestoreManager.swift in Sources */,
@@ -604,6 +629,8 @@
 				18C2F7E2254EFE0400D74E74 /* Extensions.swift in Sources */,
 				18C2F7CD254C880E00D74E74 /* TabBarProvider.swift in Sources */,
 				18C2F7D0254CA19100D74E74 /* FiltersViewController.swift in Sources */,
+				18E26C3C255FF52F00A64CD9 /* SearchFirestoreManager.swift in Sources */,
+				18E26C4025604B1B00A64CD9 /* UIStringAdditions.swift in Sources */,
 				182C9A1525598DD50074C9E9 /* DetailProductViewModel.swift in Sources */,
 				18B63E06255C2AE300831053 /* MessageFirestoreManager.swift in Sources */,
 				1825BAF32551D23500C3CDFA /* ProfileViewModel.swift in Sources */,
@@ -621,6 +648,7 @@
 				1851CE5C255805C300435F78 /* MainViewController+SearchBar.swift in Sources */,
 				18FE78CA255AC12E00BA0A64 /* DetailProductViewController+Source.swift in Sources */,
 				18C2F7DC254D9B0E00D74E74 /* Product.swift in Sources */,
+				18E26C3A255FF52400A64CD9 /* SearchFirestore.swift in Sources */,
 				18B63E08255C3F2A00831053 /* ChatViewModel.swift in Sources */,
 				1825BAEC2551B56200C3CDFA /* User.swift in Sources */,
 				189817A12552F97E0088BFB2 /* UserLocation.swift in Sources */,

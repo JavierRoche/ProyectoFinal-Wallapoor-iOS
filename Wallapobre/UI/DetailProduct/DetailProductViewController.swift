@@ -34,7 +34,7 @@ class DetailProductViewController: UIViewController {
     
     lazy var chatButton: UIButton = {
         let button: UIButton = UIButton(type: UIButton.ButtonType.system)
-        button.setTitle("Chat", for: .normal)
+        button.setTitle(Constants.Chat, for: .normal)
         button.tintColor = UIColor.black
         button.backgroundColor = UIColor.cyan
         button.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapOnChat)))
@@ -73,14 +73,14 @@ class DetailProductViewController: UIViewController {
         Managers.managerUserFirestore = UserFirestore()
         self.viewModel.getSellerData(viewModel: viewModel, onSuccess: { user in
             guard let _ = user else {
-                self.showAlert(title: "Error", message: "Missing seller")
+                self.showAlert(title: Constants.Error, message: Constants.MissingSeller)
                 self.dismiss(animated: true, completion: nil)
                 return
             }
             self.tableView.reloadData()
             
         }) { (error) in
-            self.showAlert(title: "Error", message: error.localizedDescription)
+            self.showAlert(title: Constants.Error, message: error.localizedDescription)
             self.dismiss(animated: true, completion: nil)
         }
     }
@@ -117,7 +117,7 @@ class DetailProductViewController: UIViewController {
         view.addSubview(chatButton)
         
         /// Boton superior para salir del chat
-        let leftBarButtonItem: UIBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "arrow.left"), style: .plain, target: self, action: #selector(backButtonTapped))
+        let leftBarButtonItem: UIBarButtonItem = UIBarButtonItem(image: UIImage(systemName: Constants.arrowIcon), style: .plain, target: self, action: #selector(backButtonTapped))
         leftBarButtonItem.tintColor = .black
         navigationItem.leftBarButtonItem = leftBarButtonItem
         navigationController?.navigationBar.alpha = 0.4

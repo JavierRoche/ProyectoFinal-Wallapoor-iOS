@@ -10,7 +10,6 @@ import Foundation
 import FirebaseFirestore
 
 public class Discussion {
-    
     var discussionId: String
     var productId: String
     var seller: String
@@ -33,10 +32,10 @@ public class Discussion {
     class func mapper(document: QueryDocumentSnapshot) -> Discussion {
         let json: [String : Any] = document.data()
         /// Extraemos los valores; como puede venir vacio indicamos un valor por defecto
-        let discussionId = json["discussionid"] as? String ?? ""
-        let productId = json["productid"] as? String ?? ""
-        let seller = json["seller"] as? String ?? ""
-        let buyer = json["buyer"] as? String ?? ""
+        let discussionId = json["discussionid"] as? String ?? String()
+        let productId = json["productid"] as? String ?? String()
+        let seller = json["seller"] as? String ?? String()
+        let buyer = json["buyer"] as? String ?? String()
         
         /// Creamos y devolvemos el objeto Discussion
         return Discussion.init(discussionId: discussionId, productId: productId, seller: seller, buyer: buyer)

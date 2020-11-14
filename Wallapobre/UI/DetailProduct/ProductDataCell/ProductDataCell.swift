@@ -14,7 +14,6 @@ class ProductDataCell: UITableViewCell {
         label.font = UIFont.fontStyle28Bold
         label.textColor = UIColor.black
         label.numberOfLines = 1
-        label.text = "Pricelabel"
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -24,7 +23,6 @@ class ProductDataCell: UITableViewCell {
         label.font = UIFont.fontStyle22SemiBold
         label.textColor = UIColor.black
         label.numberOfLines = 0
-        label.text = "Titlelabel"
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -34,7 +32,6 @@ class ProductDataCell: UITableViewCell {
         label.font = UIFont.fontStyle18Regular
         label.textColor = UIColor.black
         label.numberOfLines = 0
-        label.text = "Descriptionlabel"
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
