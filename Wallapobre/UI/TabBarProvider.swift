@@ -8,15 +8,17 @@
 
 import UIKit
 
-class TabBarProvider {
-    lazy var tabBar: UITabBarController = {
+class TabBarProvider: UITabBarController {
+    /*lazy var tabBar: UITabBarController = {
         let tabBar: UITabBarController = UITabBarController()
         return tabBar
-    }()
+    }()*/
     
-    static var navigation: UINavigationController?
     
-    init() {
+    var oneTime: Bool = true
+    /*init() {
+        super.init()
+        
         let mainViewModel = MainViewModel()
         let mainViewController: MainViewController = MainViewController(viewModel: mainViewModel)
         let profileViewModel = ProfileViewModel()
@@ -30,14 +32,84 @@ class TabBarProvider {
         
         //TabBarProvider.navigation = UINavigationController.init(rootViewController: mainViewController)
 
-        tabBar.viewControllers = [mainNavigationController, profileNavigationController]
-        tabBar.tabBar.barStyle = .default
-        tabBar.tabBar.isTranslucent = false
-        tabBar.tabBar.tintColor = .black
-    }
+        self.viewControllers = [mainNavigationController, profileNavigationController]
+        self.tabBar.barStyle = .default
+        self.tabBar.isTranslucent = false
+        self.tabBar.tintColor = .black
+    }*/
     
     public func activeTab() -> UITabBarController {
-        return tabBar
+        return self
+    }
+    
+    func checkUserLogged(onSuccess: @escaping (User?) -> Void, onError: ErrorClosure?) {
+        /// Chequea usuario logueado en UserAuthoritation
+        Managers.managerUserAuthoritation!.isLogged(onSuccess: { [weak self] user in
+            if user != nil && self!.oneTime {
+                self?.userLoggedIn()
+                onSuccess(user)
+                
+            } else if user == nil && self!.oneTime {
+                self?.userNotLoggedIn()
+                onSuccess(user)
+            }
+            self?.oneTime = false
+            
+        }) { error in
+            if let retError = onError {
+                retError(error)
+            }
+        }
+    }
+    
+    func getUserLogged(user: User, onSuccess: @escaping (User?) -> Void, onError: ErrorClosure?) {
+        Managers.managerUserFirestore!.selectUser(userId: user.sender.senderId, onSuccess: { user in
+            /// El usuario existe en Firestore BD
+            onSuccess(user)
+            //SceneDelegate.user = user!
+            
+        }) { error in
+            /// Ha habido error raro
+            if let retError = onError {
+                retError(error)
+            }
+        }
+    }
+    
+    func closeApp(error: String) {
+        let alert = UIAlertController(title: Constants.Error, message: error, preferredStyle: .alert)
+        alert.showAlert()
+        /// Abortamos la App pues hay algun problema en Firestore
+        UIControl().sendAction(#selector(NSXPCConnection.suspend), to: UIApplication.shared, for: nil)
+    }
+    
+    fileprivate func userLoggedIn() {
+        let mainViewModel = MainViewModel()
+        let mainViewController: MainViewController = MainViewController(viewModel: mainViewModel)
+        let profileViewModel = ProfileViewModel()
+        let profileViewController: ProfileViewController = ProfileViewController(viewModel: profileViewModel)
+        
+        mainViewController.tabBarItem = UITabBarItem.init(title: Constants.Accept, image: UIImage.init(systemName: Constants.starIcon), tag: 0)
+        profileViewController.tabBarItem = UITabBarItem.init(title: Constants.Perfil, image: UIImage.init(systemName: Constants.starIcon), tag: 1)
+
+        let mainNavigationController: UINavigationController = UINavigationController.init(rootViewController: mainViewController)
+        let profileNavigationController: UINavigationController = UINavigationController.init(rootViewController: profileViewController)
+
+        self.viewControllers = [mainNavigationController, profileNavigationController]
+        self.tabBar.barStyle = .default
+        self.tabBar.isTranslucent = false
+        self.tabBar.tintColor = .black
+    }
+    
+    fileprivate func userNotLoggedIn() {
+        let loginViewController: LoginViewController = LoginViewController()
+        let navigationController: UINavigationController = UINavigationController.init(rootViewController: loginViewController)
+        navigationController.navigationBar.isHidden = true
+        
+        self.viewControllers = [navigationController]
+        self.tabBar.barStyle = .default
+        self.tabBar.isTranslucent = false
+        self.tabBar.tintColor = .black
     }
 }
 

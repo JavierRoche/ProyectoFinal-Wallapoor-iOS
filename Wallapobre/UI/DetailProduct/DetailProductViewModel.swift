@@ -35,9 +35,6 @@ class DetailProductViewModel {
             self.seller = user
             onSuccess(user)
             
-        }, onNonexistent: {
-            onSuccess(nil)
-            
         }) { error in
             if let retError = onError {
                 retError(error)

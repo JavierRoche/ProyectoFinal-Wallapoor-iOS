@@ -174,7 +174,7 @@ class LoginViewController: UIViewController {
         viewModel.askForLocationPermissions()
         
         /// Obtencion de un usuario logueado
-        viewModel.checkUserLogged(onSuccess: { [weak self] user in
+        /*viewModel.checkUserLogged(onSuccess: { [weak self] user in
             if let user = user {
                 self?.viewModel.getUserLogged(user: user, onSuccess: { user in
                     self?.viewModel.saveUserLogged(user: user)
@@ -187,7 +187,7 @@ class LoginViewController: UIViewController {
             
         }) { error in
             self.showAlert(title: Constants.Error, message: error.localizedDescription)
-        }
+        }*/
     }
     
     override func viewDidAppear(_ animated: Bool) {

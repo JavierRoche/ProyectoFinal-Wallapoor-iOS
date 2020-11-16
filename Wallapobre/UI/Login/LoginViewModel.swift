@@ -38,19 +38,19 @@ class LoginViewModel {
     }
     
     func getUserLogged(user: User, onSuccess: @escaping (User) -> Void, onError: ErrorClosure?) {
-        Managers.managerUserFirestore!.selectUser(userId: user.sender.senderId, onSuccess: { [weak self] user in
-            /// El usuario existe en Firestore BD
-            self?.user = user
-            onSuccess(self?.user! ?? User.init(id: String(), email: String(), password: String()))
-            
-        }, onNonexistent: {
-            /// El usuario no existe en Firestore BD. Completamos datos e insertamos
-            self.user = user
-            self.user?.latitude = Managers.managerUserLocation!.currentLocation!.coordinate.latitude
-            self.user?.longitude = Managers.managerUserLocation!.currentLocation!.coordinate.longitude
-            self.insertUser(user: self.user!)
-            
-            onSuccess(self.user!)
+        Managers.managerUserFirestore!.selectUser(userId: user.sender.senderId, onSuccess: { [weak self] firestoreUser in
+            if let user = firestoreUser {
+                /// El usuario existe en Firestore BD
+                self?.user = user
+                onSuccess(user)
+                
+            } else {
+                /// El usuario no existe en Firestore BD. Completamos datos e insertamos
+                self?.user = user
+                self?.user?.latitude = Managers.managerUserLocation!.currentLocation!.coordinate.latitude
+                self?.user?.longitude = Managers.managerUserLocation!.currentLocation!.coordinate.longitude
+                self?.insertUser(user: self!.user!)
+            }
             
         }) { error in
             /// Ha habido error raro
@@ -99,8 +99,6 @@ class LoginViewModel {
     }
     
     
-    
-    
     // MARK: Private Functions
     
     fileprivate func insertUser(user: User) {
@@ -110,5 +108,4 @@ class LoginViewModel {
             print("[]\(error.localizedDescription)")
         }
     }
-    
 }

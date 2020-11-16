@@ -8,7 +8,6 @@
 
 import UIKit
 import ImageSlideshow
-import Social
 
 class DetailProductViewController: UIViewController {
     lazy var tableView: UITableView = {

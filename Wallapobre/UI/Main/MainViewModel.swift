@@ -176,9 +176,6 @@ class MainViewModel {
         Managers.managerUserFirestore!.selectUser(userId: product.seller, onSuccess: { user in
             onSuccess(user)
             
-        }, onNonexistent: {
-            onSuccess(nil)
-            
         }) { error in
             if let retError = onError {
                 retError(error)
