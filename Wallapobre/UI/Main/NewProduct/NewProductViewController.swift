@@ -202,10 +202,9 @@ class NewProductViewController: UIViewController {
     weak var delegate: ProductViewControllerDelegate?
     /// Objeto con el que acceder al manager de Productos
     let viewModel: NewProductViewModel
-    /// Objetos para almacenar datos de pantalla
-    var categories = [Category.motor, Category.textile, Category.homes, Category.informatic, Category.sports, Category.services]
+    
     private var imageHolderPressed = UIImageView()
-    var imagesList: [UIImage] = [UIImage]()
+    private var imagesList: [UIImage] = [UIImage]()
     
     
     // MARK: Inits
@@ -245,7 +244,7 @@ class NewProductViewController: UIViewController {
     }
     
     
-    // MARK: User Interactors
+    // MARK: User Interactions
     
     @objc private func tapOnCancel() {
         /// Eliminamos el controlador
@@ -302,108 +301,6 @@ class NewProductViewController: UIViewController {
     
     // MARK: Private Functions
     
-    fileprivate func setViewsHierarchy() {
-        view = UIView()
-        
-        view.addSubview(backgroundView)
-        view.addSubview(titleLabel)
-        view.addSubview(titleTextField)
-        view.addSubview(categoryLabel)
-        view.addSubview(categoryTextField)
-        view.addSubview(descriptionLabel)
-        view.addSubview(descriptionTextView)
-        view.addSubview(priceLabel)
-        view.addSubview(priceTextField)
-        view.addSubview(firstStack)
-        view.addSubview(secondStack)
-        
-        firstStack.addArrangedSubview(photo1Image)
-        firstStack.addArrangedSubview(photo2Image)
-        secondStack.addArrangedSubview(photo3Image)
-        secondStack.addArrangedSubview(photo4Image)
-    }
-    
-    fileprivate func setConstraints() {
-        NSLayoutConstraint.activate([
-            backgroundView.topAnchor.constraint(equalTo: view.topAnchor),
-            backgroundView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            backgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            backgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-        ])
-        
-        NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: backgroundView.topAnchor, constant: 90.0),
-            titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32.0)
-        ])
-        
-        NSLayoutConstraint.activate([
-            titleTextField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8.0),
-            titleTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32.0)
-        ])
-        
-        NSLayoutConstraint.activate([
-            categoryLabel.topAnchor.constraint(equalTo: titleTextField.bottomAnchor, constant: 32.0),
-            categoryLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32.0)
-        ])
-        
-        NSLayoutConstraint.activate([
-            categoryTextField.topAnchor.constraint(equalTo: categoryLabel.bottomAnchor, constant: 8.0),
-            categoryTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32.0)
-        ])
-        
-        NSLayoutConstraint.activate([
-            descriptionLabel.topAnchor.constraint(equalTo: categoryTextField.bottomAnchor, constant: 32.0),
-            descriptionLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32.0)
-        ])
-        
-        NSLayoutConstraint.activate([
-            descriptionTextView.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 8.0),
-            descriptionTextView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32.0),
-            descriptionTextView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -64.0),
-            descriptionTextView.heightAnchor.constraint(equalToConstant: 130)
-        ])
-        
-        NSLayoutConstraint.activate([
-            priceLabel.topAnchor.constraint(equalTo: descriptionTextView.bottomAnchor, constant: 32.0),
-            priceLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32.0)
-        ])
-        
-        NSLayoutConstraint.activate([
-            priceTextField.topAnchor.constraint(equalTo: priceLabel.bottomAnchor, constant: 8.0),
-            priceTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32.0)
-        ])
-        
-        NSLayoutConstraint.activate([
-            firstStack.topAnchor.constraint(equalTo: priceTextField.bottomAnchor, constant: 32.0),
-            firstStack.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-        ])
-        
-        NSLayoutConstraint.activate([
-            secondStack.topAnchor.constraint(equalTo: firstStack.bottomAnchor, constant: 32.0),
-            secondStack.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-        ])
-        
-        NSLayoutConstraint.activate([
-            photo1Image.widthAnchor.constraint(equalToConstant: 100.0),
-            photo1Image.heightAnchor.constraint(equalToConstant: 100.0)
-        ])
-        
-        NSLayoutConstraint.activate([
-            photo2Image.widthAnchor.constraint(equalToConstant: 100.0),
-            photo2Image.heightAnchor.constraint(equalToConstant: 100.0)
-        ])
-        
-        NSLayoutConstraint.activate([
-            photo3Image.widthAnchor.constraint(equalToConstant: 100.0),
-            photo3Image.heightAnchor.constraint(equalToConstant: 100.0)
-        ])
-        
-        NSLayoutConstraint.activate([
-            photo4Image.widthAnchor.constraint(equalToConstant: 100.0),
-            photo4Image.heightAnchor.constraint(equalToConstant: 100.0)
-        ])
-    }
-    
     fileprivate func configureUI() {
         /// Creacion del boton de cancelar y publicar
         let cancelLeftBarButtonItem: UIBarButtonItem = UIBarButtonItem(title: Constants.Cancel, style: .plain, target: self, action: #selector(tapOnCancel))
@@ -411,9 +308,9 @@ class NewProductViewController: UIViewController {
         navigationItem.leftBarButtonItem = cancelLeftBarButtonItem
         navigationItem.leftBarButtonItem?.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.fontStyle17Regular], for: .normal)
         
-        let postLeftBarButtonItem: UIBarButtonItem = UIBarButtonItem(title: Constants.Upload, style: .plain, target: self, action: #selector(tapOnUpload))
+        let postRightBarButtonItem: UIBarButtonItem = UIBarButtonItem(title: Constants.Upload, style: .plain, target: self, action: #selector(tapOnUpload))
         //postLeftBarButtonItem.tintColor = UIColor.tangerine
-        navigationItem.rightBarButtonItem = postLeftBarButtonItem
+        navigationItem.rightBarButtonItem = postRightBarButtonItem
         navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.fontStyle17SemiBold], for: .normal)
         
         /// El interespaciado de los stack hay que definirlo una vez el objeto creado
@@ -463,7 +360,7 @@ class NewProductViewController: UIViewController {
                                                 price: Int((self?.priceTextField.text!)!)!, photos: urlList)
             /// Guardamos el producto en Firestore
             self?.viewModel.insertProduct(product: product, onSuccess: {
-                /// Paramos la animacion y avisamoa la controlador para informar al usuario
+                /// Paramos la animacion y avisamos al controlador para informar al usuario
                 self?.activityIndicator.stopAnimating()
                 self?.delegate?.productAdded()
                 

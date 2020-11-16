@@ -68,23 +68,23 @@ class ProductMapCell: UITableViewCell {
     
     fileprivate func setConstraints() {
         NSLayoutConstraint.activate([
-            iconImage.topAnchor.constraint(equalTo: self.topAnchor, constant: 34.0),
-            iconImage.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16.0),
+            iconImage.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 34.0),
+            iconImage.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 16.0),
             iconImage.widthAnchor.constraint(equalToConstant: 16.0),
             iconImage.heightAnchor.constraint(equalToConstant: 16.0)
         ])
         
         NSLayoutConstraint.activate([
-            locationLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 32.0),
+            locationLabel.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 32.0),
             locationLabel.leadingAnchor.constraint(equalTo: iconImage.trailingAnchor, constant: 8.0),
-            locationLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16.0)
+            locationLabel.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -16.0)
         ])
         
         NSLayoutConstraint.activate([
-            mapView.topAnchor.constraint(equalTo: locationLabel.bottomAnchor, constant: 16.0),
-            mapView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -32.0),
-            mapView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16.0),
-            mapView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16.0),
+            mapView.topAnchor.constraint(equalTo: iconImage.bottomAnchor, constant: 16.0),
+            mapView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -32.0),
+            mapView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 16.0),
+            mapView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -16.0),
             mapView.heightAnchor.constraint(equalToConstant: 200.0)
         ])
     }

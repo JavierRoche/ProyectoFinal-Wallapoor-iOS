@@ -8,6 +8,7 @@
 
 import UIKit
 import ImageSlideshow
+import Social
 
 class DetailProductViewController: UIViewController {
     lazy var tableView: UITableView = {
@@ -20,6 +21,7 @@ class DetailProductViewController: UIViewController {
         table.dataSource = self
         table.delegate = self
         table.estimatedRowHeight = 30
+        table.backgroundColor = UIColor.white
         table.rowHeight = UITableView.automaticDimension
         table.translatesAutoresizingMaskIntoConstraints = false
         return table
@@ -28,6 +30,8 @@ class DetailProductViewController: UIViewController {
     lazy var footerView: UIView = {
         let view: UIView = UIView()
         view.backgroundColor = UIColor.white
+        view.layer.borderColor = CGColor.init(srgbRed: 196/255.0, green: 196/255.0, blue: 196/255.0, alpha: 0.75)
+        view.layer.borderWidth = 1
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -92,7 +96,7 @@ class DetailProductViewController: UIViewController {
     
     // MARK: User Interactors
     
-    @objc private func backButtonTapped() {
+    @objc func backButtonTapped() {
         dismiss(animated: true, completion: nil)
     }
     
@@ -104,47 +108,6 @@ class DetailProductViewController: UIViewController {
         let navigationController: UINavigationController = UINavigationController.init(rootViewController: chatViewController)
         navigationController.modalPresentationStyle = .fullScreen
         self.present(navigationController, animated: true, completion: nil)
-    }
-    
-    
-    // MARK: Private Functions
-    
-    fileprivate func setViewsHierarchy() {
-        view = UIView()
-        
-        view.addSubview(tableView)
-        view.addSubview(footerView)
-        view.addSubview(chatButton)
-        
-        /// Boton superior para salir del chat
-        let leftBarButtonItem: UIBarButtonItem = UIBarButtonItem(image: UIImage(systemName: Constants.arrowIcon), style: .plain, target: self, action: #selector(backButtonTapped))
-        leftBarButtonItem.tintColor = .black
-        navigationItem.leftBarButtonItem = leftBarButtonItem
-        navigationController?.navigationBar.alpha = 0.4
-    }
-    
-    fileprivate func setConstraints() {
-        NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.topAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-        ])
-        
-        NSLayoutConstraint.activate([
-            //footerView.topAnchor.constraint(equalTo: tableView.bottomAnchor),
-            footerView.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor),
-            footerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            footerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            footerView.heightAnchor.constraint(equalToConstant: 50.0)
-        ])
-        
-        NSLayoutConstraint.activate([
-            chatButton.topAnchor.constraint(equalTo: footerView.topAnchor, constant: 16.0),
-            chatButton.bottomAnchor.constraint(equalTo: footerView.bottomAnchor, constant: -16.0),
-            chatButton.leadingAnchor.constraint(equalTo: footerView.leadingAnchor, constant: 16.0),
-            chatButton.trailingAnchor.constraint(equalTo: footerView.trailingAnchor, constant: -16.0)
-        ])
     }
 }
 

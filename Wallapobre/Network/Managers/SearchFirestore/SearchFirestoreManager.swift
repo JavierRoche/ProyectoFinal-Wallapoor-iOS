@@ -9,6 +9,6 @@
 import Foundation
 
 protocol SearchFirestoreManager {
-    func selectSearchs(search: Search, onSuccess: @escaping ([Search]) -> Void, onNonexistent: @escaping () -> Void, onError: ErrorClosure?)
+    func selectSearchs(onSuccess: @escaping ([Search]) -> Void, onNonexistent: @escaping () -> Void, onError: ErrorClosure?)
     func insertSearch(search: Search, onSuccess: @escaping () -> Void, onError: ErrorClosure?)
 }

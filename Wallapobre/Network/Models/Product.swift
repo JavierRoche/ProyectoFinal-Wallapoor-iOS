@@ -9,15 +9,15 @@
 import FirebaseFirestore
 
 class Product {
-    public var productId: String
-    public var seller: String
-    public var state: ProductState
-    public var title: String
-    public var category: Category
-    public var description: String
-    public var price: Int
-    public var sentDate: Date
-    public var photos: [String]
+    var productId: String
+    var seller: String
+    var state: ProductState
+    var title: String
+    var category: Category
+    var description: String
+    var price: Int
+    var sentDate: Date
+    var photos: [String]
     
     
     // MARK: Inits
@@ -47,7 +47,7 @@ class Product {
                      category: Category,
                      description: String,
                      price: Int,
-                     photos: [String]){
+                     photos: [String]) {
         self.init(productId: UUID().uuidString,
                   seller: seller,
                   state: ProductState.selling,

@@ -28,12 +28,34 @@ class ProductFirestore: ProductFirestoreManager {
                     retError(error)
                 }
                 
+                if let snapshot = snapshot {
+                    /// Recorremos los documents de Firestore mapeandolos a una lista de Product
+                    let products: [Product] = snapshot.documents
+                        .compactMap({ Product.mapper(document: $0) })
+                    onSuccess(products)
+                }
+        }
+    }
+    
+    public func selectProductBySeller(userId: String, onSuccess: @escaping ([Product]) -> Void, onError: ErrorClosure?) {
+        /// Realizamos la SELECT a Firebase.products
+        self.db
+            /// Filtramos los productos de este usuario
+            .whereField("seller", isEqualTo: userId)
+            /// Ordenamos los productos mas actuales primero
+            .order(by: "sentdate", descending: false)
+            /// No necesitamos listener y usamos .getDocuments
+            .getDocuments { (snapshot, error) in
+                /// Raro que devuelva Firestore un error aqui
+                if let error = error, let retError = onError {
+                    retError(error)
+                }
                 
                 if let snapshot = snapshot {
                     /// Recorremos los documents de Firestore mapeandolos a una lista de Product
-                    let productList: [Product] = snapshot.documents
+                    let products: [Product] = snapshot.documents
                         .compactMap({ Product.mapper(document: $0) })
-                    onSuccess(productList)
+                    onSuccess(products)
                 }
         }
     }

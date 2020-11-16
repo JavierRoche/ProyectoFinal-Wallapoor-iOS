@@ -16,7 +16,6 @@ enum Constants {
     static let Productos: String = "Productos"
     static let starIcon: String = "star.fill"
     static let cameraIcon: String = "camera.fill"
-    
     static let Perfil: String = "Perfil"
     static let EMAIL: String = "EMAIL"
     static let TypeAnEmail: String = "Escribe un email"
@@ -47,12 +46,10 @@ enum Constants {
     static let CATEGORIES: String = "CATEGORÍAS"
     static let number50: String = "50"
     static let TITLE: String = "TITLE"
-    
     static let NewProduct: String = "Producto nuevo"
     static let CATEGORY: String = "CATEGORÍA"
     static let SelectCategory: String = "Selecciona categoría"
     static let DESCRIPTION: String = "DESCRIPCIÓN"
-    
     static let PRICE: String = "PRECIO"
     static let price0000: String = "00.00"
     static let PriceHasToBe: String = "Price has to be a number"
@@ -63,7 +60,8 @@ enum Constants {
     static let locationIcon: String = "location.circle"
     static let faceIcon: String = "faceid"
     static let Logout: String = "Logout"
-    static let UserLogout: String = "User log out"
+    static let UserLogout: String = "User logout"
+    static let GoingToLogout: String = "Going to logout"
     static let fatalErrorAuth: String = "Configure Wallapoor authorization from options"
     static let fatalErrorNeedLoc: String = "Wallapoop needs to get the locations to work"
     static let usersFirebase: String = "users"
@@ -72,6 +70,11 @@ enum Constants {
     static let discussionsFirebase: String = "discussions"
     static let messagesFirebase: String = "messages"
     static let searchesFirebase: String = "searches"
+    static let Searches: String = "Searches"
+    static let Selling: String = "Selling"
+    static let Sold: String = "Sold"
+    static let Edit: String = "Edit"
+    static let Save: String = "Save"
     
     
     

@@ -58,9 +58,9 @@ class ProductSellerCell: UITableViewCell {
     
     fileprivate func setConstraints() {
         NSLayoutConstraint.activate([
-            avatarImageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 32.0),
-            avatarImageView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -32.0),
-            avatarImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16.0),
+            avatarImageView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 32.0),
+            avatarImageView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -32.0),
+            avatarImageView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 16.0),
             avatarImageView.widthAnchor.constraint(equalToConstant: 48.0),
             avatarImageView.heightAnchor.constraint(equalToConstant: 48.0)
         ])

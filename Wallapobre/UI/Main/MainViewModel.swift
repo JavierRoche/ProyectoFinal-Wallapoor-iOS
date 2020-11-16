@@ -29,7 +29,7 @@ class MainViewModel {
     // MARK: Public Functions
     
     func viewWasLoaded() {
-        //var count: Int = 0
+        Managers.managerProductFirestore = ProductFirestore()
         
         Managers.managerProductFirestore!.selectProducts(onSuccess: { [weak self] products in
             /// Habria que aplicar antes el filtro antes de mapear, pero todas las funciones del modelo funcionan con ProductCellViewModel asi que...
@@ -196,8 +196,9 @@ class MainViewModel {
         
         /// Avisamos al controlador de que el modelo de datos se ha creado
         if initialSituation {
-            self.delegate?.productCellViewModelsCreated()
             self.originalFilter = filter
+            self.delegate?.productCellViewModelsCreated()
+            
         } else {
             self.delegate?.filterApplied()
         }

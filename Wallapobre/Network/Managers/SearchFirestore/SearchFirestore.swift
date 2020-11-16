@@ -13,7 +13,7 @@ class SearchFirestore: SearchFirestoreManager {
     /// Instancia para acceder al nodo principal de la DB de Firestore
     var db = Firestore.firestore().collection(Constants.searchesFirebase)
     
-    func selectSearchs(search: Search, onSuccess: @escaping ([Search]) -> Void, onNonexistent: @escaping () -> Void, onError: ErrorClosure?) {
+    func selectSearchs(onSuccess: @escaping ([Search]) -> Void, onNonexistent: @escaping () -> Void, onError: ErrorClosure?) {
         
         /// Realizamos la SELECT a Firebase.searchs
         self.db

@@ -63,10 +63,10 @@ class ProductImagesCell: UITableViewCell {
     
     fileprivate func setConstraints() {
         NSLayoutConstraint.activate([
-            imageSlide.topAnchor.constraint(equalTo: self.topAnchor),
-            imageSlide.bottomAnchor.constraint(equalTo: self.bottomAnchor),
-            imageSlide.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            imageSlide.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            imageSlide.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
+            imageSlide.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor),
+            imageSlide.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor),
+            imageSlide.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor),
             imageSlide.heightAnchor.constraint(equalToConstant: 400.0)
         ])
     }

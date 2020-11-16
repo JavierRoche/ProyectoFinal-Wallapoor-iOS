@@ -70,24 +70,22 @@ class ProductDataCell: UITableViewCell {
     
     fileprivate func setConstraints() {
         NSLayoutConstraint.activate([
-            priceLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 16.0),
-            //priceLabel.bottomAnchor.constraint(equalTo: titleLabel.topAnchor, constant: -16.0),
-            priceLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16.0),
-            priceLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16.0)
+            priceLabel.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 16.0),
+            priceLabel.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 16.0),
+            priceLabel.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -16.0)
         ])
         
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: priceLabel.bottomAnchor, constant: 16.0),
-            //titleLabel.bottomAnchor.constraint(equalTo: descriptionLabel.topAnchor, constant: -16.0),
-            titleLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16.0),
-            titleLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16.0)
+            titleLabel.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 16.0),
+            titleLabel.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -16.0)
         ])
         
         NSLayoutConstraint.activate([
             descriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 16.0),
-            descriptionLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -32.0),
-            descriptionLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16.0),
-            descriptionLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16.0)
+            descriptionLabel.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -32.0),
+            descriptionLabel.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 16.0),
+            descriptionLabel.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -16.0)
         ])
     }
 }

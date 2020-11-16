@@ -9,11 +9,23 @@
 import UIKit
 
 class NewProductViewModel {
+    /// Objetos para almacenar datos de pantalla
+    private let categories = [Category.motor, Category.textile, Category.homes, Category.informatic, Category.sports, Category.services]
+    
     var categoryPicked: Category?
+    
     
     // MARK: Public Functions
     
-    public func uploadImages(images: [UIImage], onSuccess: @escaping (_ urlList: [String]) -> Void, onError: ErrorClosure?) {
+    func numberOfCategories() -> Int {
+        return categories.count
+    }
+    
+    func getCategoryViewModel(at row: Int) -> String {
+        return categories[row].name
+    }
+    
+    func uploadImages(images: [UIImage], onSuccess: @escaping (_ urlList: [String]) -> Void, onError: ErrorClosure?) {
         var urlList: [String] = [String]()
         var count: Int = 0
         

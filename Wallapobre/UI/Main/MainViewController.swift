@@ -26,7 +26,7 @@ class MainViewController: UIViewController {
     
     lazy var collectionView: UICollectionView = {
         let collection = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
-        collection.backgroundColor = UIColor.white
+        collection.backgroundColor = UIColor.gray
         collection.dataSource = self
         collection.delegate = self
         collection.register(ProductCell.self, forCellWithReuseIdentifier: String(describing: ProductCell.self))
@@ -102,14 +102,19 @@ class MainViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        Managers.managerProductFirestore = ProductFirestore()
         
+        /// Iniciamos la animacion de actividad previa a la carga inicial
+        self.activityIndicator.center = self.view.center
+        self.activityIndicator.startAnimating()
+        self.view.addSubview(self.activityIndicator)
+        self.view.isUserInteractionEnabled = false
+        
+        /// Damos al modelo via libre para cargarse
         self.viewModel.delegate = self
         self.viewModel.viewWasLoaded()
         
-        /// Configuramos la interface y cargamos las fotos en el CollectionView
-        self.configureUI()
+        /// Asignacion del UISearchController
+        self.navigationItem.searchController = searchController
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -136,7 +141,7 @@ class MainViewController: UIViewController {
             /// Nos aseguramos de que el usuario ha introducido un nombre
             guard let text = inputText else { return }
             /// Creamos la Search actual
-            let actualSearch: Search = Search.init(title: text, filter: self!.viewModel.getActualFilter())
+            let actualSearch: Search = Search.init(searcher: Managers.managerUserLocation!.getUserLogged().sender.senderId, title: text, filter: self!.viewModel.getActualFilter())
             
             /// Guardamos el producto en Firestore
             self?.viewModel.insertSearch(search: actualSearch, onSuccess: {
@@ -148,48 +153,6 @@ class MainViewController: UIViewController {
                 Managers.managerSearchFirestore = nil
             })
         }
-    }
-    
-    
-    // MARK: Private Functions
-    
-    fileprivate func setViewsHierarchy() {
-        view = UIView()
-        view.backgroundColor = .white
-
-        view.addSubview(collectionView)
-        view.addSubview(newProductButton)
-        view.addSubview(saveSearchButton)
-    }
-    
-    fileprivate func setConstraints() {
-        NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: view.topAnchor),
-            collectionView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -6.0),
-            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            collectionView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 6.0)
-        ])
-        
-        NSLayoutConstraint.activate([
-            newProductButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            newProductButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20.0),
-            //newProductButton.trailingAnchor.constraint(equalTo: saveSearchButton.leadingAnchor, constant: 32.0),
-            newProductButton.widthAnchor.constraint(equalToConstant: 64.0),
-            newProductButton.heightAnchor.constraint(equalToConstant: 64.0)
-        ])
-        
-        NSLayoutConstraint.activate([
-            //saveSearchButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            saveSearchButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20.0),
-            saveSearchButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16.0),
-            saveSearchButton.widthAnchor.constraint(equalToConstant: 64.0),
-            saveSearchButton.heightAnchor.constraint(equalToConstant: 64.0)
-        ])
-    }
-    
-    fileprivate func configureUI() {
-        /// Asignacion del UISearchController
-        self.navigationItem.searchController = searchController
     }
 }
 
@@ -246,15 +209,23 @@ extension MainViewController: PinterestLayoutDelegate {
 }
 
 
-// MARK: ViewModel Delegate
+// MARK: MainViewModel Delegate
 
 extension MainViewController: MainViewModelDelegate {
     func productCellViewModelsCreated() {
+        /// Paramos el indicador de actividad y recargamos el collection
+        activityIndicator.stopAnimating()
+        self.view.isUserInteractionEnabled = true
         collectionView.reloadData()
     }
     
     func filterApplied() {
+        /// Paramos el indicador de actividad y recargamos el collection
+        activityIndicator.stopAnimating()
+        self.view.isUserInteractionEnabled = true
         collectionView.reloadData()
+        
+        /// Ofrecemos guardar la busquedea tras un filtrado
         saveSearchButton.isHidden = self.viewModel.showUpSaveSearchButton()
     }
 }

@@ -34,6 +34,12 @@
 		1898179E2552CD1E0088BFB2 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1898179D2552CD1E0088BFB2 /* LoginViewModel.swift */; };
 		189817A12552F97E0088BFB2 /* UserLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189817A02552F97E0088BFB2 /* UserLocation.swift */; };
 		189817A325531BE80088BFB2 /* Managers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189817A225531BE80088BFB2 /* Managers.swift */; };
+		18A513EC2561AF9300387355 /* LoginViewController+Constraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A513EB2561AF9300387355 /* LoginViewController+Constraints.swift */; };
+		18A513EE2561AFDB00387355 /* MainViewController+Constraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A513ED2561AFDB00387355 /* MainViewController+Constraints.swift */; };
+		18A513F02561B21D00387355 /* FiltersViewController+Constraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A513EF2561B21D00387355 /* FiltersViewController+Constraints.swift */; };
+		18A513F22561B27F00387355 /* NewProductViewController+Constraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A513F12561B27F00387355 /* NewProductViewController+Constraints.swift */; };
+		18A513F42561B32B00387355 /* DetailProductViewController+Constraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A513F32561B32B00387355 /* DetailProductViewController+Constraints.swift */; };
+		18A513F62561B3BE00387355 /* ProfileViewController+Constraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A513F52561B3BE00387355 /* ProfileViewController+Constraints.swift */; };
 		18B215FB254C75C6008027D1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B215FA254C75C6008027D1 /* AppDelegate.swift */; };
 		18B215FD254C75C6008027D1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B215FC254C75C6008027D1 /* SceneDelegate.swift */; };
 		18B215FF254C75C6008027D1 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B215FE254C75C6008027D1 /* MainViewController.swift */; };
@@ -107,6 +113,12 @@
 		1898179D2552CD1E0088BFB2 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		189817A02552F97E0088BFB2 /* UserLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserLocation.swift; sourceTree = "<group>"; };
 		189817A225531BE80088BFB2 /* Managers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Managers.swift; sourceTree = "<group>"; };
+		18A513EB2561AF9300387355 /* LoginViewController+Constraints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LoginViewController+Constraints.swift"; sourceTree = "<group>"; };
+		18A513ED2561AFDB00387355 /* MainViewController+Constraints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MainViewController+Constraints.swift"; sourceTree = "<group>"; };
+		18A513EF2561B21D00387355 /* FiltersViewController+Constraints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FiltersViewController+Constraints.swift"; sourceTree = "<group>"; };
+		18A513F12561B27F00387355 /* NewProductViewController+Constraints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NewProductViewController+Constraints.swift"; sourceTree = "<group>"; };
+		18A513F32561B32B00387355 /* DetailProductViewController+Constraints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DetailProductViewController+Constraints.swift"; sourceTree = "<group>"; };
+		18A513F52561B3BE00387355 /* ProfileViewController+Constraints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProfileViewController+Constraints.swift"; sourceTree = "<group>"; };
 		18B215F7254C75C6008027D1 /* Wallapobre.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Wallapobre.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		18B215FA254C75C6008027D1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		18B215FC254C75C6008027D1 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -171,6 +183,7 @@
 			isa = PBXGroup;
 			children = (
 				1825BADF25502BC700C3CDFA /* LoginViewController.swift */,
+				18A513EB2561AF9300387355 /* LoginViewController+Constraints.swift */,
 				1825BAED2551BFFC00C3CDFA /* LoginViewController+Animation.swift */,
 				1898179D2552CD1E0088BFB2 /* LoginViewModel.swift */,
 			);
@@ -228,6 +241,7 @@
 			isa = PBXGroup;
 			children = (
 				1825BAF02551D1EA00C3CDFA /* ProfileViewController.swift */,
+				18A513F52561B3BE00387355 /* ProfileViewController+Constraints.swift */,
 				1825BAF22551D23500C3CDFA /* ProfileViewModel.swift */,
 			);
 			path = Profile;
@@ -237,6 +251,7 @@
 			isa = PBXGroup;
 			children = (
 				182C9A1225596E360074C9E9 /* DetailProductViewController.swift */,
+				18A513F32561B32B00387355 /* DetailProductViewController+Constraints.swift */,
 				18FE78C9255AC12E00BA0A64 /* DetailProductViewController+Source.swift */,
 				182C9A1425598DD50074C9E9 /* DetailProductViewModel.swift */,
 				182C9A162559BBD90074C9E9 /* ProductDataCell */,
@@ -374,6 +389,7 @@
 			isa = PBXGroup;
 			children = (
 				18B215FE254C75C6008027D1 /* MainViewController.swift */,
+				18A513ED2561AFDB00387355 /* MainViewController+Constraints.swift */,
 				1851CE5B255805C300435F78 /* MainViewController+SearchBar.swift */,
 				18B21623254C7658008027D1 /* MainViewModel.swift */,
 				1851CE5D2558944300435F78 /* ProductCell */,
@@ -414,6 +430,7 @@
 			isa = PBXGroup;
 			children = (
 				18C2F7CF254CA19100D74E74 /* FiltersViewController.swift */,
+				18A513EF2561B21D00387355 /* FiltersViewController+Constraints.swift */,
 				18C2F7D3254D732C00D74E74 /* FiltersViewModel.swift */,
 			);
 			path = Filters;
@@ -423,6 +440,7 @@
 			isa = PBXGroup;
 			children = (
 				18C2F7D6254D936F00D74E74 /* NewProductViewController.swift */,
+				18A513F12561B27F00387355 /* NewProductViewController+Constraints.swift */,
 				18C2F7E3254F5E0900D74E74 /* NewProductViewController+Input.swift */,
 				18C2F7D8254D938200D74E74 /* NewProductViewModel.swift */,
 			);
@@ -608,12 +626,14 @@
 				18B63DF7255C08F300831053 /* Discussion.swift in Sources */,
 				182C9A1325596E360074C9E9 /* DetailProductViewController.swift in Sources */,
 				18B2161F254C7615008027D1 /* PinterestLayout.swift in Sources */,
+				18A513EC2561AF9300387355 /* LoginViewController+Constraints.swift in Sources */,
 				18C2F7D4254D732C00D74E74 /* FiltersViewModel.swift in Sources */,
 				185B333F2555B72000778CE4 /* StorageFirebase.swift in Sources */,
 				182C9A1E2559BCB20074C9E9 /* ProductSocialNetworksCell.swift in Sources */,
 				18C2F7D9254D938200D74E74 /* NewProductViewModel.swift in Sources */,
 				18E26C4225604B6B00A64CD9 /* UIColorAdditions.swift in Sources */,
 				18B63DF9255C09ED00831053 /* Message.swift in Sources */,
+				18A513F42561B32B00387355 /* DetailProductViewController+Constraints.swift in Sources */,
 				185B33392555ADF200778CE4 /* ProductFirestore.swift in Sources */,
 				18E26C3E255FF82400A64CD9 /* Search.swift in Sources */,
 				1825BAF12551D1EA00C3CDFA /* ProfileViewController.swift in Sources */,
@@ -625,6 +645,7 @@
 				18B63DFF255C233D00831053 /* DiscussionFirestore.swift in Sources */,
 				1825BAEE2551BFFC00C3CDFA /* LoginViewController+Animation.swift in Sources */,
 				18B215FF254C75C6008027D1 /* MainViewController.swift in Sources */,
+				18A513F02561B21D00387355 /* FiltersViewController+Constraints.swift in Sources */,
 				18B215FB254C75C6008027D1 /* AppDelegate.swift in Sources */,
 				18C2F7E2254EFE0400D74E74 /* Extensions.swift in Sources */,
 				18C2F7CD254C880E00D74E74 /* TabBarProvider.swift in Sources */,
@@ -641,6 +662,7 @@
 				182C9A182559BC250074C9E9 /* ProductDataCell.swift in Sources */,
 				182C9A1C2559BC6B0074C9E9 /* ProductSellerCell.swift in Sources */,
 				1825BAE82551B1C700C3CDFA /* UserAuthoritation.swift in Sources */,
+				18A513F22561B27F00387355 /* NewProductViewController+Constraints.swift in Sources */,
 				18FE78CC255ADB8F00BA0A64 /* ProductImagesCell.swift in Sources */,
 				18C2F7E4254F5E0900D74E74 /* NewProductViewController+Input.swift in Sources */,
 				1825BAEA2551B1DB00C3CDFA /* UserAuthorizationManager.swift in Sources */,
@@ -654,6 +676,8 @@
 				189817A12552F97E0088BFB2 /* UserLocation.swift in Sources */,
 				185B333D2555B71400778CE4 /* StorageFirebaseManager.swift in Sources */,
 				182C9A1A2559BC4B0074C9E9 /* ProductMapCell.swift in Sources */,
+				18A513F62561B3BE00387355 /* ProfileViewController+Constraints.swift in Sources */,
+				18A513EE2561AFDB00387355 /* MainViewController+Constraints.swift in Sources */,
 				18B63E04255C2AD900831053 /* MessageFirestore.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

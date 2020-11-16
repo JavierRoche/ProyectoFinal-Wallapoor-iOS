@@ -46,7 +46,7 @@ extension DetailProductViewController: UITableViewDataSource {
     /// Funcion delegada del numero de celda de la tabla
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let _ = self.viewModel.seller else { return 0 }
-        return 4
+        return 5
     }
     
     /// Funcion delegada de llenado de la tabla
@@ -80,7 +80,8 @@ extension DetailProductViewController: UITableViewDataSource {
         case 4:
             /// Celda con las opciones de compartir en redes
             guard let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: ProductSocialNetworksCell.self), for: indexPath) as? ProductSocialNetworksCell else { fatalError() }
-            //cell.configureCell()
+            //cell.delegate = self
+            cell.configureCell()
             return cell
             
         default:

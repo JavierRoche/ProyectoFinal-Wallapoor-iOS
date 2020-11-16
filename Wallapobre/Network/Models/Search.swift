@@ -10,20 +10,34 @@ import Foundation
 import FirebaseFirestore
 
 public class Search {
+    var searchId: String
+    var searcher: String
     var title: String
     var filter: Filter
     
-    init(title: String, filter: Filter){
+    init(searchId: String, searcher: String, title: String, filter: Filter){
+        self.searchId = searchId
+        self.searcher = searcher
         self.title = title
         self.filter = filter
     }
     
+    convenience init(searcher: String,
+                     title: String,
+                     filter: Filter) {
+        self.init(searchId: UUID().uuidString,
+                  searcher: searcher,
+                  title: title,
+                  filter: filter)
+    }
     
     // MARK: Static Class Functions
     
     class func mapper(document: QueryDocumentSnapshot) -> Search {
         let json: [String : Any] = document.data()
         /// Extraemos los valores; como puede venir vacio indicamos un valor por defecto
+        let searchId = json["searchid"] as? String ?? String()
+        let searcher = json["searcher"] as? String ?? String()
         let title = json["title"] as? String ?? String()
         let motor = json["motor"] as? Bool ?? true
         let textile = json["textile"] as? Bool ?? true
@@ -36,13 +50,15 @@ public class Search {
         let filter = Filter.init(motor: motor, textile: textile, homes: homes, informatic: informatic, sports: sports, services: services, distance: distance, text: text)
         
         /// Creamos y devolvemos el objeto Discussion
-        return Search.init(title: title, filter: filter)
+        return Search.init(searchId: searchId, searcher: searcher, title: title, filter: filter)
     }
     
     class func toSnapshot(search: Search) -> [String: Any] {
         /// Creamos el objeto QueryDocumentSnapshot de Firestore y lo devolvemos
         var snapshot = [String: Any]()
         
+        snapshot["searchid"] = search.searchId
+        snapshot["searcher"] = search.searcher
         snapshot["title"] = search.title
         snapshot["motor"] = search.filter.motor
         snapshot["textile"] = search.filter.textile
