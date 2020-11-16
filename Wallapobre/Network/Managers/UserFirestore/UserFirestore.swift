@@ -24,17 +24,23 @@ class UserFirestore: UserFirestoreManager {
             .getDocuments { (snapshot, error) in
                 /// Raro que devuelva Firestore un error aqui
                 if let error = error, let retError = onError {
-                    retError(error)
+                    DispatchQueue.main.async {
+                        retError(error)
+                    }
                 }
                 
                 /// El usuario existia
                 if let snapshot = snapshot {
                     /// Si no hay ningun user con ese id devolvemos inexistente
                     guard let document: QueryDocumentSnapshot = snapshot.documents.first else {
-                        onSuccess(nil)
+                        DispatchQueue.main.async {
+                            onSuccess(nil)
+                        }
                         return
                     }
-                    onSuccess(User.mapper(document: document))
+                    DispatchQueue.main.async {
+                        onSuccess(User.mapper(document: document))
+                    }
                 }
         }
     }
@@ -47,9 +53,13 @@ class UserFirestore: UserFirestoreManager {
         self.db
             .addDocument(data: snapshot) { (error) in
                 if let error = error, let retError = onError {
-                    retError(error)
+                    DispatchQueue.main.async {
+                        retError(error)
+                    }
                 }
-                onSuccess()
+                DispatchQueue.main.async {
+                    onSuccess()
+                }
         }
     }
 }

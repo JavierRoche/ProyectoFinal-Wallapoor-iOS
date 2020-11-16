@@ -73,7 +73,9 @@ class ProductSellerCell: UITableViewCell {
     
     fileprivate func setData(seller: User) {
         //avatarImageView.image = seller.avatar
-        usernameLabel.text = seller.username
+        DispatchQueue.main.async { [weak self] in
+            self?.usernameLabel.text = seller.username
+        }
     }
 }
 

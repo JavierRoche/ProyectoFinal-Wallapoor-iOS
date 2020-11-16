@@ -55,7 +55,9 @@ extension ChatViewController: MessagesDataSource {
             self.messagesCollectionView.scrollToBottom()
             
         }) { error in
-            self.showAlert(title: Constants.Error, message: error.localizedDescription)
+            DispatchQueue.main.async { [weak self] in
+                self?.showAlert(title: Constants.Error, message: error.localizedDescription)
+            }
         }
     }
     
@@ -113,12 +115,12 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
                 let message = Message.init(senderId: MainViewModel.user.sender.senderId, discussionId: discussion.discussionId, kind: kind, value: text)
                 /// Insertamos el mensaje en Firestore. El observer hara la magia
                 self.viewModel.insertMessage(message: message, onSuccess: {
-                    
-                    //NO HAY QUE AÑADIR EL MENSAJE A L modelo PORQUE ESTA EL OBSERVER
-                    //self.viewModel.appendMessageToModel(message: message)
+                    /// El observer hace el trabajo de añadir el mensaje al modelo
                     
                 }) { error in
-                    self.showAlert(title: Constants.Error, message: error.localizedDescription)
+                    DispatchQueue.main.async { [weak self] in
+                        self?.showAlert(title: Constants.Error, message: error.localizedDescription)
+                    }
                 }
             }
         }

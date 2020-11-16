@@ -60,12 +60,13 @@ class ProductCell: UICollectionViewCell {
                 }
             }*/
             //imageView.image = viewModel.productImage
-            priceLabel.text = String(viewModel.product.price)
-            titleLabel.text = viewModel.product.title
+            DispatchQueue.main.async { [weak self] in
+                self?.priceLabel.text = String(viewModel.product.price)
+                self?.titleLabel.text = viewModel.product.title
+            }
             
             self.setViewsHierarchy()
             self.setConstraints()
-            
         }
     }
     

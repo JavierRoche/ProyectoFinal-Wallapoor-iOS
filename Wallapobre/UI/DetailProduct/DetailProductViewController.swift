@@ -76,14 +76,20 @@ class DetailProductViewController: UIViewController {
         Managers.managerUserFirestore = UserFirestore()
         self.viewModel.getSellerData(viewModel: viewModel, onSuccess: { user in
             guard let _ = user else {
-                self.showAlert(title: Constants.Error, message: Constants.MissingSeller)
+                DispatchQueue.main.async { [weak self] in
+                    self?.showAlert(title: Constants.Error, message: Constants.MissingSeller)
+                }
                 self.dismiss(animated: true, completion: nil)
                 return
             }
-            self.tableView.reloadData()
+            DispatchQueue.main.async { [weak self] in
+                self?.tableView.reloadData()
+            }
             
         }) { (error) in
-            self.showAlert(title: Constants.Error, message: error.localizedDescription)
+            DispatchQueue.main.async { [weak self] in
+                self?.showAlert(title: Constants.Error, message: error.localizedDescription)
+            }
             self.dismiss(animated: true, completion: nil)
         }
     }

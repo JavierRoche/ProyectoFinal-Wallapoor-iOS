@@ -80,7 +80,10 @@ extension NewProductViewController: UITextFieldDelegate, UITextViewDelegate, UIP
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         self.viewModel.categoryPicked = Category(rawValue: row)
-        categoryTextField.text = self.viewModel.getCategoryViewModel(at: row)
+        
+        DispatchQueue.main.async { [weak self] in
+            self?.categoryTextField.text = self?.viewModel.getCategoryViewModel(at: row)
+        }
     }
 }
 

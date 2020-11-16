@@ -74,8 +74,6 @@ class ProductSocialNetworksCell: UITableViewCell {
         // Initialization code
         //contentView.layer.cornerRadius = 8.0
         //contentView.layer.masksToBounds = true
-        
-        
     }
 
     

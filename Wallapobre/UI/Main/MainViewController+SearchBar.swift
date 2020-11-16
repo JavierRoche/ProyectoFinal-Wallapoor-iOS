@@ -29,13 +29,16 @@ extension MainViewController: UISearchBarDelegate  {
         if storedText.isEmpty && text.isEmpty {
             /// Volvemos a cargar todas las imagenes previas al filtrado textual
             self.viewModel.cancelFilterByText()
+            
         } else {
             /// Lanzamos la busqueda con el texto acumulado mas lo pulsado
             self.viewModel.filterByText(text: (storedText + text).lowercased())
         }
 
-        collectionView.reloadData()
-        saveSearchButton.isHidden = self.viewModel.showUpSaveSearchButton()
+        DispatchQueue.main.async { [weak self] in
+            self?.collectionView.reloadData()
+            self?.saveSearchButton.isHidden = self!.viewModel.showUpSaveSearchButton()
+        }
         return true
     }
     
@@ -55,8 +58,11 @@ extension MainViewController: UISearchBarDelegate  {
                 
             /// Aplicamos el filtro textual a la lista ACTUAL, NO a la original que tiene todo
             self.viewModel.filterByText(text: text)
-            collectionView.reloadData()
-            saveSearchButton.isHidden = self.viewModel.showUpSaveSearchButton()
+            
+            DispatchQueue.main.async { [weak self] in
+                self?.collectionView.reloadData()
+                self?.saveSearchButton.isHidden = self!.viewModel.showUpSaveSearchButton()
+            }
             
             /// Paramos la animacion y liberamos el uso del searchController y del resto de la interface
             self.searchController.searchBar.isUserInteractionEnabled = true
@@ -86,7 +92,10 @@ extension MainViewController: UISearchBarDelegate  {
         
         /// Volvemos a cargar todas las imagenes previas al filtrado textual
         self.viewModel.cancelFilterByText()
-        collectionView.reloadData()
-        saveSearchButton.isHidden = self.viewModel.showUpSaveSearchButton()
+        
+        DispatchQueue.main.async { [weak self] in
+            self?.collectionView.reloadData()
+            self?.saveSearchButton.isHidden = self!.viewModel.showUpSaveSearchButton()
+        }
     }
 }

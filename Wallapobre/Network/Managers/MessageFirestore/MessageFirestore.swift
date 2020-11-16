@@ -26,7 +26,9 @@ class MessageFirestore: MessageFirestoreManager {
             .addSnapshotListener { (snapshot, error) in
                 /// Raro que devuelva Firestore un error aqui
                 if let err = error, let retError = onError {
-                    retError(err)
+                    DispatchQueue.main.async {
+                        retError(err)
+                    }
                 }
                 
                 /// Existen mensajes
@@ -34,7 +36,9 @@ class MessageFirestore: MessageFirestoreManager {
                     let messages: [Message] = snapshot.documents
                         .compactMap({ Message.mapper(document: $0) })
                     
-                    onSuccess(messages)
+                    DispatchQueue.main.async {
+                        onSuccess(messages)
+                    }
                 }
         }
     }
@@ -47,9 +51,13 @@ class MessageFirestore: MessageFirestoreManager {
         self.db
             .addDocument(data: snapshot) { (error) in
                 if let error = error, let retError = onError {
-                    retError(error)
+                    DispatchQueue.main.async {
+                        retError(error)
+                    }
                 }
-                onSuccess()
+                DispatchQueue.main.async {
+                    onSuccess()
+                }
         }
     }
 }

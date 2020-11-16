@@ -33,7 +33,7 @@ class UserLocation: NSObject {
             
         /// Configurar desde opciones
         case .restricted, .denied:
-            fatalError(Constants.fatalErrorAuth)
+            //fatalError(Constants.fatalErrorAuth)
             break
             
         /// Ya tenemos los permisos
@@ -41,8 +41,17 @@ class UserLocation: NSObject {
             break
             
         @unknown default:
-            fatalError(Constants.fatalErrorNeedLoc)
+            //fatalError(Constants.fatalErrorNeedLoc)
+            break
         }
+    }
+    
+    func neverRequested() -> Bool {
+        return CLLocationManager.authorizationStatus() == .notDetermined
+    }
+    
+    func userAuthorized() -> Bool {
+        return CLLocationManager.authorizationStatus() == .authorizedAlways || CLLocationManager.authorizationStatus() == .authorizedWhenInUse
     }
     
     func requestLocation() {

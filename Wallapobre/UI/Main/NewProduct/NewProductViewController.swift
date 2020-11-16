@@ -254,14 +254,16 @@ class NewProductViewController: UIViewController {
     @objc private func tapOnUpload() {
         /// Chequeo de datos y confirmacion de usuario
         if areDataRight() {
-            self.showAlert(forInput: false, onlyAccept: false, title: Constants.UploadProduct, message: Constants.GoingToUpload) { _ in
-                /// Iniciamos la animacion de waiting y bloqueamos la pantalla
-                self.activityIndicator.center = self.view.center
-                self.activityIndicator.startAnimating()
-                self.view.addSubview(self.activityIndicator)
-                self.view.isUserInteractionEnabled = false
-                
-                self.processProduct()
+            DispatchQueue.main.async { [weak self] in
+                self?.showAlert(forInput: false, onlyAccept: false, title: Constants.UploadProduct, message: Constants.GoingToUpload) { _ in
+                    /// Iniciamos la animacion de waiting y bloqueamos la pantalla
+                    self?.activityIndicator.center = self!.view.center
+                    self?.activityIndicator.startAnimating()
+                    self?.view.addSubview(self!.activityIndicator)
+                    self?.view.isUserInteractionEnabled = false
+                    
+                    self?.processProduct()
+                }
             }
         }
     }
@@ -280,21 +282,27 @@ class NewProductViewController: UIViewController {
     @objc private func deletePhoto(_ sender: UILongPressGestureRecognizer) {
         /// Recibimos el imageHolder del LongPress para ponerle el holder
         let imageView: UIImageView = sender.view as! UIImageView
-        switch imageView {
-        case photo1Image:
-            photo1Image.image = UIImage.init(systemName: Constants.cameraIcon)
-            break
-        case photo2Image:
-            photo2Image.image = UIImage.init(systemName: Constants.cameraIcon)
-            break
-        case photo3Image:
-            photo3Image.image = UIImage.init(systemName: Constants.cameraIcon)
-            break
-        case photo4Image:
-            photo4Image.image = UIImage.init(systemName: Constants.cameraIcon)
-            break
-        default:
-            break
+        DispatchQueue.main.async { [weak self] in
+            switch imageView {
+            case self?.photo1Image:
+                self?.photo1Image.image = UIImage.init(systemName: Constants.cameraIcon)
+                break
+                
+            case self?.photo2Image:
+                self?.photo2Image.image = UIImage.init(systemName: Constants.cameraIcon)
+                break
+                
+            case self?.photo3Image:
+                self?.photo3Image.image = UIImage.init(systemName: Constants.cameraIcon)
+                break
+                
+            case self?.photo4Image:
+                self?.photo4Image.image = UIImage.init(systemName: Constants.cameraIcon)
+                break
+                
+            default:
+                break
+            }
         }
     }
     
@@ -344,7 +352,9 @@ class NewProductViewController: UIViewController {
             if let image = photo4Image.image { imagesList.append(image) }
         }
         if imagesList.count == 0 {
-            self.showAlert(title: Constants.Warning, message: Constants.OnePhotoAtLess)
+            DispatchQueue.main.async { [weak self] in
+                self?.showAlert(title: Constants.Warning, message: Constants.OnePhotoAtLess)
+            }
             return false
         }
         return true
@@ -367,12 +377,16 @@ class NewProductViewController: UIViewController {
                 self?.dismiss(animated: true, completion: nil)
                 
             }, onError: { error in
-                self?.showAlert(title: Constants.Error, message: error.localizedDescription)
+                DispatchQueue.main.async {
+                    self?.showAlert(title: Constants.Error, message: error.localizedDescription)
+                }
             })
             
             
         }) { [weak self] error in
-            self?.showAlert(title: Constants.Error, message: error.localizedDescription)
+            DispatchQueue.main.async {
+                self?.showAlert(title: Constants.Error, message: error.localizedDescription)
+            }
         }
     }
 }
@@ -385,7 +399,9 @@ extension NewProductViewController: UIImagePickerControllerDelegate, UINavigatio
         dismiss(animated: true, completion: {
             /// Si se ha seleccionado foto la ubicamos en el hueco selecionado
             if let pickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
-                self.imageHolderPressed.image = pickedImage
+                DispatchQueue.main.async {
+                    self.imageHolderPressed.image = pickedImage
+                }
             }
         })
     }

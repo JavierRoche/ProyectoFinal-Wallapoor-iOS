@@ -110,7 +110,10 @@ class ProductMapCell: UITableViewCell {
             let postalCode = placemark.postalCode ?? String()
             let locality = placemark.locality ?? String()
             let address = ("\(postalCode), \(locality)")
-            self?.locationLabel.text = address
+            
+            DispatchQueue.main.async {
+                self?.locationLabel.text = address
+            }
         }
     }
     

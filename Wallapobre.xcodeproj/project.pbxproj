@@ -48,6 +48,7 @@
 		18B21612254C75C7008027D1 /* WallapobreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B21611254C75C7008027D1 /* WallapobreTests.swift */; };
 		18B2161F254C7615008027D1 /* PinterestLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B2161E254C7615008027D1 /* PinterestLayout.swift */; };
 		18B21624254C7658008027D1 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B21623254C7658008027D1 /* MainViewModel.swift */; };
+		18B5055C2562D9140034D28B /* NavigationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B5055B2562D9140034D28B /* NavigationManager.swift */; };
 		18B63DF7255C08F300831053 /* Discussion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B63DF6255C08F300831053 /* Discussion.swift */; };
 		18B63DF9255C09ED00831053 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B63DF8255C09ED00831053 /* Message.swift */; };
 		18B63DFC255C0DA900831053 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B63DFB255C0DA900831053 /* ChatViewController.swift */; };
@@ -56,7 +57,6 @@
 		18B63E04255C2AD900831053 /* MessageFirestore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B63E03255C2AD900831053 /* MessageFirestore.swift */; };
 		18B63E06255C2AE300831053 /* MessageFirestoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B63E05255C2AE300831053 /* MessageFirestoreManager.swift */; };
 		18B63E08255C3F2A00831053 /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B63E07255C3F2A00831053 /* ChatViewModel.swift */; };
-		18C2F7CD254C880E00D74E74 /* TabBarProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C2F7CC254C880E00D74E74 /* TabBarProvider.swift */; };
 		18C2F7D0254CA19100D74E74 /* FiltersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C2F7CF254CA19100D74E74 /* FiltersViewController.swift */; };
 		18C2F7D2254CA6E000D74E74 /* UIFontAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C2F7D1254CA6E000D74E74 /* UIFontAdditions.swift */; };
 		18C2F7D4254D732C00D74E74 /* FiltersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C2F7D3254D732C00D74E74 /* FiltersViewModel.swift */; };
@@ -131,6 +131,7 @@
 		18B21613254C75C7008027D1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		18B2161E254C7615008027D1 /* PinterestLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinterestLayout.swift; sourceTree = "<group>"; };
 		18B21623254C7658008027D1 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
+		18B5055B2562D9140034D28B /* NavigationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationManager.swift; sourceTree = "<group>"; };
 		18B63DF6255C08F300831053 /* Discussion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Discussion.swift; sourceTree = "<group>"; };
 		18B63DF8255C09ED00831053 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		18B63DFB255C0DA900831053 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
@@ -139,7 +140,6 @@
 		18B63E03255C2AD900831053 /* MessageFirestore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageFirestore.swift; sourceTree = "<group>"; };
 		18B63E05255C2AE300831053 /* MessageFirestoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageFirestoreManager.swift; sourceTree = "<group>"; };
 		18B63E07255C3F2A00831053 /* ChatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModel.swift; sourceTree = "<group>"; };
-		18C2F7CC254C880E00D74E74 /* TabBarProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarProvider.swift; sourceTree = "<group>"; };
 		18C2F7CF254CA19100D74E74 /* FiltersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiltersViewController.swift; sourceTree = "<group>"; };
 		18C2F7D1254CA6E000D74E74 /* UIFontAdditions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFontAdditions.swift; sourceTree = "<group>"; };
 		18C2F7D3254D732C00D74E74 /* FiltersViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiltersViewModel.swift; sourceTree = "<group>"; };
@@ -376,7 +376,7 @@
 		18B21620254C761B008027D1 /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				18C2F7CC254C880E00D74E74 /* TabBarProvider.swift */,
+				18B5055B2562D9140034D28B /* NavigationManager.swift */,
 				1825BADE25502BB200C3CDFA /* Login */,
 				18B21621254C7624008027D1 /* Main */,
 				182C9A1125596E0C0074C9E9 /* DetailProduct */,
@@ -639,6 +639,7 @@
 				1825BAF12551D1EA00C3CDFA /* ProfileViewController.swift in Sources */,
 				1898179E2552CD1E0088BFB2 /* LoginViewModel.swift in Sources */,
 				185B33372555ADDF00778CE4 /* ProductFirestoreManager.swift in Sources */,
+				18B5055C2562D9140034D28B /* NavigationManager.swift in Sources */,
 				18C2F7D7254D936F00D74E74 /* NewProductViewController.swift in Sources */,
 				189817A325531BE80088BFB2 /* Managers.swift in Sources */,
 				1851CE5F2558945C00435F78 /* ProductCell.swift in Sources */,
@@ -648,7 +649,6 @@
 				18A513F02561B21D00387355 /* FiltersViewController+Constraints.swift in Sources */,
 				18B215FB254C75C6008027D1 /* AppDelegate.swift in Sources */,
 				18C2F7E2254EFE0400D74E74 /* Extensions.swift in Sources */,
-				18C2F7CD254C880E00D74E74 /* TabBarProvider.swift in Sources */,
 				18C2F7D0254CA19100D74E74 /* FiltersViewController.swift in Sources */,
 				18E26C3C255FF52F00A64CD9 /* SearchFirestoreManager.swift in Sources */,
 				18E26C4025604B1B00A64CD9 /* UIStringAdditions.swift in Sources */,

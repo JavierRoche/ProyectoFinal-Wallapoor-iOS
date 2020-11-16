@@ -152,8 +152,21 @@ class LoginViewController: UIViewController {
     
     lazy var registerPosition: CGPoint = CGPoint(x: 0, y: 0)
     lazy var loginPosition: CGPoint = CGPoint(x: 0, y: 0)
-    var registerInterface: Bool = false
-    lazy var viewModel = LoginViewModel()
+    var onRegisterInterface: Bool = false
+    let viewModel: LoginViewModel
+    
+    
+    // MARK: Inits
+
+    init(viewModel: LoginViewModel) {
+        self.viewModel = viewModel
+        
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError()
+    }
     
     
     // MARK: Life Cycle
@@ -166,12 +179,21 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        /// Arrancamos el manager que necesitan la escena
-        //Managers.managerUserFirestore = UserFirestore()
-        //Managers.managerUserAuthoritation = UserAuthoritation()
+        if viewModel.logoutMessage {
+            self.showAlert(title: Constants.Logout, message: Constants.UserLogout)
+        }
+        
+        /// Arrancamos los managers que necesitan la escena
+        Managers.managerUserLocation = UserLocation()
+        Managers.managerUserAuthoritation = UserAuthoritation()
+        Managers.managerUserFirestore = UserFirestore()
         
         /// Solicitamos permisos de geolocalizacion al usuario
-        viewModel.askForLocationPermissions()
+        guard let _ = viewModel.askForLocationPermissions() else { return }
+        
+        DispatchQueue.main.async { [weak self] in
+            self?.showAlert(forInput: false, onlyAccept: true, title: Constants.Error, message: "\(Constants.fatalErrorAuth)\n\(Constants.fatalErrorNeedLoc)")
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -188,11 +210,17 @@ class LoginViewController: UIViewController {
     }
     
     @objc func tapOnRegister(sender: UIButton!) {
-        if !registerInterface {
+        /// Abrimos el panel de registro o lanzamos el registro
+        if !onRegisterInterface {
             self.openRegisterInterface()
             
         } else {
-            self.register()
+            /// Solicitamos permisos de geolocalizacion al usuario
+            guard let _ = viewModel.askForLocationPermissions() else {
+                self.register()
+                return
+            }
+            self.showAlert(forInput: false, onlyAccept: true, title: Constants.Error, message: "\(Constants.fatalErrorAuth)\n\(Constants.fatalErrorNeedLoc)")
         }
     }
     
@@ -245,65 +273,81 @@ class LoginViewController: UIViewController {
         
         self.viewModel.logUser(user: user, onSuccess: { [weak self] user in
             self?.viewModel.getUserLogged(user: user, onSuccess: { (user) in
-                //self?.viewModel.saveUserLogged(user: user)
-                self?.createScene(user: user)
+                self?.createMainScene(user: user)
                 
             }) { (error) in
-                self?.showAlert(title: Constants.Error, message: error.localizedDescription)
+                DispatchQueue.main.async {
+                    self?.showAlert(title: Constants.Error, message: error.localizedDescription)
+                }
             }
             
         }) { [weak self] error in
-            self?.showAlert(title: Constants.Error, message: error.localizedDescription)
+            DispatchQueue.main.async {
+                self?.showAlert(title: Constants.Error, message: error.localizedDescription)
+            }
         }
     }
     
     fileprivate func register() {
         /// Comprobamos que el usuario ha introducido un email y un pass
         guard let email = emailTextField.text?.lowercased(), let password = passwordTextField.text, let username = usernameTextField.text else {
-            self.showAlert(title: Constants.Warning, message: Constants.MissingData)
+            DispatchQueue.main.async { [weak self] in
+                self?.showAlert(title: Constants.Warning, message: Constants.MissingData)
+            }
             return
         }
         
         if email.isEmpty || password.isEmpty || username.isEmpty {
-            self.showAlert(title: Constants.Warning, message: Constants.MissingData)
+            DispatchQueue.main.async { [weak self] in
+                self?.showAlert(title: Constants.Warning, message: Constants.MissingData)
+            }
             return
         }
         
         /// Inicializamos un User con los datos introducidos por el usuario y registramos
-        let user: User = User.init(id: "", email: email, password: password)
+        let user: User = User.init(id: String(), email: email, password: password)
         self.viewModel.registerUser(user: user, onSuccess: { [weak self] user in
             user.username = username
             self?.viewModel.getUserLogged(user: user, onSuccess: { (user) in
-                //self?.viewModel.saveUserLogged(user: user)
-                self?.createScene(user: user)
+                self?.createMainScene(user: user)
                 
             }) { (error) in
-                self?.showAlert(title: Constants.Error, message: error.localizedDescription)
+                DispatchQueue.main.async {
+                    self?.showAlert(title: Constants.Error, message: error.localizedDescription)
+                }
             }
             
         }) { [weak self] error in
-            self?.showAlert(title: Constants.Error, message: error.localizedDescription)
+            DispatchQueue.main.async {
+                self?.showAlert(title: Constants.Error, message: error.localizedDescription)
+            }
         }
     }
     
     fileprivate func recover() {
         /// Comprobamos que el usuario ha introducido un email
         guard let email = emailTextField.text else {
-            self.showAlert(title: Constants.Warning, message: Constants.MissingData)
+            DispatchQueue.main.async { [weak self] in
+                self?.showAlert(title: Constants.Warning, message: Constants.MissingData)
+            }
             return
         }
         
         /// Inicializamos un User con los datos introducidos por el usuario
         let user = User.init(id: String(), email: email, password: nil)
         self.viewModel.recoverUser(user: user, onSuccess: {
-            self.showAlert(title: Constants.Password, message: Constants.PasswordRecovered)
+            DispatchQueue.main.async { [weak self] in
+                self?.showAlert(title: Constants.Password, message: Constants.PasswordRecovered)
+            }
             
         }) { [weak self] error in
-            self?.showAlert(title: Constants.Error, message: error.localizedDescription)
+            DispatchQueue.main.async {
+                self?.showAlert(title: Constants.Error, message: error.localizedDescription)
+            }
         }
     }
     
-    fileprivate func createScene(user: User) {
+    fileprivate func createMainScene(user: User) {
         /// Liberamos memoria
         Managers.managerUserLocation = nil
         Managers.managerUserAuthoritation = nil
@@ -312,8 +356,9 @@ class LoginViewController: UIViewController {
         /// Accedemos a la WindowScene de la App para la navegacion
         guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
               let sceneDelegate = windowScene.delegate as? SceneDelegate else { return }
+        
         /// Creamos el con la escena inicial de la App
-        let tabBarProvider: TabBarProvider = TabBarProvider()
+        let tabBarProvider: NavigationManager = NavigationManager()
         tabBarProvider.userLoggedIn(user: user)
         sceneDelegate.window?.rootViewController = tabBarProvider.activeTab()
         

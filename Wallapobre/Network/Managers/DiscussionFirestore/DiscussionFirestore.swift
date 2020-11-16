@@ -25,17 +25,23 @@ class DiscussionFirestore: DiscussionFirestoreManager {
             .getDocuments { (snapshot, error) in
             /// Raro que devuelva Firestore un error aqui
             if let error = error, let retError = onError {
-                retError(error)
+                DispatchQueue.main.async {
+                    retError(error)
+                }
             }
             
             /// La discussion existe
             if let snapshot = snapshot {
                 /// Si no se puede recuperar por lo que sea
                 guard let document: QueryDocumentSnapshot = snapshot.documents.first else {
-                    onNonexistent()
+                    DispatchQueue.main.async {
+                        onNonexistent()
+                    }
                     return
                 }
-                onSuccess(Discussion.mapper(document: document))
+                DispatchQueue.main.async {
+                    onSuccess(Discussion.mapper(document: document))
+                }
             }
         }
     }
@@ -48,9 +54,13 @@ class DiscussionFirestore: DiscussionFirestoreManager {
         self.db
             .addDocument(data: snapshot) { (error) in
                 if let error = error, let retError = onError {
-                    retError(error)
+                    DispatchQueue.main.async {
+                        retError(error)
+                    }
                 }
-                onSuccess()
+                DispatchQueue.main.async {
+                    onSuccess()
+                }
         }
     }
 }

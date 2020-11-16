@@ -1,5 +1,5 @@
 //
-//  TabBarProvider.swift
+//  NavigationManager.swift
 //  Wallapobre
 //
 //  Created by APPLE on 30/10/2020.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TabBarProvider: UITabBarController {
+class NavigationManager: UITabBarController {
     /*lazy var tabBar: UITabBarController = {
         let tabBar: UITabBarController = UITabBarController()
         return tabBar
@@ -51,7 +51,7 @@ class TabBarProvider: UITabBarController {
                 
             } else if user == nil && self!.oneTime {
                 /// Configuramos la escena inicial para usuario NO logueado
-                self?.userNotLoggedIn()
+                self?.userNotLoggedIn(fromLogout: false)
                 
                 /// Devolvemos nil
                 onSuccess(user)
@@ -90,7 +90,7 @@ class TabBarProvider: UITabBarController {
     }
     
     func userLoggedIn(user: User) {
-        let mainViewModel = MainViewModel(user: user)
+        let mainViewModel: MainViewModel = MainViewModel(user: user)
         let mainViewController: MainViewController = MainViewController(viewModel: mainViewModel)
         let profileViewModel = ProfileViewModel()
         let profileViewController: ProfileViewController = ProfileViewController(viewModel: profileViewModel)
@@ -107,8 +107,9 @@ class TabBarProvider: UITabBarController {
         self.tabBar.tintColor = .black
     }
     
-    fileprivate func userNotLoggedIn() {
-        let loginViewController: LoginViewController = LoginViewController()
+    func userNotLoggedIn(fromLogout: Bool) {
+        let loginViewModel: LoginViewModel = LoginViewModel(fromLogout: fromLogout)
+        let loginViewController: LoginViewController = LoginViewController(viewModel: loginViewModel)
         let navigationController: UINavigationController = UINavigationController.init(rootViewController: loginViewController)
         navigationController.navigationBar.isHidden = true
         

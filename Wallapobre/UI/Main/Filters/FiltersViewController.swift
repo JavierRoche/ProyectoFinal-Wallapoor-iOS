@@ -198,15 +198,17 @@ class FiltersViewController: UIViewController {
     }
     
     override func viewDidLoad() {
-        motorSwitch.isOn = viewModel.filter.motor
-        textileSwitch.isOn = viewModel.filter.textile
-        homesSwitch.isOn = viewModel.filter.homes
-        informaticSwitch.isOn = viewModel.filter.informatic
-        sportsSwitch.isOn = viewModel.filter.sports
-        servicesSwitch.isOn = viewModel.filter.services
+        DispatchQueue.main.async { [weak self] in
+            self?.motorSwitch.isOn = self!.viewModel.filter.motor
+            self?.textileSwitch.isOn = self!.viewModel.filter.textile
+            self?.homesSwitch.isOn = self!.viewModel.filter.homes
+            self?.informaticSwitch.isOn = self!.viewModel.filter.informatic
+            self?.sportsSwitch.isOn = self!.viewModel.filter.sports
+            self?.servicesSwitch.isOn = self!.viewModel.filter.services
 
-        sliderLabel.text = String(Int(viewModel.filter.distance))
-        slider.value = Float(viewModel.filter.distance)
+            self?.sliderLabel.text = String(Int(self!.viewModel.filter.distance))
+            self?.slider.value = Float(self!.viewModel.filter.distance)
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -222,7 +224,9 @@ class FiltersViewController: UIViewController {
     
     @objc func sliderValueDidChange(sender: UISlider!) {
         sender.value = round(sender.value / 10) * 10
-        sliderLabel.text = String(Int(sender.value))
+        DispatchQueue.main.async { [weak self] in
+            self?.sliderLabel.text = String(Int(sender.value))
+        }
     }
     
     @objc func acceptFilter(sender: UIButton!) {

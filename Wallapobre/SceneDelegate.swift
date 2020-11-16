@@ -17,34 +17,36 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
         
-        /// El manager del usuario logueado y geolocalizacion se inicializa aqui para que no se destruya
+        /// Inicializamos los managers necesarios
         Managers.managerUserLocation = UserLocation()
         Managers.managerUserAuthoritation = UserAuthoritation()
         Managers.managerUserFirestore = UserFirestore()
         
-        let tabBarProvider: TabBarProvider = TabBarProvider()
+        let navigation: NavigationManager = NavigationManager()
         /// Obtencion de un usuario logueado
-        tabBarProvider.checkUserLogged(onSuccess: { [weak self] user in
+        navigation.checkUserLogged(onSuccess: { [weak self] user in
             if let user = user {
-                tabBarProvider.getUserLogged(user: user, onSuccess: { user in
-                    //guard let user = user else { return }
-                    //Managers.managerUserLocation?.saveUserLogged(user: user)
-                    
-                    self?.window?.rootViewController = tabBarProvider.activeTab()
+                navigation.getUserLogged(user: user, onSuccess: { user in
+                    self?.window?.rootViewController = navigation.activeTab()
                     self?.window?.makeKeyAndVisible()
                     
                 }) { error in
-                    tabBarProvider.closeApp(error: error.localizedDescription)
+                    navigation.closeApp(error: error.localizedDescription)
                 }
                 
             } else {
-                self?.window?.rootViewController = tabBarProvider.activeTab()
+                self?.window?.rootViewController = navigation.activeTab()
                 self?.window?.makeKeyAndVisible()
             }
             
         }) { error in
-            tabBarProvider.closeApp(error: error.localizedDescription)
+            navigation.closeApp(error: error.localizedDescription)
         }
+        
+        /// Limpiamos memoria
+        Managers.managerUserLocation = nil
+        Managers.managerUserAuthoritation = nil
+        Managers.managerUserFirestore = nil
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

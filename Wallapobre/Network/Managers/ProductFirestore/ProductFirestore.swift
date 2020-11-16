@@ -25,14 +25,18 @@ class ProductFirestore: ProductFirestoreManager {
             .addSnapshotListener { (snapshot, error) in
                 /// Raro que devuelva Firestore un error aqui
                 if let error = error, let retError = onError {
-                    retError(error)
+                    DispatchQueue.main.async {
+                        retError(error)
+                    }
                 }
                 
                 if let snapshot = snapshot {
                     /// Recorremos los documents de Firestore mapeandolos a una lista de Product
                     let products: [Product] = snapshot.documents
                         .compactMap({ Product.mapper(document: $0) })
-                    onSuccess(products)
+                    DispatchQueue.main.async {
+                        onSuccess(products)
+                    }
                 }
         }
     }
@@ -48,14 +52,18 @@ class ProductFirestore: ProductFirestoreManager {
             .getDocuments { (snapshot, error) in
                 /// Raro que devuelva Firestore un error aqui
                 if let error = error, let retError = onError {
-                    retError(error)
+                    DispatchQueue.main.async {
+                        retError(error)
+                    }
                 }
                 
                 if let snapshot = snapshot {
                     /// Recorremos los documents de Firestore mapeandolos a una lista de Product
                     let products: [Product] = snapshot.documents
                         .compactMap({ Product.mapper(document: $0) })
-                    onSuccess(products)
+                    DispatchQueue.main.async {
+                        onSuccess(products)
+                    }
                 }
         }
     }
@@ -69,9 +77,13 @@ class ProductFirestore: ProductFirestoreManager {
         self.db
             .addDocument(data: snapshot) { (error) in
                 if let error = error, let retError = onError {
-                    retError(error)
+                    DispatchQueue.main.async {
+                        retError(error)
+                    }
                 }
-                onSuccess()
+                DispatchQueue.main.async {
+                    onSuccess()
+                }
         }
     }
 }

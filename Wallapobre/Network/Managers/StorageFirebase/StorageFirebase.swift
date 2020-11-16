@@ -24,17 +24,23 @@ class StorageFirebase: StorageFirebaseManager {
             /// Intentamos guardar el fichero en Cloud Storage con la imagen en Data y el StorageMetadata
             ref.putData(imageData, metadata: metadata) { (metadata, error) in
                 if let error = error, let retError = onError {
-                    retError(error)
+                    DispatchQueue.main.async {
+                        retError(error)
+                    }
                 }
                 
                 /// Sino el upload no genera error, intentamos recuperar la url de la imagen
                 ref.downloadURL { (url, error) in
                     if let error = error, let retError = onError {
-                        retError(error)
+                        DispatchQueue.main.async {
+                            retError(error)
+                        }
                     }
                     /// Obtenemos la url y la devolvemos
                     if let url = url {
-                        onSuccess(url.absoluteString)
+                        DispatchQueue.main.async {
+                            onSuccess(url.absoluteString)
+                        }
                     }
                 }
             }

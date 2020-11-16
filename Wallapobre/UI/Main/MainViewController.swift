@@ -137,21 +137,23 @@ class MainViewController: UIViewController {
     }
     
     @objc func tapOnSaveSearch(sender: UIButton!) {
-        self.showAlert(forInput: true, onlyAccept: false, title: Constants.SaveSearch, message: Constants.NameForPersonal, inputKeyboardType: UIKeyboardType.alphabet) { [weak self] inputText in
-            /// Nos aseguramos de que el usuario ha introducido un nombre
-            guard let text = inputText else { return }
-            /// Creamos la Search actual
-            let actualSearch: Search = Search.init(searcher: MainViewModel.user.sender.senderId, title: text, filter: self!.viewModel.getActualFilter())
-            
-            /// Guardamos el producto en Firestore
-            self?.viewModel.insertSearch(search: actualSearch, onSuccess: {
-                self?.showAlert(forInput: false, onlyAccept: true, title: Constants.Success, message: Constants.PersonalSearchSaved)
-                Managers.managerSearchFirestore = nil
+        DispatchQueue.main.async { [weak self] in
+            self?.showAlert(forInput: true, onlyAccept: false, title: Constants.SaveSearch, message: Constants.NameForPersonal, inputKeyboardType: UIKeyboardType.alphabet) { inputText in
+                /// Nos aseguramos de que el usuario ha introducido un nombre
+                guard let text = inputText else { return }
+                /// Creamos la Search actual
+                let actualSearch: Search = Search.init(searcher: MainViewModel.user.sender.senderId, title: text, filter: self!.viewModel.getActualFilter())
                 
-            }, onError: { error in
-                self?.showAlert(title: Constants.Error, message: error.localizedDescription)
-                Managers.managerSearchFirestore = nil
-            })
+                /// Guardamos el producto en Firestore
+                self?.viewModel.insertSearch(search: actualSearch, onSuccess: {
+                    self?.showAlert(forInput: false, onlyAccept: true, title: Constants.Success, message: Constants.PersonalSearchSaved)
+                    Managers.managerSearchFirestore = nil
+                    
+                }, onError: { error in
+                    self?.showAlert(title: Constants.Error, message: error.localizedDescription)
+                    Managers.managerSearchFirestore = nil
+                })
+            }
         }
     }
 }
@@ -244,6 +246,8 @@ extension MainViewController: FiltersViewControllerDelegate {
 
 extension MainViewController: ProductViewControllerDelegate {
     func productAdded() {
-        showAlert(title: Constants.Info, message: Constants.ProductUploaded)
+        DispatchQueue.main.async { [weak self] in
+            self?.showAlert(title: Constants.Info, message: Constants.ProductUploaded)
+        }
     }
 }

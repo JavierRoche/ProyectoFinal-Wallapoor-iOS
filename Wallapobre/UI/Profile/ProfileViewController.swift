@@ -119,7 +119,7 @@ class ProfileViewController: UIViewController {
         self.viewModel.viewWasLoaded()
         
         /// Configuramos la interface y cargamos las fotos en el CollectionView
-        configureUI()
+        self.configureUI()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -142,16 +142,16 @@ class ProfileViewController: UIViewController {
     // MARK: User Interactions
     
     @objc private func tapOnLogout() {
-        self.showAlert(forInput: false, onlyAccept: false, title: Constants.Logout, message: Constants.GoingToLogout) { _ in
-            /// Arrancamos el manager y deslogueamos
-            Managers.managerUserAuthoritation = UserAuthoritation()
-            Managers.managerUserAuthoritation!.logout(onSuccess: {
-                self.showAlert(title: Constants.Logout, message: Constants.UserLogout)
-                // TODO: Poner scena inicial de login
-                
-            }) { [weak self] error in
-                print(error)
-                self?.showAlert(title: Constants.Error, message: error.localizedDescription)
+        DispatchQueue.main.async { [weak self] in
+            self?.showAlert(forInput: false, onlyAccept: false, title: Constants.Logout, message: Constants.GoingToLogout) { _ in
+                /// Arrancamos el manager y deslogueamos
+                Managers.managerUserAuthoritation = UserAuthoritation()
+                Managers.managerUserAuthoritation!.logout(onSuccess: {
+                    self?.createLoginScene()
+                    
+                }) { error in
+                    self?.showAlert(title: Constants.Error, message: error.localizedDescription)
+                }
             }
         }
     }
@@ -170,7 +170,9 @@ class ProfileViewController: UIViewController {
     
     @objc private func deleteAvatar(_ sender: UILongPressGestureRecognizer) {
         /// Recibimos el imageHolder del LongPress para ponerle el holder
-        avatarImageView.image = UIImage(systemName: Constants.faceIcon)
+        DispatchQueue.main.async { [weak self] in
+            self?.avatarImageView.image = UIImage(systemName: Constants.faceIcon)
+        }
         self.navigationItem.rightBarButtonItem?.isEnabled = false
     }
     
@@ -210,9 +212,29 @@ class ProfileViewController: UIViewController {
         navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.fontStyle17SemiBold], for: .normal)
         
         /// Informacion de usuario
-        usernameLabel.text = MainViewModel.user.username
-        shoppingSalesLabel.text = "Quitar //" //\(MainViewModel.user.shopping) compras | \(MainViewModel.user.sales) ventas"
+        DispatchQueue.main.async { [weak self] in
+            self?.usernameLabel.text = MainViewModel.user.username
+            self?.shoppingSalesLabel.text = "Quitar //" //\(MainViewModel.user.shopping) compras | \(MainViewModel.user.sales) ventas"
+        }
         
+        /// Filtrado inicial ya que el segmentControl aparece en .selling
+        self.viewModel.filterByState(state: .selling)
+    }
+    
+    fileprivate func createLoginScene() {
+        /// Liberamos memoria
+        Managers.managerUserAuthoritation = nil
+        
+        /// Accedemos a la WindowScene de la App para la navegacion
+        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+              let sceneDelegate = windowScene.delegate as? SceneDelegate else { return }
+        /// Creamos el con la escena inicial de la App
+        let tabBarProvider: NavigationManager = NavigationManager()
+        tabBarProvider.userNotLoggedIn(fromLogout: true)
+        sceneDelegate.window?.rootViewController = tabBarProvider.activeTab()
+        
+        /// Eliminamos el controlador del login
+        self.dismiss(animated: true, completion: nil)
     }
 }
 
@@ -243,19 +265,27 @@ extension ProfileViewController: UICollectionViewDataSource {
 
 extension ProfileViewController: ProfileViewModelDelegate {
     func geocodeLocationed(location: String) {
-        locationLabel.text = location
+        DispatchQueue.main.async { [weak self] in
+            self?.locationLabel.text = location
+        }
     }
     
     func productCellViewModelsCreated() {
-        collectionView.reloadData()
+        DispatchQueue.main.async { [weak self] in
+            self?.collectionView.reloadData()
+        }
     }
     
     func searchViewModelsCreated() {
-        //tableView.reloadData()
+        DispatchQueue.main.async { [weak self] in
+            //self?.tableView.reloadData()
+        }
     }
     
     func filterApplied() {
-        collectionView.reloadData()
+        DispatchQueue.main.async { [weak self] in
+            self?.collectionView.reloadData()
+        }
     }
 }
 
@@ -267,8 +297,10 @@ extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationCo
         dismiss(animated: true, completion: {
             /// Si se ha seleccionado foto la ubicamos en el hueco selecionado
             if let pickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
-                self.avatarImageView.image = pickedImage
-                self.navigationItem.rightBarButtonItem?.isEnabled = true
+                DispatchQueue.main.async { [weak self] in
+                    self?.avatarImageView.image = pickedImage
+                    self?.navigationItem.rightBarButtonItem?.isEnabled = true
+                }
             }
         })
     }

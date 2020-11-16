@@ -18,12 +18,15 @@ class UserAuthoritation: UserAuthorizationManager {
         Auth.auth().signIn(withEmail: user.email, password: user.password!) { (user, error) in
             /// Nos aseguramos de que ha llegado un error y la clausura de error existe
             if let error = error, let retError = onError {
-                /// Devolvemos la clausura de error con el error
-                retError(error)
+                DispatchQueue.main.async {
+                    retError(error)
+                }
             }
             /// Comprobamos que el sistema ha devuelto el usuario registrado y lo devolvemos
             if let user = user {
-                onSuccess(User.init(id: user.user.uid, email: user.user.email!, password: nil))
+                DispatchQueue.main.async {
+                    onSuccess(User.init(id: user.user.uid, email: user.user.email!, password: nil))
+                }
             }
         }
     }
@@ -34,11 +37,15 @@ class UserAuthoritation: UserAuthorizationManager {
         Auth.auth().createUser(withEmail: user.email, password: user.password!) { (user, error) in
             /// Si existe la causura de error y ha llegado uno devolvemos la clausura con el error
             if let error = error, let retError = onError {
-                retError(error)
+                DispatchQueue.main.async {
+                    retError(error)
+                }
             }
             /// Comprobamos que el sistema ha devuelto el usuario registrado y lo devolvemos
             if let user = user {
-                onSuccess(User.init(id: user.user.uid, email: user.user.email!, password: nil))
+                DispatchQueue.main.async {
+                    onSuccess(User.init(id: user.user.uid, email: user.user.email!, password: nil))
+                }
             }
         }
     }
@@ -49,11 +56,14 @@ class UserAuthoritation: UserAuthorizationManager {
         Auth.auth().sendPasswordReset(withEmail: user.email) { (error) in
             /// Nos aseguramos de que ha llegado un error y la clausura de error existe
             if let error = error, let retError = onError {
-                /// Devolvemos la clausura de error con el error
-                retError(error)
+                DispatchQueue.main.async {
+                    retError(error)
+                }
             }
             /// El sistema devuelve el usuario recuperado, pero se manda un email para el reset
-            onSuccess(user)
+            DispatchQueue.main.async {
+                onSuccess(user)
+            }
         }
     }
     
@@ -62,10 +72,14 @@ class UserAuthoritation: UserAuthorizationManager {
         /// Metodo que accede a Firebase a comprobar el usuario actual
         if let user = Auth.auth().currentUser {
             let user = User.init(id: user.uid, email: user.email!, password: nil)
-            onSuccess(user)
+            DispatchQueue.main.async {
+                onSuccess(user)
+            }
         }
         /// Sino esta logueado devolvemos un nil en la closure success
-        onSuccess(nil)
+        DispatchQueue.main.async {
+            onSuccess(nil)
+        }
     }
     
     /// Metodo para desloguear el usuario de Firebase
@@ -73,12 +87,16 @@ class UserAuthoritation: UserAuthorizationManager {
         /// Es un metodo que puede lanzar una excepcion
         do {
             try Auth.auth().signOut()
-            onSuccess()
+            DispatchQueue.main.async {
+                onSuccess()
+            }
             
         } catch let error as NSError {
             /// Nos aseguramos de que la clausura de error existe y devolvemos el error recuperado
             if let retError = onError {
-                retError(error)
+                DispatchQueue.main.async {
+                    retError(error)
+                }
             }
         }
     }

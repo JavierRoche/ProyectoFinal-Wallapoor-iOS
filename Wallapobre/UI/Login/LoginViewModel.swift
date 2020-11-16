@@ -14,25 +14,47 @@ protocol LoginViewModelDelegate: class {
 
 class LoginViewModel {
     weak var delegate: LoginViewModelDelegate?
-    /// Objeto que maneja el modelo
-    var user: User?
+    var logoutMessage: Bool
+    
+    
+    // MARK: Inits
+    
+    init(fromLogout: Bool){
+        self.logoutMessage = fromLogout
+    }
     
     
     // MARK: Public Functions
     
-    func askForLocationPermissions() {
-        Managers.managerUserLocation!.handleAuthorizationStatus()
-        Managers.managerUserLocation!.requestLocation()
+    func askForLocationPermissions() -> String? {
+        if Managers.managerUserLocation!.neverRequested() {
+            Managers.managerUserLocation!.handleAuthorizationStatus()
+            
+            if Managers.managerUserLocation!.userAuthorized() {
+                Managers.managerUserLocation!.requestLocation()
+            } else { return String() }
+            
+        } else {
+            if Managers.managerUserLocation!.userAuthorized() {
+                Managers.managerUserLocation!.requestLocation()
+            } else { return String() }
+        }
+        
+        return nil
     }
     
     func checkUserLogged(onSuccess: @escaping (User?) -> Void, onError: ErrorClosure?) {
         /// Chequea usuario logueado en UserAuthoritation
         Managers.managerUserAuthoritation!.isLogged(onSuccess: { user in
-            onSuccess(user)
+            DispatchQueue.main.async {
+                onSuccess(user)
+            }
             
         }) { error in
             if let retError = onError {
-                retError(error)
+                DispatchQueue.main.async {
+                    retError(error)
+                }
             }
         }
     }
@@ -40,22 +62,29 @@ class LoginViewModel {
     func getUserLogged(user: User, onSuccess: @escaping (User) -> Void, onError: ErrorClosure?) {
         Managers.managerUserFirestore!.selectUser(userId: user.sender.senderId, onSuccess: { [weak self] firestoreUser in
             if let user = firestoreUser {
-                /// El usuario existe en Firestore BD
-                self?.user = user
-                onSuccess(user)
+                /// Devolvemos el usuario existe en Firestore BD
+                DispatchQueue.main.async {
+                    onSuccess(user)
+                }
                 
             } else {
                 /// El usuario no existe en Firestore BD. Completamos datos e insertamos
-                self?.user = user
-                self?.user?.latitude = Managers.managerUserLocation!.currentLocation!.coordinate.latitude
-                self?.user?.longitude = Managers.managerUserLocation!.currentLocation!.coordinate.longitude
-                self?.insertUser(user: self!.user!)
+                user.latitude = Managers.managerUserLocation!.currentLocation!.coordinate.latitude
+                user.longitude = Managers.managerUserLocation!.currentLocation!.coordinate.longitude
+                self?.insertUser(user: user)
+                
+                /// Devolvemos el usuario recien creado
+                DispatchQueue.main.async {
+                    onSuccess(user)
+                }
             }
             
         }) { error in
             /// Ha habido error raro
             if let retError = onError {
-                retError(error)
+                DispatchQueue.main.async {
+                    retError(error)
+                }
             }
         }
     }
@@ -63,40 +92,48 @@ class LoginViewModel {
     func logUser(user: User, onSuccess: @escaping (User) -> Void, onError: ErrorClosure?) {
         /// Obtenemos el manager del interactor y hacemos el login
         Managers.managerUserAuthoritation!.login(user: user, onSuccess: { user in
-            onSuccess(user)
+            DispatchQueue.main.async {
+                onSuccess(user)
+            }
             
         }) { error in
             if let retError = onError {
-                retError(error)
+                DispatchQueue.main.async {
+                    retError(error)
+                }
             }
         }
     }
     
     func registerUser(user: User, onSuccess: @escaping (User) -> Void, onError: ErrorClosure?) {
         Managers.managerUserAuthoritation!.register(user: user, onSuccess: { user in
-            onSuccess(user)
+            DispatchQueue.main.async {
+                onSuccess(user)
+            }
             
         }) { error in
             if let retError = onError {
-                retError(error)
+                DispatchQueue.main.async {
+                    retError(error)
+                }
             }
         }
     }
     
     func recoverUser(user: User, onSuccess: @escaping () -> Void, onError: ErrorClosure?) {
         Managers.managerUserAuthoritation!.recoverPassword(user: user, onSuccess: { user in
-            onSuccess()
+            DispatchQueue.main.async {
+                onSuccess()
+            }
             
         }) { error in
             if let retError = onError {
-                retError(error)
+                DispatchQueue.main.async {
+                    retError(error)
+                }
             }
         }
     }
-    
-    /*func saveUserLogged(user: User) {
-        Managers.managerUserLocation?.saveUserLogged(user: user)
-    }*/
     
     
     // MARK: Private Functions

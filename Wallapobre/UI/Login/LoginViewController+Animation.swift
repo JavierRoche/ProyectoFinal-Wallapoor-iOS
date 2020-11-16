@@ -12,8 +12,9 @@ import UIKit
 
 extension LoginViewController: CAAnimationDelegate {
     func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
-        if registerInterface == false {
-            registerInterface = true
+        if onRegisterInterface == false {
+            onRegisterInterface = true
+            
             /// Visibilidad de los botones
             loginButton.isHidden = true
             hideButton.isHidden = false
@@ -29,7 +30,7 @@ extension LoginViewController: CAAnimationDelegate {
             registerButton.frame.origin = registerPosition
             
         } else {
-            registerInterface = false
+            onRegisterInterface = false
             
             /// Guardamos los nuevos puntos porque (no se por que) se descolocan tras la animacion
             registerPosition = CGPoint(x: registerPosition.x, y: registerPosition.y + -90)
@@ -41,7 +42,7 @@ extension LoginViewController: CAAnimationDelegate {
     }
     
     func animationDidStart(_ anim: CAAnimation) {
-        if registerInterface == true {
+        if onRegisterInterface == true {
             /// Visibilidad de los botones
             loginButton.isHidden = false
             hideButton.isHidden = true

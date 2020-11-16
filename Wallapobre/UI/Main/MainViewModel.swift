@@ -126,7 +126,9 @@ class MainViewModel {
     func insertSearch(search: Search, onSuccess: @escaping () -> Void, onError: ErrorClosure?) {
         Managers.managerSearchFirestore = SearchFirestore()
         Managers.managerSearchFirestore!.insertSearch(search: search, onSuccess: {
-            onSuccess()
+            DispatchQueue.main.async {
+                onSuccess()
+            }
             
         }) { error in
             if let retError = onError {
@@ -181,7 +183,9 @@ class MainViewModel {
     
     fileprivate func getSellerData(product: Product, onSuccess: @escaping (User?) -> Void, onError: ErrorClosure?) {
         Managers.managerUserFirestore!.selectUser(userId: product.seller, onSuccess: { user in
-            onSuccess(user)
+            DispatchQueue.main.async {
+                onSuccess(user)
+            }
             
         }) { error in
             if let retError = onError {

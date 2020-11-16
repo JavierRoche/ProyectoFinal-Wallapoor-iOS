@@ -34,11 +34,15 @@ class ChatViewModel {
             /// Buscamos los mensajes de la Discussion recuperada
             Managers.managerMessageFirestore!.selectMessages(discussion: discussion, onSuccess: { messages in
                 self.messages = messages
-                onSuccess()
+                DispatchQueue.main.async {
+                    onSuccess()
+                }
                 
             }) { error in
                 if let retError = onError {
-                    retError(error)
+                    DispatchQueue.main.async {
+                        retError(error)
+                    }
                 }
             }
             
@@ -50,25 +54,33 @@ class ChatViewModel {
                 self.discussion = discussion
                 
                 /// Buscamos los mensajes de la Discussion creada. NO habra ninguno pero hay que activar el Listener
-                Managers.managerMessageFirestore!.selectMessages(discussion: discussion, onSuccess: { messages in
-                    self.messages = messages
-                    onSuccess()
+                Managers.managerMessageFirestore!.selectMessages(discussion: discussion, onSuccess: { [weak self] messages in
+                    self?.messages = messages
+                    DispatchQueue.main.async {
+                        onSuccess()
+                    }
                     
                 }) { error in
                     if let retError = onError {
-                        retError(error)
+                        DispatchQueue.main.async {
+                            retError(error)
+                        }
                     }
                 }
                 
             }) { error in
                 if let retError = onError {
-                    retError(error)
+                    DispatchQueue.main.async {
+                        retError(error)
+                    }
                 }
             }
             
         }) { error in
             if let retError = onError {
-                retError(error)
+                DispatchQueue.main.async {
+                    retError(error)
+                }
             }
         }
     }
@@ -76,11 +88,15 @@ class ChatViewModel {
     func insertMessage(message: Message, onSuccess: @escaping () -> Void, onError: ErrorClosure?) {
         Managers.managerMessageFirestore!.insertMessage(message: message, onSuccess: {
             /// Mensaje insertado en Firestore
-            onSuccess()
+            DispatchQueue.main.async {
+                onSuccess()
+            }
             
         }) { error in
             if let retError = onError {
-                retError(error)
+                DispatchQueue.main.async {
+                    retError(error)
+                }
             }
         }
     }

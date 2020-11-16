@@ -23,7 +23,9 @@ class SearchFirestore: SearchFirestoreManager {
             .getDocuments { (snapshot, error) in
             /// Raro que devuelva Firestore un error aqui
             if let error = error, let retError = onError {
-                retError(error)
+                DispatchQueue.main.async {
+                    retError(error)
+                }
             }
             
             /// Existen busquedas de usuario
@@ -31,7 +33,9 @@ class SearchFirestore: SearchFirestoreManager {
                 let searches: [Search] = snapshot.documents
                     .compactMap({ Search.mapper(document: $0) })
                 
-                onSuccess(searches)
+                DispatchQueue.main.async {
+                    onSuccess(searches)
+                }
             }
         }
     }
@@ -44,9 +48,13 @@ class SearchFirestore: SearchFirestoreManager {
         self.db
             .addDocument(data: snapshot) { (error) in
                 if let error = error, let retError = onError {
-                    retError(error)
+                    DispatchQueue.main.async {
+                        retError(error)
+                    }
                 }
-                onSuccess()
+                DispatchQueue.main.async {
+                    onSuccess()
+                }
         }
     }
 }

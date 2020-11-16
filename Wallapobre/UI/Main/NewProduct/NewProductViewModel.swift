@@ -38,12 +38,16 @@ class NewProductViewModel {
                 count += 1
                 /// Solo salimos cuando se hayan subido todas las imagenes o por error
                 if count == images.count {
-                    onSuccess(urlList)
+                    DispatchQueue.main.async {
+                        onSuccess(urlList)
+                    }
                 }
                 
             }) { error in
                 if let retError = onError {
-                    retError(error)
+                    DispatchQueue.main.async {
+                        retError(error)
+                    }
                 }
             }
         }
@@ -51,11 +55,15 @@ class NewProductViewModel {
     
     func insertProduct(product: Product, onSuccess: @escaping () -> Void, onError: ErrorClosure?) {
         Managers.managerProductFirestore!.insertProduct(product: product, onSuccess: {
-            onSuccess()
+            DispatchQueue.main.async {
+                onSuccess()
+            }
             
         }) { error in
             if let retError = onError {
-                retError(error)
+                DispatchQueue.main.async {
+                    retError(error)
+                }
             }
         }
     }
