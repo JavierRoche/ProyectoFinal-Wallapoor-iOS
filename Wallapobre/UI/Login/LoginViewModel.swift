@@ -94,9 +94,9 @@ class LoginViewModel {
         }
     }
     
-    func saveUserLogged(user: User) {
+    /*func saveUserLogged(user: User) {
         Managers.managerUserLocation?.saveUserLogged(user: user)
-    }
+    }*/
     
     
     // MARK: Private Functions

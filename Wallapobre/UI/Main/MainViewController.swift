@@ -141,7 +141,7 @@ class MainViewController: UIViewController {
             /// Nos aseguramos de que el usuario ha introducido un nombre
             guard let text = inputText else { return }
             /// Creamos la Search actual
-            let actualSearch: Search = Search.init(searcher: Managers.managerUserLocation!.getUserLogged().sender.senderId, title: text, filter: self!.viewModel.getActualFilter())
+            let actualSearch: Search = Search.init(searcher: MainViewModel.user.sender.senderId, title: text, filter: self!.viewModel.getActualFilter())
             
             /// Guardamos el producto en Firestore
             self?.viewModel.insertSearch(search: actualSearch, onSuccess: {

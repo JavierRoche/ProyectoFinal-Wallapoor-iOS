@@ -61,7 +61,7 @@ extension ChatViewController: MessagesDataSource {
     
     /// Identificador para el usuario que envia el mensaje
     func currentSender() -> SenderType {
-        return (Managers.managerUserLocation?.getUserLogged().sender)!
+        return MainViewModel.user.sender
     }
     
     /// Evento delegado que devuelve el mensaje de cada item
@@ -110,7 +110,7 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
                 
                 /// Inicializamos el objeto del modelo si existe la Discussion
                 guard let discussion = self.viewModel.discussion else { return }
-                let message = Message.init(senderId: Managers.managerUserLocation!.getUserLogged().sender.senderId, discussionId: discussion.discussionId, kind: kind, value: text)
+                let message = Message.init(senderId: MainViewModel.user.sender.senderId, discussionId: discussion.discussionId, kind: kind, value: text)
                 /// Insertamos el mensaje en Firestore. El observer hara la magia
                 self.viewModel.insertMessage(message: message, onSuccess: {
                     

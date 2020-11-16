@@ -167,27 +167,11 @@ class LoginViewController: UIViewController {
         super.viewDidLoad()
         
         /// Arrancamos el manager que necesitan la escena
-        Managers.managerUserFirestore = UserFirestore()
-        Managers.managerUserAuthoritation = UserAuthoritation()
+        //Managers.managerUserFirestore = UserFirestore()
+        //Managers.managerUserAuthoritation = UserAuthoritation()
         
         /// Solicitamos permisos de geolocalizacion al usuario
         viewModel.askForLocationPermissions()
-        
-        /// Obtencion de un usuario logueado
-        /*viewModel.checkUserLogged(onSuccess: { [weak self] user in
-            if let user = user {
-                self?.viewModel.getUserLogged(user: user, onSuccess: { user in
-                    self?.viewModel.saveUserLogged(user: user)
-                    self?.createScene()
-                    
-                }) { (error) in
-                    self?.showAlert(title: Constants.Error, message: error.localizedDescription)
-                }
-            }
-            
-        }) { error in
-            self.showAlert(title: Constants.Error, message: error.localizedDescription)
-        }*/
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -261,8 +245,8 @@ class LoginViewController: UIViewController {
         
         self.viewModel.logUser(user: user, onSuccess: { [weak self] user in
             self?.viewModel.getUserLogged(user: user, onSuccess: { (user) in
-                self?.viewModel.saveUserLogged(user: user)
-                self?.createScene()
+                //self?.viewModel.saveUserLogged(user: user)
+                self?.createScene(user: user)
                 
             }) { (error) in
                 self?.showAlert(title: Constants.Error, message: error.localizedDescription)
@@ -290,8 +274,8 @@ class LoginViewController: UIViewController {
         self.viewModel.registerUser(user: user, onSuccess: { [weak self] user in
             user.username = username
             self?.viewModel.getUserLogged(user: user, onSuccess: { (user) in
-                self?.viewModel.saveUserLogged(user: user)
-                self?.createScene()
+                //self?.viewModel.saveUserLogged(user: user)
+                self?.createScene(user: user)
                 
             }) { (error) in
                 self?.showAlert(title: Constants.Error, message: error.localizedDescription)
@@ -319,17 +303,20 @@ class LoginViewController: UIViewController {
         }
     }
     
-    fileprivate func createScene() {
+    fileprivate func createScene(user: User) {
         /// Liberamos memoria
-        //Managers.managerUserAuthoritation = nil
-        //Managers.managerUserFirestore = nil
+        Managers.managerUserLocation = nil
+        Managers.managerUserAuthoritation = nil
+        Managers.managerUserFirestore = nil
         
         /// Accedemos a la WindowScene de la App para la navegacion
         guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
               let sceneDelegate = windowScene.delegate as? SceneDelegate else { return }
-        /// Creamos el TabBar con las pestañas de la App
-        let tabBar: TabBarProvider = TabBarProvider.init()
-        sceneDelegate.window?.rootViewController = tabBar.activeTab()
+        /// Creamos el con la escena inicial de la App
+        let tabBarProvider: TabBarProvider = TabBarProvider()
+        tabBarProvider.userLoggedIn(user: user)
+        sceneDelegate.window?.rootViewController = tabBarProvider.activeTab()
+        
         /// Eliminamos el controlador del login
         self.dismiss(animated: true, completion: nil)
     }

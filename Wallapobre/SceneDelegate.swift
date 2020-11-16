@@ -11,28 +11,11 @@ import UIKit
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
-    var user: User = User(id: String(), email: String(), password: String())
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         /// Obtenemos la escena y la navegacion para la ventana antes de iniciar
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
-        
-        //Managers.managerUserLocation = UserLocation()
-        /// Creamos la escena de la App y la asignamos a la Window
-        /*let tabBar: TabBarProvider = TabBarProvider.init()
-        window?.rootViewController = tabBar.activeTab()
-        window?.makeKeyAndVisible()*/
-        /// Si el user no esta logueado arranca la escena de Login
-        /*let loginViewController: LoginViewController = LoginViewController()
-        let navigationController: UINavigationController = UINavigationController.init(rootViewController: loginViewController)
-        navigationController.navigationBar.isHidden = true
-        
-        
-        window = UIWindow(windowScene: windowScene)
-        window?.rootViewController = navigationController
-        window?.makeKeyAndVisible()*/
-        
         
         /// El manager del usuario logueado y geolocalizacion se inicializa aqui para que no se destruya
         Managers.managerUserLocation = UserLocation()
@@ -44,8 +27,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         tabBarProvider.checkUserLogged(onSuccess: { [weak self] user in
             if let user = user {
                 tabBarProvider.getUserLogged(user: user, onSuccess: { user in
-                    guard let user = user else { return }
-                    Managers.managerUserLocation?.saveUserLogged(user: user)
+                    //guard let user = user else { return }
+                    //Managers.managerUserLocation?.saveUserLogged(user: user)
                     
                     self?.window?.rootViewController = tabBarProvider.activeTab()
                     self?.window?.makeKeyAndVisible()
@@ -62,42 +45,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }) { error in
             tabBarProvider.closeApp(error: error.localizedDescription)
         }
-        
-        
-        
-        /*
-        /// El manager del usuario logueado y geolocalizacion se inicializa aqui para que no se destruya
-        Managers.managerUserLocation = UserLocation()
-        Managers.managerUserAuthoritation = UserAuthoritation()
-        
-        /// Chequea usuario logueado en UserAuthoritation para arrancar directamente
-        Managers.managerUserAuthoritation!.isLogged(onSuccess: { [weak self] user in
-            if let user = user {
-                /// Guardamos en el manager el usuario logueado
-                Managers.managerUserLocation?.saveUserLogged(user: user)
-                
-                /// Creamos la escena de la App y la asignamos a la Window
-                let tabBar: TabBarProvider = TabBarProvider.init()
-                self?.window?.rootViewController = tabBar.activeTab()
-                
-            } else {
-                /// Si el user no esta logueado arranca la escena de Login
-                let loginViewController: LoginViewController = LoginViewController()
-                let navigationController: UINavigationController = UINavigationController.init(rootViewController: loginViewController)
-                navigationController.navigationBar.isHidden = true
-                
-                self?.window?.rootViewController = navigationController
-            }
-            
-            //self?.window = UIWindow(windowScene: windowScene)
-            self?.window?.makeKeyAndVisible()
-            
-        }) { error in
-            let alert = UIAlertController(title: Constants.Error, message: error.localizedDescription, preferredStyle: .alert)
-            alert.showAlert()
-            /// Abortamos la App pues hay algun problema en Firestore
-            UIControl().sendAction(#selector(NSXPCConnection.suspend), to: UIApplication.shared, for: nil)
-        }*/
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -131,3 +78,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 }
 
+/*
+Managers.managerUserLocation = UserLocation()
+/// Creamos la escena de la App y la asignamos a la Window
+let tabBar: TabBarProvider = TabBarProvider.init()
+window?.rootViewController = tabBar.activeTab()
+window?.makeKeyAndVisible()
+ 
+let loginViewController: LoginViewController = LoginViewController()
+let navigationController: UINavigationController = UINavigationController.init(rootViewController: loginViewController)
+navigationController.navigationBar.isHidden = true
+window?.rootViewController = navigationController
+ 
+window?.makeKeyAndVisible()
+*/

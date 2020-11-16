@@ -353,7 +353,7 @@ class NewProductViewController: UIViewController {
     fileprivate func processProduct() {
         /// Subimos las imagenes al Cloud Firebase y esperamos recibir la lista de urls
         self.viewModel.uploadImages(images: self.imagesList, onSuccess: { [weak self] urlList in
-            let product: Product = Product.init(seller: Managers.managerUserLocation!.getUserLogged().sender.id,
+            let product: Product = Product.init(seller: MainViewModel.user.sender.id,
                                                 title: (self?.titleTextField.text!)!,
                                                 category: self?.viewModel.categoryPicked! ?? Category.homes,
                                                 description: (self?.descriptionTextView.text!)!,

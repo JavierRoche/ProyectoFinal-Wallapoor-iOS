@@ -15,6 +15,8 @@ protocol MainViewModelDelegate: class {
 }
 
 class MainViewModel {
+    /// Usuario logueado en la App
+    static var user: User = User(id: String(), email: String(), password: String())
     weak var delegate: MainViewModelDelegate?
     /// Lista original con todos los productos descargados de Firebase DB
     private var originalProductList: [ProductCellViewModel] = []
@@ -26,11 +28,18 @@ class MainViewModel {
     private var actualFilter: Filter = Filter()
 
     
+    // MARK: Inits
+    
+    init(user: User){
+        MainViewModel.user = user
+    }
+    
+    
     // MARK: Public Functions
     
     func viewWasLoaded() {
         Managers.managerProductFirestore = ProductFirestore()
-        
+        Managers.managerUserFirestore = UserFirestore()
         Managers.managerProductFirestore!.selectProducts(onSuccess: { [weak self] products in
             /// Habria que aplicar antes el filtro antes de mapear, pero todas las funciones del modelo funcionan con ProductCellViewModel asi que...
             /// Mapeamos los productos del area inicial al modelo de celda
@@ -114,8 +123,6 @@ class MainViewModel {
         self.actualFilter.text = String()
     }
     
-    
-    
     func insertSearch(search: Search, onSuccess: @escaping () -> Void, onError: ErrorClosure?) {
         Managers.managerSearchFirestore = SearchFirestore()
         Managers.managerSearchFirestore!.insertSearch(search: search, onSuccess: {
@@ -127,6 +134,7 @@ class MainViewModel {
             }
         }
     }
+    
     
     // MARK: Private Functions
     
@@ -141,10 +149,9 @@ class MainViewModel {
         return filteredProductList
     }
     
-    //comprueba de cada producto la distancia con el usuario
     fileprivate func filterByDistance(productCellViewModels: [ProductCellViewModel], toDistance: Double = 50000.0, onSuccess: @escaping ([ProductCellViewModel]) -> Void) {
         /// Obtenemos la localizacion del usuario logueado
-        let userLocation: CLLocation = CLLocation(latitude: Managers.managerUserLocation!.getUserLogged().latitude!, longitude: Managers.managerUserLocation!.getUserLogged().longitude!)
+        let userLocation: CLLocation = CLLocation(latitude: MainViewModel.user.latitude!, longitude: MainViewModel.user.longitude!)
         
         /// Inicializamos valores para el algoritmo que buscara por cada usuario si esta en rango con el user logueado
         var filteredProductCellViewModels: [ProductCellViewModel] = [ProductCellViewModel]()

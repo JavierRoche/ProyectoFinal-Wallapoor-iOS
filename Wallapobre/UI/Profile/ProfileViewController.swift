@@ -210,8 +210,8 @@ class ProfileViewController: UIViewController {
         navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.fontStyle17SemiBold], for: .normal)
         
         /// Informacion de usuario
-        usernameLabel.text = Managers.managerUserLocation!.getUserLogged().username
-        shoppingSalesLabel.text = "Quitar //" //\(Managers.managerUserLocation!.getUserLogged().shopping) compras | \(Managers.managerUserLocation!.getUserLogged().sales) ventas"
+        usernameLabel.text = MainViewModel.user.username
+        shoppingSalesLabel.text = "Quitar //" //\(MainViewModel.user.shopping) compras | \(MainViewModel.user.sales) ventas"
         
     }
 }

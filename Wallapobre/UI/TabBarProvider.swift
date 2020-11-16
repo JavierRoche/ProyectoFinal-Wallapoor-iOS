@@ -46,13 +46,17 @@ class TabBarProvider: UITabBarController {
         /// Chequea usuario logueado en UserAuthoritation
         Managers.managerUserAuthoritation!.isLogged(onSuccess: { [weak self] user in
             if user != nil && self!.oneTime {
-                self?.userLoggedIn()
+                /// Devolvemos el user logueado
                 onSuccess(user)
                 
             } else if user == nil && self!.oneTime {
+                /// Configuramos la escena inicial para usuario NO logueado
                 self?.userNotLoggedIn()
+                
+                /// Devolvemos nil
                 onSuccess(user)
             }
+            /// Por algun motivo de Firebase esta funcion se rellama. Lo evito.
             self?.oneTime = false
             
         }) { error in
@@ -63,10 +67,12 @@ class TabBarProvider: UITabBarController {
     }
     
     func getUserLogged(user: User, onSuccess: @escaping (User?) -> Void, onError: ErrorClosure?) {
-        Managers.managerUserFirestore!.selectUser(userId: user.sender.senderId, onSuccess: { user in
+        Managers.managerUserFirestore!.selectUser(userId: user.sender.senderId, onSuccess: { [weak self] user in
+            /// Configuramos la escena inicial para usuario logueado
+            self?.userLoggedIn(user: user!)
+            
             /// El usuario existe en Firestore BD
             onSuccess(user)
-            //SceneDelegate.user = user!
             
         }) { error in
             /// Ha habido error raro
@@ -83,8 +89,8 @@ class TabBarProvider: UITabBarController {
         UIControl().sendAction(#selector(NSXPCConnection.suspend), to: UIApplication.shared, for: nil)
     }
     
-    fileprivate func userLoggedIn() {
-        let mainViewModel = MainViewModel()
+    func userLoggedIn(user: User) {
+        let mainViewModel = MainViewModel(user: user)
         let mainViewController: MainViewController = MainViewController(viewModel: mainViewModel)
         let profileViewModel = ProfileViewModel()
         let profileViewController: ProfileViewController = ProfileViewController(viewModel: profileViewModel)

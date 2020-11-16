@@ -10,8 +10,6 @@ import UIKit
 import CoreLocation
 
 class UserLocation: NSObject {
-    /// Usuario logueado que ha entrado en la App
-    private lazy var userLogged = User.init(id: String(), email: String(), password: String())
     /// Definimos el cerebro de CoreLocation
     lazy var locationManager: CLLocationManager = {
         let manager: CLLocationManager = CLLocationManager()
@@ -31,7 +29,6 @@ class UserLocation: NSObject {
         /// Mediante el LocationManager solicitamos los permisos
         case .notDetermined:
             locationManager.requestAlwaysAuthorization()
-            //locationManager.requestLocation()
             break
             
         /// Configurar desde opciones
@@ -41,7 +38,6 @@ class UserLocation: NSObject {
             
         /// Ya tenemos los permisos
         case .authorizedAlways, .authorizedWhenInUse:
-            //locationManager.requestLocation()
             break
             
         @unknown default:
@@ -51,14 +47,6 @@ class UserLocation: NSObject {
     
     func requestLocation() {
         locationManager.requestLocation()
-    }
-    
-    func saveUserLogged(user: User) {
-        self.userLogged = user
-    }
-    
-    func getUserLogged() -> User {
-        return self.userLogged
     }
 }
 

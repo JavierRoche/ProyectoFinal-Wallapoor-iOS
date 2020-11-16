@@ -18,7 +18,7 @@ class SearchFirestore: SearchFirestoreManager {
         /// Realizamos la SELECT a Firebase.searchs
         self.db
             /// Cada Search se guarda por usuario logueado
-            .whereField("searcher", isEqualTo: Managers.managerUserLocation!.getUserLogged().sender.senderId)
+            .whereField("searcher", isEqualTo: MainViewModel.user.sender.senderId)
             /// No necesitamos listener y usamos .getDocuments
             .getDocuments { (snapshot, error) in
             /// Raro que devuelva Firestore un error aqui

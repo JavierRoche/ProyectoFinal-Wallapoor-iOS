@@ -27,7 +27,7 @@ class ChatViewModel {
     
     func initDiscussionChat(onSuccess: @escaping () -> Void, onError: ErrorClosure?) {
         /// Buscamos una Discussion por Producto - Vendedor - Usuario (logged)
-        let discussion: Discussion = Discussion.init(discussionId: String(), productId: self.product.productId, seller: self.product.seller, buyer: Managers.managerUserLocation!.getUserLogged().sender.senderId)
+        let discussion: Discussion = Discussion.init(discussionId: String(), productId: self.product.productId, seller: self.product.seller, buyer: MainViewModel.user.sender.senderId)
         Managers.managerDiscussionFirestore!.selectDiscussion(discussion: discussion, onSuccess: { discussion in
             self.discussion = discussion
             
@@ -44,7 +44,7 @@ class ChatViewModel {
             
         }, onNonexistent: {
             /// Creamos una Discussion nueva
-            let discussion: Discussion = Discussion.init(productId: self.product.productId, seller: self.product.seller, buyer: Managers.managerUserLocation!.getUserLogged().sender.senderId)
+            let discussion: Discussion = Discussion.init(productId: self.product.productId, seller: self.product.seller, buyer: MainViewModel.user.sender.senderId)
             Managers.managerDiscussionFirestore!.insertDiscussion(discussion: discussion, onSuccess: {
                 /// Se ha creado una nueva Discussion
                 self.discussion = discussion

@@ -65,8 +65,8 @@ class ProfileViewModel {
     // MARK: Private Functions
     
     func setAddress() {
-        let userLocation = CLLocation(latitude: Managers.managerUserLocation!.getUserLogged().latitude!,
-                                      longitude: Managers.managerUserLocation!.getUserLogged().longitude!)
+        let userLocation = CLLocation(latitude: MainViewModel.user.latitude!,
+                                      longitude: MainViewModel.user.longitude!)
         
         /// Aplicamos geolocalizacion inversa con un CLGeocoder
         let geocoder = CLGeocoder()
@@ -92,7 +92,7 @@ class ProfileViewModel {
     
     fileprivate func getUserProducts() {
         Managers.managerProductFirestore = ProductFirestore()
-        Managers.managerProductFirestore!.selectProductBySeller(userId: Managers.managerUserLocation!.getUserLogged().sender.senderId, onSuccess: { [weak self] products in
+        Managers.managerProductFirestore!.selectProductBySeller(userId: MainViewModel.user.sender.senderId, onSuccess: { [weak self] products in
             /// Mapeamos los productos al modelo de celda
             let productCellViewModels = products.compactMap({ ProductCellViewModel(product: $0) })
             
