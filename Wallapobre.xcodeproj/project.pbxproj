@@ -57,6 +57,7 @@
 		18B63E04255C2AD900831053 /* MessageFirestore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B63E03255C2AD900831053 /* MessageFirestore.swift */; };
 		18B63E06255C2AE300831053 /* MessageFirestoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B63E05255C2AE300831053 /* MessageFirestoreManager.swift */; };
 		18B63E08255C3F2A00831053 /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B63E07255C3F2A00831053 /* ChatViewModel.swift */; };
+		18BFA3EE25640F8E00CA1B24 /* ProfileViewController+Source.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18BFA3ED25640F8E00CA1B24 /* ProfileViewController+Source.swift */; };
 		18C2F7D0254CA19100D74E74 /* FiltersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C2F7CF254CA19100D74E74 /* FiltersViewController.swift */; };
 		18C2F7D2254CA6E000D74E74 /* UIFontAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C2F7D1254CA6E000D74E74 /* UIFontAdditions.swift */; };
 		18C2F7D4254D732C00D74E74 /* FiltersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C2F7D3254D732C00D74E74 /* FiltersViewModel.swift */; };
@@ -140,6 +141,7 @@
 		18B63E03255C2AD900831053 /* MessageFirestore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageFirestore.swift; sourceTree = "<group>"; };
 		18B63E05255C2AE300831053 /* MessageFirestoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageFirestoreManager.swift; sourceTree = "<group>"; };
 		18B63E07255C3F2A00831053 /* ChatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModel.swift; sourceTree = "<group>"; };
+		18BFA3ED25640F8E00CA1B24 /* ProfileViewController+Source.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProfileViewController+Source.swift"; sourceTree = "<group>"; };
 		18C2F7CF254CA19100D74E74 /* FiltersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiltersViewController.swift; sourceTree = "<group>"; };
 		18C2F7D1254CA6E000D74E74 /* UIFontAdditions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFontAdditions.swift; sourceTree = "<group>"; };
 		18C2F7D3254D732C00D74E74 /* FiltersViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiltersViewModel.swift; sourceTree = "<group>"; };
@@ -242,6 +244,7 @@
 			children = (
 				1825BAF02551D1EA00C3CDFA /* ProfileViewController.swift */,
 				18A513F52561B3BE00387355 /* ProfileViewController+Constraints.swift */,
+				18BFA3ED25640F8E00CA1B24 /* ProfileViewController+Source.swift */,
 				1825BAF22551D23500C3CDFA /* ProfileViewModel.swift */,
 			);
 			path = Profile;
@@ -672,6 +675,7 @@
 				18C2F7DC254D9B0E00D74E74 /* Product.swift in Sources */,
 				18E26C3A255FF52400A64CD9 /* SearchFirestore.swift in Sources */,
 				18B63E08255C3F2A00831053 /* ChatViewModel.swift in Sources */,
+				18BFA3EE25640F8E00CA1B24 /* ProfileViewController+Source.swift in Sources */,
 				1825BAEC2551B56200C3CDFA /* User.swift in Sources */,
 				189817A12552F97E0088BFB2 /* UserLocation.swift in Sources */,
 				185B333D2555B71400778CE4 /* StorageFirebaseManager.swift in Sources */,

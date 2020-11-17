@@ -79,7 +79,6 @@ class MainViewController: UIViewController {
     /// Objeto del modelo que contiene las imagenes
     let viewModel: MainViewModel
     
-    
     // MARK: Inits
 
     init(viewModel: MainViewModel) {
@@ -144,7 +143,7 @@ class MainViewController: UIViewController {
                 /// Creamos la Search actual
                 let actualSearch: Search = Search.init(searcher: MainViewModel.user.sender.senderId, title: text, filter: self!.viewModel.getActualFilter())
                 
-                /// Guardamos el producto en Firestore
+                /// Guardamos la Search en Firestore
                 self?.viewModel.insertSearch(search: actualSearch, onSuccess: {
                     self?.showAlert(forInput: false, onlyAccept: true, title: Constants.Success, message: Constants.PersonalSearchSaved)
                     Managers.managerSearchFirestore = nil
@@ -188,9 +187,7 @@ extension MainViewController: UICollectionViewDataSource {
         
         let productViewModel: ProductCellViewModel = self.viewModel.getCellViewModel(at: indexPath)
         
-        cell.configureCell(imageUrl: productViewModel.product.photos[0],
-                           price: productViewModel.product.price,
-                           title: productViewModel.product.title)
+        cell.configureCell(viewModel: productViewModel)
         //cell.viewModel = viewModel.getCellViewModel(at: indexPath)
         //collectionView.collectionViewLayout.invalidateLayout()
         return cell
@@ -249,5 +246,14 @@ extension MainViewController: ProductViewControllerDelegate {
         DispatchQueue.main.async { [weak self] in
             self?.showAlert(title: Constants.Info, message: Constants.ProductUploaded)
         }
+    }
+}
+
+
+// MARK: ProfileViewController Delegate
+
+extension MainViewController: ProfileViewControllerDelegate {
+    func searchSelected(search: Search) {
+        self.viewModel.applyFilter(filter: search.filter)
     }
 }

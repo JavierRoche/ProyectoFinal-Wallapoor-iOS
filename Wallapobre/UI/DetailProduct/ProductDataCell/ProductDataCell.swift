@@ -63,11 +63,9 @@ class ProductDataCell: UITableViewCell {
     }
     
     fileprivate func setData(viewModel: DetailProductViewModel) {
-        DispatchQueue.main.async { [weak self] in
-            self?.priceLabel.text = String(viewModel.product.price)
-            self?.titleLabel.text = viewModel.product.title
-            self?.descriptionLabel.text = viewModel.product.description
-        }
+        priceLabel.text = String(viewModel.product.price)
+        titleLabel.text = viewModel.product.title
+        descriptionLabel.text = viewModel.product.description
     }
     
     fileprivate func setConstraints() {

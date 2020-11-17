@@ -94,6 +94,7 @@ class NavigationManager: UITabBarController {
         let mainViewController: MainViewController = MainViewController(viewModel: mainViewModel)
         let profileViewModel = ProfileViewModel()
         let profileViewController: ProfileViewController = ProfileViewController(viewModel: profileViewModel)
+        profileViewController.delegate = mainViewController
         
         mainViewController.tabBarItem = UITabBarItem.init(title: Constants.Accept, image: UIImage.init(systemName: Constants.starIcon), tag: 0)
         profileViewController.tabBarItem = UITabBarItem.init(title: Constants.Perfil, image: UIImage.init(systemName: Constants.starIcon), tag: 1)

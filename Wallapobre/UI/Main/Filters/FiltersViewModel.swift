@@ -25,6 +25,7 @@ final class FiltersViewModel: Equatable {
     
     convenience init(motor: Bool, textile: Bool, homes: Bool, informatic: Bool, sports: Bool, services: Bool, distance: Double, text: String) {
         self.init()
+        
         self.filter.motor = motor
         self.filter.textile = textile
         self.filter.homes = homes

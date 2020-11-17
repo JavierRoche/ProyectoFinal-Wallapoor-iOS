@@ -62,4 +62,35 @@ class UserFirestore: UserFirestoreManager {
                 }
         }
     }
+    
+    public func updateUser(user: User, onSuccess: @escaping () -> Void, onError: ErrorClosure?) {
+        /// Actualizamos el usuario en BD
+        self.db
+            .whereField("userid", isEqualTo: user.sender.senderId)
+            .getDocuments { (snapshot, error) in
+            /// Raro que devuelva Firestore un error aqui
+            if let error = error, let retError = onError {
+                DispatchQueue.main.async {
+                    retError(error)
+                }
+            }
+            
+            /// El usuario existe
+            if let snapshot = snapshot {
+                /// Si no hay ningun user con ese id devolvemos inexistente
+                guard let document: QueryDocumentSnapshot = snapshot.documents.first else { return }
+                
+                document.reference.updateData(["avatar": user.avatar ?? String()]) { error in
+                    if let error = error, let retError = onError {
+                        DispatchQueue.main.async {
+                            retError(error)
+                        }
+                    }
+                    DispatchQueue.main.async {
+                        onSuccess()
+                    }   
+                }
+            }
+        }
+    }
 }

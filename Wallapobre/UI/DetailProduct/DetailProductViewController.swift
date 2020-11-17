@@ -11,7 +11,7 @@ import ImageSlideshow
 
 class DetailProductViewController: UIViewController {
     lazy var tableView: UITableView = {
-        let table: UITableView = UITableView(frame: .zero, style: .grouped)
+        let table: UITableView = UITableView(frame: .zero, style: UITableView.Style.plain)
         table.register(ProductImagesCell.self, forCellReuseIdentifier: String(describing: ProductImagesCell.self))
         table.register(ProductDataCell.self, forCellReuseIdentifier: String(describing: ProductDataCell.self))
         table.register(ProductMapCell.self, forCellReuseIdentifier: String(describing: ProductMapCell.self))

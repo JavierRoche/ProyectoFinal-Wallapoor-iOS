@@ -29,9 +29,9 @@ class ProfileViewModel {
     // MARK: Life Cycle
     
     func viewWasLoaded() {
-        setAddress()
-        getUserProducts()
-        getUserSearches()
+        self.setAddress()
+        self.getUserProducts()
+        self.getUserSearches()
     }
     
     
@@ -43,6 +43,14 @@ class ProfileViewModel {
 
     func getCellViewModel(at indexPath: IndexPath) -> ProductCellViewModel {
         return actualProductList[indexPath.row]
+    }
+    
+    func numberOfRows(in section: Int) -> Int {
+        return originalSearchList.count
+    }
+
+    func getRowViewModel(at indexPath: IndexPath) -> Search {
+        return originalSearchList[indexPath.row]
     }
     
     func filterByState(state: ProductState){
@@ -60,9 +68,6 @@ class ProfileViewModel {
         self.actualProductList = filteredProducts
         self.delegate?.filterApplied()
     }
-
-    
-    // MARK: Private Functions
     
     func setAddress() {
         let userLocation = CLLocation(latitude: MainViewModel.user.latitude!,
@@ -89,6 +94,35 @@ class ProfileViewModel {
             self?.delegate?.geocodeLocationed(location: "\(postalCode), \(locality)")
         }
     }
+    
+    func updateProfile(image: UIImage, onSuccess: @escaping () -> Void, onError: ErrorClosure?) {
+        /// Primero subimos la foto
+        self.uploadImages(image: image, onSuccess: { url in
+            MainViewModel.user.avatar = url
+            /// Actualizamos el registro del usuario
+            Managers.managerUserFirestore = UserFirestore()
+            Managers.managerUserFirestore!.updateUser(user: MainViewModel.user, onSuccess: {
+                onSuccess()
+                
+            }) { error in
+                if let retError = onError {
+                    DispatchQueue.main.async {
+                        retError(error)
+                    }
+                }
+            }
+                
+        }) { error in
+            if let retError = onError {
+                DispatchQueue.main.async {
+                    retError(error)
+                }
+            }
+        }
+    }
+    
+    
+    // MARK: Private Functions
     
     fileprivate func getUserProducts() {
         Managers.managerProductFirestore = ProductFirestore()
@@ -126,30 +160,22 @@ class ProfileViewModel {
             print(error.localizedDescription)
         })
     }
+    
+    fileprivate func uploadImages(image: UIImage, onSuccess: @escaping (_ urlList: String) -> Void, onError: ErrorClosure?) {
+        let fileName = "\(UUID().uuidString).jpg"
+        Managers.managerStorageFirebase = StorageFirebase()
+        Managers.managerStorageFirebase!.saveImageGetUrl(fileName: fileName, image: image, onSuccess: { url in
+            /// Añadimos la url recibida a la lista
+            DispatchQueue.main.async {
+                onSuccess(url)
+            }
+            
+        }) { error in
+            if let retError = onError {
+                DispatchQueue.main.async {
+                    retError(error)
+                }
+            }
+        }
+    }
 }
-
-/*
- func uploadImages(images: [UIImage], onSuccess: @escaping (_ urlList: [String]) -> Void, onError: ErrorClosure?) {
-     var urlList: [String] = [String]()
-     var count: Int = 0
-     
-     for image in images {
-         let fileName = "\(UUID().uuidString).jpg"
-         
-         Managers.managerStorageFirebase!.saveImageGetUrl(fileName: fileName, image: image, onSuccess: { url in
-             /// Añadimos la url recibida a la lista
-             urlList.append(url)
-             count += 1
-             /// Solo salimos cuando se hayan subido todas las imagenes o por error
-             if count == images.count {
-                 onSuccess(urlList)
-             }
-             
-         }) { error in
-             if let retError = onError {
-                 retError(error)
-             }
-         }
-     }
- }
- */

@@ -42,11 +42,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }) { error in
             navigation.closeApp(error: error.localizedDescription)
         }
-        
-        /// Limpiamos memoria
-        Managers.managerUserLocation = nil
-        Managers.managerUserAuthoritation = nil
-        Managers.managerUserFirestore = nil
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

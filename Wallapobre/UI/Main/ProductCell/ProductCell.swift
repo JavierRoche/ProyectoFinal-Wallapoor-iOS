@@ -72,11 +72,11 @@ class ProductCell: UICollectionViewCell {
     
     //MARK: Life Cycle
     
-    public func configureCell(imageUrl: String, price: Int, title: String) {
+    public func configureCell(viewModel: ProductCellViewModel) {
         /// Aplicamos la jerarquia de vistas y propiedades
         self.setViewsHierarchy()
         /// Pintamos la foto
-        self.setInfo(imageUrl: imageUrl, price: price, title: title)
+        self.setInfo(viewModel: viewModel)
         /// Fijamos las constraints de los elementos
         self.setConstraints()
     }
@@ -98,8 +98,8 @@ class ProductCell: UICollectionViewCell {
         self.addSubview(titleLabel)
     }
     
-    fileprivate func setInfo(imageUrl: String, price: Int, title: String) {
-        let url = URL.init(string: imageUrl)
+    fileprivate func setInfo(viewModel: ProductCellViewModel) {
+        let url = URL.init(string: viewModel.product.photos[0])
         
         imageView.kf.setImage(with: url, placeholder: nil, options: nil, progressBlock: nil) { (image,_,_,_) in
             if let image = image {
@@ -108,8 +108,8 @@ class ProductCell: UICollectionViewCell {
         }
         
         DispatchQueue.main.async {
-            self.priceLabel.text = String(price)
-            self.titleLabel.text = title
+            self.priceLabel.text = String(viewModel.product.price)
+            self.titleLabel.text = viewModel.product.title
             //self.imageView.setNeedsLayout()
         }
     }

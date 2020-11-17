@@ -75,6 +75,12 @@ enum Constants {
     static let Sold: String = "Sold"
     static let Edit: String = "Edit"
     static let Save: String = "Save"
+    static let UpdateProfile: String = "Update profile"
+    static let GoingToUpdate: String = "Going to update profile"
+    static let AvatarUpdated: String = "Avatar updated"
+    static let Shopping: String = "shopping |"
+    static let Sales: String = "sales"
+    static let Cell: String = "Cell"
     
     
     

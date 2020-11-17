@@ -19,6 +19,7 @@ extension ProfileViewController {
         view.addSubview(shoppingSalesLabel)
         view.addSubview(segmentControl)
         view.addSubview(collectionView)
+        view.addSubview(tableView)
     }
     
     func setConstraints() {
@@ -56,6 +57,13 @@ extension ProfileViewController {
             collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
+        ])
+        
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: segmentControl.bottomAnchor, constant: 16.0),
+            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            tableView.leadingAnchor.constraint(equalTo: segmentControl.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: segmentControl.trailingAnchor)
         ])
     }
 }

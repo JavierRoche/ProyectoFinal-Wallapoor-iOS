@@ -10,12 +10,16 @@ import MessageKit
 import FirebaseFirestore
 
 class User {
-    public var sender: Sender
-    public var email: String
-    public var password: String?
-    public var username: String?
-    public var latitude: Double?
-    public var longitude: Double?
+    var sender: Sender
+    var email: String
+    var password: String?
+    var username: String?
+    var latitude: Double?
+    var longitude: Double?
+    var avatar: String?
+    var lovers: Int?
+    var shopping: Int?
+    var sales: Int?
     
     
     // MARK: Inits
@@ -26,12 +30,16 @@ class User {
         self.password = password
     }
     
-    convenience init(id: String, email: String, username: String, latitude: Double, longitude: Double) {
+    convenience init(id: String, email: String, username: String, latitude: Double, longitude: Double, avatar: String, lovers: Int, shopping: Int, sales: Int) {
         self.init(id: id, email: email, password: String())
         
         self.username = username
         self.latitude = latitude
         self.longitude = longitude
+        self.avatar = avatar
+        self.lovers = lovers
+        self.shopping = shopping
+        self.sales = sales
     }
     
     
@@ -45,9 +53,13 @@ class User {
         let username = json["username"] as? String ?? String()
         let latitude = json["latitude"] as? Double ?? 0.0
         let longitude = json["longitude"] as? Double ?? 0.0
+        let avatar = json["avatar"] as? String ?? String()
+        let lovers = json["lovers"] as? Int ?? Int()
+        let shopping = json["shopping"] as? Int ?? Int()
+        let sales = json["sales"] as? Int ?? Int()
         
         /// Creamos y devolvemos el objeto User
-        return User.init(id: userId, email: email, username: username, latitude: latitude, longitude: longitude)
+        return User.init(id: userId, email: email, username: username, latitude: latitude, longitude: longitude, avatar: avatar, lovers: lovers, shopping: shopping, sales: sales)
     }
     
     
@@ -60,6 +72,10 @@ class User {
         snapshot["username"] = user.username
         snapshot["latitude"] = user.latitude
         snapshot["longitude"] = user.longitude
+        snapshot["avatar"] = user.avatar
+        snapshot["lovers"] = user.lovers
+        snapshot["shopping"] = user.shopping
+        snapshot["sales"] = user.sales
         
         return snapshot
     }

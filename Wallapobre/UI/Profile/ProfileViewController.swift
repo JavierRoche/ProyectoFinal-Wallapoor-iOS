@@ -7,6 +7,11 @@
 //
 
 import UIKit
+import Kingfisher
+
+protocol ProfileViewControllerDelegate: class {
+    func searchSelected(search: Search)
+}
 
 class ProfileViewController: UIViewController {
     lazy var backgroundView: UIView = {
@@ -82,13 +87,24 @@ class ProfileViewController: UIViewController {
         let collection = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collection.backgroundColor = UIColor.red
         collection.dataSource = self
-        //collection.delegate = self
+        collection.delegate = self
         collection.register(ProductCell.self, forCellWithReuseIdentifier: String(describing: ProductCell.self))
         collection.translatesAutoresizingMaskIntoConstraints = false
         return collection
     }()
     
+    lazy var tableView: UITableView = {
+        let table = UITableView(frame: .zero, style: UITableView.Style.plain)
+        table.isHidden = true
+        table.dataSource = self
+        table.delegate = self
+        table.register(UITableViewCell.self, forCellReuseIdentifier: Constants.Cell)
+        table.translatesAutoresizingMaskIntoConstraints = false
+        return table
+    }()
     
+    
+    weak var delegate: ProfileViewControllerDelegate?
     /// Objeto del modelo que contiene el perfil del usuario
     let viewModel: ProfileViewModel
     
@@ -143,7 +159,7 @@ class ProfileViewController: UIViewController {
     
     @objc private func tapOnLogout() {
         DispatchQueue.main.async { [weak self] in
-            self?.showAlert(forInput: false, onlyAccept: false, title: Constants.Logout, message: Constants.GoingToLogout) { _ in
+            self?.showAlert(forInput: false, onlyAccept: false, title: Constants.UpdateProfile, message: Constants.GoingToUpdate) { _ in
                 /// Arrancamos el manager y deslogueamos
                 Managers.managerUserAuthoritation = UserAuthoritation()
                 Managers.managerUserAuthoritation!.logout(onSuccess: {
@@ -157,7 +173,17 @@ class ProfileViewController: UIViewController {
     }
     
     @objc private func tapOnSaveUser() {
-        
+        DispatchQueue.main.async { [weak self] in
+            self?.showAlert(forInput: false, onlyAccept: false, title: Constants.UploadProduct, message: Constants.GoingToUpload) { _ in
+                self?.viewModel.updateProfile(image: self!.avatarImageView.image!, onSuccess: {
+                    self?.showAlert(title: Constants.Success, message: Constants.AvatarUpdated)
+                    self?.navigationItem.rightBarButtonItem?.isEnabled = false
+                    
+                }, onError: { error in
+                    self?.showAlert(title: Constants.Error, message: error.localizedDescription)
+                })
+            }
+        }
     }
     
     @objc private func tapOnAvatar(_ sender: UITapGestureRecognizer) {
@@ -173,7 +199,7 @@ class ProfileViewController: UIViewController {
         DispatchQueue.main.async { [weak self] in
             self?.avatarImageView.image = UIImage(systemName: Constants.faceIcon)
         }
-        self.navigationItem.rightBarButtonItem?.isEnabled = false
+        self.navigationItem.rightBarButtonItem?.isEnabled = !self.navigationItem.rightBarButtonItem!.isEnabled
     }
     
     @objc private func changeSegment(sender: UISegmentedControl!) {
@@ -181,14 +207,16 @@ class ProfileViewController: UIViewController {
         case 0:
             self.viewModel.filterByState(state: .selling)
             collectionView.isHidden = false
+            tableView.isHidden = true
             
         case 1:
             self.viewModel.filterByState(state: .sold)
             collectionView.isHidden = false
+            tableView.isHidden = true
             
         case 2:
             collectionView.isHidden = true
-            break
+            tableView.isHidden = false
             
         default:
             break
@@ -214,11 +242,21 @@ class ProfileViewController: UIViewController {
         /// Informacion de usuario
         DispatchQueue.main.async { [weak self] in
             self?.usernameLabel.text = MainViewModel.user.username
-            self?.shoppingSalesLabel.text = "Quitar //" //\(MainViewModel.user.shopping) compras | \(MainViewModel.user.sales) ventas"
+            self?.shoppingSalesLabel.text = "\(MainViewModel.user.shopping!) \(Constants.Shopping) \(MainViewModel.user.sales!) \(Constants.Sales)"
         }
         
-        /// Filtrado inicial ya que el segmentControl aparece en .selling
-        self.viewModel.filterByState(state: .selling)
+        /// Avatar de usuario
+        if MainViewModel.user.avatar!.isEmpty {
+            self.avatarImageView.image = UIImage(systemName: Constants.faceIcon)
+            
+        } else {
+            guard let url = URL.init(string: MainViewModel.user.avatar!) else { return }
+            avatarImageView.kf.setImage(with: url, placeholder: nil, options: nil, progressBlock: nil) { (image,_,_,_) in
+                if let image = image {
+                    self.avatarImageView.image = image
+                }
+            }
+        }
     }
     
     fileprivate func createLoginScene() {
@@ -239,28 +277,6 @@ class ProfileViewController: UIViewController {
 }
 
 
-// MARK: UICollectionView DataSource
-
-extension ProfileViewController: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.viewModel.numberOfItems(in: section)
-    }
-
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: ProductCell.self), for: indexPath) as? ProductCell else { fatalError() }
-        
-        let productViewModel: ProductCellViewModel = self.viewModel.getCellViewModel(at: indexPath)
-        
-        cell.configureCell(imageUrl: productViewModel.product.photos[0],
-                           price: productViewModel.product.price,
-                           title: productViewModel.product.title)
-        //cell.viewModel = viewModel.getCellViewModel(at: indexPath)
-        //collectionView.collectionViewLayout.invalidateLayout()
-        return cell
-    }
-}
-
-
 // MARK: ProfileViewModel Delegate
 
 extension ProfileViewController: ProfileViewModelDelegate {
@@ -271,14 +287,13 @@ extension ProfileViewController: ProfileViewModelDelegate {
     }
     
     func productCellViewModelsCreated() {
-        DispatchQueue.main.async { [weak self] in
-            self?.collectionView.reloadData()
-        }
+        /// Filtrado inicial ya que el segmentControl aparece en .selling
+        self.viewModel.filterByState(state: .selling)
     }
     
     func searchViewModelsCreated() {
         DispatchQueue.main.async { [weak self] in
-            //self?.tableView.reloadData()
+            self?.tableView.reloadData()
         }
     }
     
