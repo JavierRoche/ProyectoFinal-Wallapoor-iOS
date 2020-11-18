@@ -98,9 +98,11 @@ class ProfileViewModel {
     func updateProfile(image: UIImage, onSuccess: @escaping () -> Void, onError: ErrorClosure?) {
         /// Primero subimos la foto
         self.uploadImages(image: image, onSuccess: { url in
+            /// Podemos liberar memoria
+            Managers.managerStorageFirebase = nil
+            
             MainViewModel.user.avatar = url
             /// Actualizamos el registro del usuario
-            Managers.managerUserFirestore = UserFirestore()
             Managers.managerUserFirestore!.updateUser(user: MainViewModel.user, onSuccess: {
                 onSuccess()
                 
@@ -125,7 +127,6 @@ class ProfileViewModel {
     // MARK: Private Functions
     
     fileprivate func getUserProducts() {
-        Managers.managerProductFirestore = ProductFirestore()
         Managers.managerProductFirestore!.selectProductBySeller(userId: MainViewModel.user.sender.senderId, onSuccess: { [weak self] products in
             /// Mapeamos los productos al modelo de celda
             let productCellViewModels = products.compactMap({ ProductCellViewModel(product: $0) })
@@ -146,6 +147,9 @@ class ProfileViewModel {
     fileprivate func getUserSearches() {
         Managers.managerSearchFirestore = SearchFirestore()
         Managers.managerSearchFirestore!.selectSearchs(onSuccess: { [weak self] searches in
+            /// Liberamos memoria
+            Managers.managerSearchFirestore = nil
+            
             /// Actualizamos la situacion de los modelos
             self?.originalSearchList = searches
             

@@ -37,8 +37,10 @@ enum Constants {
     static let Success: String = "Exito"
     static let PersonalSearchSaved: String = "Búsqueda personal guardada"
     static let Info: String = "Info"
-    static let ProductUploaded: String = "Producto subido"
+    static let ProductUploaded: String = "Product uploaded"
+    static let ProductUpdated: String = "Product updated"
     static let Upload: String = "Upload"
+    static let Update: String = "Update"
     static let UploadProduct: String = "Upload product"
     static let GoingToUpload: String = "Se subirá un producto"
     static let NewParagraph: String = "\n"
@@ -47,6 +49,7 @@ enum Constants {
     static let number50: String = "50"
     static let TITLE: String = "TITLE"
     static let NewProduct: String = "Producto nuevo"
+    static let ModifyProduct: String = "Modify product"
     static let CATEGORY: String = "CATEGORÍA"
     static let SelectCategory: String = "Selecciona categoría"
     static let DESCRIPTION: String = "DESCRIPCIÓN"
@@ -59,6 +62,7 @@ enum Constants {
     static let arrowIcon: String = "arrow.left"
     static let locationIcon: String = "location.circle"
     static let faceIcon: String = "faceid"
+    static let WarningImage: String = "exclamationmark.triangle"
     static let Logout: String = "Logout"
     static let UserLogout: String = "User logout"
     static let GoingToLogout: String = "Going to logout"
@@ -81,6 +85,7 @@ enum Constants {
     static let Shopping: String = "shopping |"
     static let Sales: String = "sales"
     static let Cell: String = "Cell"
+    static let Modify: String = "Modify"
     
     
     

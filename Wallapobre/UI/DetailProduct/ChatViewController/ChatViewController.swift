@@ -33,6 +33,11 @@ class ChatViewController: MessagesViewController {
         navigationItem.leftBarButtonItem = leftBarButtonItem
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        Managers.managerDiscussionFirestore = nil
+        Managers.managerMessageFirestore = nil
+    }
+    
     
     // MARK: User Interactors
     

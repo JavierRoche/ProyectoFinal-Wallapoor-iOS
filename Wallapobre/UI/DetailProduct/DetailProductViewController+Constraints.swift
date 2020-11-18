@@ -15,12 +15,6 @@ extension DetailProductViewController {
         view.addSubview(tableView)
         view.addSubview(footerView)
         view.addSubview(chatButton)
-        
-        /// Boton superior para salir del chat
-        let leftBarButtonItem: UIBarButtonItem = UIBarButtonItem(image: UIImage(systemName: Constants.arrowIcon), style: .plain, target: self, action: #selector(backButtonTapped))
-        leftBarButtonItem.tintColor = .black
-        navigationItem.leftBarButtonItem = leftBarButtonItem
-        navigationController?.navigationBar.alpha = 0.4
     }
     
     func setConstraints() {

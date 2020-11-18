@@ -179,14 +179,12 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        /// Indicamos usuario logueado si venimos de un logout
         if viewModel.logoutMessage {
-            self.showAlert(title: Constants.Logout, message: Constants.UserLogout)
+            DispatchQueue.main.async { [weak self] in
+                self?.showAlert(forInput: false, onlyAccept: true, title: Constants.Logout, message: Constants.UserLogout)
+            }
         }
-        
-        /// Arrancamos los managers que necesitan la escena
-        Managers.managerUserLocation = UserLocation()
-        Managers.managerUserAuthoritation = UserAuthoritation()
-        Managers.managerUserFirestore = UserFirestore()
         
         /// Solicitamos permisos de geolocalizacion al usuario
         guard let _ = viewModel.askForLocationPermissions() else { return }
@@ -220,7 +218,11 @@ class LoginViewController: UIViewController {
                 self.register()
                 return
             }
-            self.showAlert(forInput: false, onlyAccept: true, title: Constants.Error, message: "\(Constants.fatalErrorAuth)\n\(Constants.fatalErrorNeedLoc)")
+            
+            /// Si no hay permisos de localizacion damos un mensaje informativo
+            DispatchQueue.main.async { [weak self] in
+                self?.showAlert(forInput: false, onlyAccept: true, title: Constants.Error, message: "\(Constants.fatalErrorAuth)\n\(Constants.fatalErrorNeedLoc)")
+            }
         }
     }
     
@@ -264,7 +266,9 @@ class LoginViewController: UIViewController {
     fileprivate func login() {
         /// Comprobamos que el usuario ha introducido un email y un pass
         guard let email = emailTextField.text?.lowercased(), let password = passwordTextField.text else {
-            self.showAlert(title: Constants.Warning, message: Constants.MissingData)
+            DispatchQueue.main.async {
+                self.showAlert(title: Constants.Warning, message: Constants.MissingData)
+            }
             return
         }
         
@@ -351,7 +355,6 @@ class LoginViewController: UIViewController {
         /// Liberamos memoria
         Managers.managerUserLocation = nil
         Managers.managerUserAuthoritation = nil
-        Managers.managerUserFirestore = nil
         
         /// Accedemos a la WindowScene de la App para la navegacion
         guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,

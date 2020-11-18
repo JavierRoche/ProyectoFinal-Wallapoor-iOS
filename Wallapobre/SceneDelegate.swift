@@ -18,9 +18,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(windowScene: windowScene)
         
         /// Inicializamos los managers necesarios
-        Managers.managerUserLocation = UserLocation()
         Managers.managerUserAuthoritation = UserAuthoritation()
         Managers.managerUserFirestore = UserFirestore()
+        Managers.managerUserLocation = UserLocation()
         
         let navigation: NavigationManager = NavigationManager()
         /// Obtencion de un usuario logueado

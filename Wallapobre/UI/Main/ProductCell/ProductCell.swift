@@ -100,10 +100,13 @@ class ProductCell: UICollectionViewCell {
     
     fileprivate func setInfo(viewModel: ProductCellViewModel) {
         let url = URL.init(string: viewModel.product.photos[0])
-        
-        imageView.kf.setImage(with: url, placeholder: nil, options: nil, progressBlock: nil) { (image,_,_,_) in
-            if let image = image {
-                self.imageView.image = image
+        imageView.kf.setImage(with: url) { result in
+            switch result {
+            case .success(let value):
+                self.imageView.image = value.image
+                
+            case .failure(_):
+                self.imageView.image = UIImage(systemName: Constants.WarningImage)
             }
         }
         

@@ -131,11 +131,7 @@ class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.viewModel.delegate = self
-        self.viewModel.viewWasLoaded()
         
-        /// Configuramos la interface y cargamos las fotos en el CollectionView
-        self.configureUI()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -152,6 +148,12 @@ class ProfileViewController: UIViewController {
             segmentControl.heightAnchor.constraint(equalToConstant: 31.0)
         ])*/
         
+        /// Hacemos la recuperacion de datos y la configuracion de la UI aqui porque si vengo de una modificacion quiero que se actualice
+        self.viewModel.delegate = self
+        self.viewModel.viewWasLoaded()
+        
+        /// Configuramos la interface y cargamos las fotos en el CollectionView
+        self.configureUI()
     }
     
     
@@ -240,10 +242,8 @@ class ProfileViewController: UIViewController {
         navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.fontStyle17SemiBold], for: .normal)
         
         /// Informacion de usuario
-        DispatchQueue.main.async { [weak self] in
-            self?.usernameLabel.text = MainViewModel.user.username
-            self?.shoppingSalesLabel.text = "\(MainViewModel.user.shopping!) \(Constants.Shopping) \(MainViewModel.user.sales!) \(Constants.Sales)"
-        }
+        usernameLabel.text = MainViewModel.user.username
+        shoppingSalesLabel.text = "\(MainViewModel.user.shopping!) \(Constants.Shopping) \(MainViewModel.user.sales!) \(Constants.Sales)"
         
         /// Avatar de usuario
         if MainViewModel.user.avatar!.isEmpty {
@@ -251,9 +251,13 @@ class ProfileViewController: UIViewController {
             
         } else {
             guard let url = URL.init(string: MainViewModel.user.avatar!) else { return }
-            avatarImageView.kf.setImage(with: url, placeholder: nil, options: nil, progressBlock: nil) { (image,_,_,_) in
-                if let image = image {
-                    self.avatarImageView.image = image
+            avatarImageView.kf.setImage(with: url) { result in
+                switch result {
+                case .success(let value):
+                    self.avatarImageView.image = value.image
+                    
+                case .failure(_):
+                    self.avatarImageView.image = UIImage(systemName: Constants.faceIcon)
                 }
             }
         }

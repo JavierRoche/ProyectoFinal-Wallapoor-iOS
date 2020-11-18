@@ -22,8 +22,9 @@ class MainViewModel {
     private var originalProductList: [ProductCellViewModel] = []
     /// Es la foto tras volver de la scena de seleccion de filtros
     private var auxiliarProductList: [ProductCellViewModel] = []
-    /// Es la lista de la que tira el Collection View principal
+    /// Es la lista de la que tira el CollectionView principal
     private var actualProductList: [ProductCellViewModel] = []
+    /// Dos referencias para almacenar el filtro original y el actual
     private var originalFilter: Filter = Filter()
     private var actualFilter: Filter = Filter()
 
@@ -39,28 +40,23 @@ class MainViewModel {
     
     func viewWasLoaded() {
         Managers.managerProductFirestore = ProductFirestore()
-        Managers.managerUserFirestore = UserFirestore()
         Managers.managerProductFirestore!.selectProducts(onSuccess: { [weak self] products in
             /// Habria que aplicar antes el filtro antes de mapear, pero todas las funciones del modelo funcionan con ProductCellViewModel asi que...
             /// Mapeamos los productos del area inicial al modelo de celda
             let productCellViewModels = products.compactMap({ ProductCellViewModel(product: $0) })
+            
             /// Aplicamos el filtro de distancia a la lista original descargada
             self?.filterByDistance(productCellViewModels: productCellViewModels, onSuccess: { productCellViewModels in
                 self?.originalProductList = productCellViewModels
                 self?.updateSituation(initialSituation: true, productCellViewModels: productCellViewModels)
                 
-                /*self?.actualProductList = productCellViewModels
-                
                 /// Avisamos al controlador de que el modelo de datos se ha creado
-                self?.delegate?.productCellViewModelsCreated()*/
+                self?.delegate?.productCellViewModelsCreated()
             })
             
         }, onError: { error in
             /// Ha habido error raro
             print(error.localizedDescription)
-            /*if let retError = onError {
-                retError(error)
-            }*/
         })
     }
 
@@ -81,14 +77,17 @@ class MainViewModel {
     }
     
     func applyFilter(filter: Filter) {
+        /// Los filtros por categoria y distancia siempre parten de la lista de productos original
         var productCellViewModels: [ProductCellViewModel] = self.originalProductList
         
+        /// Vamos retirando productos de la lista conforme a las categorias
         if !filter.motor { productCellViewModels = filterByCategory(productCellViewModels: productCellViewModels, category: Category.motor) }
         if !filter.textile { productCellViewModels = filterByCategory(productCellViewModels: productCellViewModels, category: Category.textile) }
         if !filter.homes { productCellViewModels = filterByCategory(productCellViewModels: productCellViewModels, category: Category.homes) }
         if !filter.informatic { productCellViewModels = filterByCategory(productCellViewModels: productCellViewModels, category: Category.informatic) }
         if !filter.sports { productCellViewModels = filterByCategory(productCellViewModels: productCellViewModels, category: Category.sports) }
         if !filter.services { productCellViewModels = filterByCategory(productCellViewModels: productCellViewModels, category: Category.services) }
+        
         /// Podemos llegar aqui con la lista ya vacia
         if filter.distance != 50.0 && !productCellViewModels.isEmpty {
             /// Aplicamos el filtro de distancia a la lista original descargada
@@ -111,8 +110,7 @@ class MainViewModel {
             return nil
         }
         
-        /// Para no cargarme la que tiene el filtro principal
-        //self.auxiliarProductList = self.actualProductList
+        /// Actualizamos la lista de alimentacion
         self.actualProductList = filteredProductList
         /// Tambien tenemos que actualizar el filtro actual
         self.actualFilter.text = text
@@ -195,9 +193,9 @@ class MainViewModel {
     }
     
     fileprivate func updateSituation(initialSituation: Bool, productCellViewModels: [ProductCellViewModel], filter: Filter = Filter()) {
-        /// Guardamos la foto tras volver de la seleccion de categorias
+        /// Guardamos la foto en la lista auxiliar
         self.auxiliarProductList = productCellViewModels
-        /// Mapeamos los productos del area elegida en el filtro al modelo de celda
+        /// Guardamos la foto en la lista principal de la que tira el Collection
         self.actualProductList = productCellViewModels
         /// Actualizamos o inicializamos el filtro segun si viene informado
         self.actualFilter = filter

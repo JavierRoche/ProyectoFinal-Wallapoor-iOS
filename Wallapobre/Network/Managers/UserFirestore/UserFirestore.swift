@@ -68,29 +68,32 @@ class UserFirestore: UserFirestoreManager {
         self.db
             .whereField("userid", isEqualTo: user.sender.senderId)
             .getDocuments { (snapshot, error) in
-            /// Raro que devuelva Firestore un error aqui
-            if let error = error, let retError = onError {
-                DispatchQueue.main.async {
-                    retError(error)
+                /// Raro que devuelva Firestore un error aqui
+                if let error = error, let retError = onError {
+                    DispatchQueue.main.async {
+                        retError(error)
+                    }
                 }
-            }
-            
-            /// El usuario existe
-            if let snapshot = snapshot {
-                /// Si no hay ningun user con ese id devolvemos inexistente
-                guard let document: QueryDocumentSnapshot = snapshot.documents.first else { return }
                 
-                document.reference.updateData(["avatar": user.avatar ?? String()]) { error in
-                    if let error = error, let retError = onError {
+                /// Pasamos el user modificado al tipo QueryDocumentSnapshot
+                let updatedSnapshot = User.toSnapshot(user: user)
+                    
+                /// El usuario existe
+                if let snapshot = snapshot {
+                    /// Si no hay ningun user con ese id devolvemos inexistente
+                    guard let document: QueryDocumentSnapshot = snapshot.documents.first else { return }
+                    
+                    document.reference.updateData(updatedSnapshot) { error in
+                        if let error = error, let retError = onError {
+                            DispatchQueue.main.async {
+                                retError(error)
+                            }
+                        }
                         DispatchQueue.main.async {
-                            retError(error)
+                            onSuccess()
                         }
                     }
-                    DispatchQueue.main.async {
-                        onSuccess()
-                    }   
                 }
-            }
         }
     }
 }

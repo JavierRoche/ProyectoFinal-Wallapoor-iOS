@@ -37,23 +37,6 @@ final class FiltersViewModel: Equatable {
     }
     
     
-    // MARK: Public Functions
-    
-    /*func setFilter(motorSwitchValue: Bool, textileSwitchValue: Bool, homesSwitchValue: Bool,
-                   informaticSwitchValue: Bool, sportsSwitchValue: Bool, servicesSwitchValue: Bool, slideValue: Double, text: String) -> Filter {
-        filter.motor = motorSwitchValue
-        filter.textile = textileSwitchValue
-        filter.homes = homesSwitchValue
-        filter.informatic = informaticSwitchValue
-        filter.sports = sportsSwitchValue
-        filter.services = servicesSwitchValue
-        filter.distance = slideValue
-        filter.text = text
-        
-        return filter
-    }*/
-    
-    
     // MARK: Equatable
     
     static func == (lhs: FiltersViewModel, rhs: FiltersViewModel) -> Bool {

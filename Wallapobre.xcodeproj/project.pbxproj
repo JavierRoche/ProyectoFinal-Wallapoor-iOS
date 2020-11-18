@@ -66,6 +66,7 @@
 		18C2F7DC254D9B0E00D74E74 /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C2F7DB254D9B0E00D74E74 /* Product.swift */; };
 		18C2F7E2254EFE0400D74E74 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C2F7E1254EFE0400D74E74 /* Extensions.swift */; };
 		18C2F7E4254F5E0900D74E74 /* NewProductViewController+Input.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C2F7E3254F5E0900D74E74 /* NewProductViewController+Input.swift */; };
+		18DFC370256578A400FD6686 /* MainViewController+Source.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18DFC36F256578A400FD6686 /* MainViewController+Source.swift */; };
 		18E26C3A255FF52400A64CD9 /* SearchFirestore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E26C39255FF52400A64CD9 /* SearchFirestore.swift */; };
 		18E26C3C255FF52F00A64CD9 /* SearchFirestoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E26C3B255FF52F00A64CD9 /* SearchFirestoreManager.swift */; };
 		18E26C3E255FF82400A64CD9 /* Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E26C3D255FF82400A64CD9 /* Search.swift */; };
@@ -150,6 +151,7 @@
 		18C2F7DB254D9B0E00D74E74 /* Product.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
 		18C2F7E1254EFE0400D74E74 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		18C2F7E3254F5E0900D74E74 /* NewProductViewController+Input.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NewProductViewController+Input.swift"; sourceTree = "<group>"; };
+		18DFC36F256578A400FD6686 /* MainViewController+Source.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MainViewController+Source.swift"; sourceTree = "<group>"; };
 		18E26C39255FF52400A64CD9 /* SearchFirestore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFirestore.swift; sourceTree = "<group>"; };
 		18E26C3B255FF52F00A64CD9 /* SearchFirestoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFirestoreManager.swift; sourceTree = "<group>"; };
 		18E26C3D255FF82400A64CD9 /* Search.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Search.swift; sourceTree = "<group>"; };
@@ -393,6 +395,7 @@
 			children = (
 				18B215FE254C75C6008027D1 /* MainViewController.swift */,
 				18A513ED2561AFDB00387355 /* MainViewController+Constraints.swift */,
+				18DFC36F256578A400FD6686 /* MainViewController+Source.swift */,
 				1851CE5B255805C300435F78 /* MainViewController+SearchBar.swift */,
 				18B21623254C7658008027D1 /* MainViewModel.swift */,
 				1851CE5D2558944300435F78 /* ProductCell */,
@@ -654,6 +657,7 @@
 				18C2F7E2254EFE0400D74E74 /* Extensions.swift in Sources */,
 				18C2F7D0254CA19100D74E74 /* FiltersViewController.swift in Sources */,
 				18E26C3C255FF52F00A64CD9 /* SearchFirestoreManager.swift in Sources */,
+				18DFC370256578A400FD6686 /* MainViewController+Source.swift in Sources */,
 				18E26C4025604B1B00A64CD9 /* UIStringAdditions.swift in Sources */,
 				182C9A1525598DD50074C9E9 /* DetailProductViewModel.swift in Sources */,
 				18B63E06255C2AE300831053 /* MessageFirestoreManager.swift in Sources */,

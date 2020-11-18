@@ -103,10 +103,7 @@ class MainViewController: UIViewController {
         super.viewDidLoad()
         
         /// Iniciamos la animacion de actividad previa a la carga inicial
-        self.activityIndicator.center = self.view.center
-        self.activityIndicator.startAnimating()
-        self.view.addSubview(self.activityIndicator)
-        self.view.isUserInteractionEnabled = false
+        self.activateActivityIndicator()
         
         /// Damos al modelo via libre para cargarse
         self.viewModel.delegate = self
@@ -125,9 +122,9 @@ class MainViewController: UIViewController {
     // MARK: User Interactions
     
     @objc func tapOnNewProduct(sender: UIButton!) {
-        let newProductViewModel: NewProductViewModel = NewProductViewModel()
+        let newProductViewModel: NewProductViewModel = NewProductViewModel(product: nil)
         let newProductViewController: NewProductViewController = NewProductViewController(viewModel: newProductViewModel)
-        newProductViewController.delegate = self
+        newProductViewController.creationDelegate = self
         let navigationController: UINavigationController = UINavigationController.init(rootViewController: newProductViewController)
         navigationController.modalPresentationStyle = .automatic
         
@@ -141,69 +138,34 @@ class MainViewController: UIViewController {
                 /// Nos aseguramos de que el usuario ha introducido un nombre
                 guard let text = inputText else { return }
                 /// Creamos la Search actual
-                let actualSearch: Search = Search.init(searcher: MainViewModel.user.sender.senderId, title: text, filter: self!.viewModel.getActualFilter())
+                let actualSearch: Search = Search.init(searcher: MainViewModel.user.sender.senderId, title: text, filter: self?.viewModel.getActualFilter() ?? Filter())
                 
                 /// Guardamos la Search en Firestore
                 self?.viewModel.insertSearch(search: actualSearch, onSuccess: {
                     self?.showAlert(forInput: false, onlyAccept: true, title: Constants.Success, message: Constants.PersonalSearchSaved)
-                    Managers.managerSearchFirestore = nil
                     
                 }, onError: { error in
                     self?.showAlert(title: Constants.Error, message: error.localizedDescription)
-                    Managers.managerSearchFirestore = nil
                 })
             }
         }
     }
-}
-
-
-// MARK: UICollectionView Delegate
-
-extension MainViewController: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let detailProductViewModel: DetailProductViewModel = DetailProductViewModel.init(product: viewModel.getCellViewModel(at: indexPath).product)
-        let detailProductViewController: DetailProductViewController = DetailProductViewController.init(viewModel: detailProductViewModel)
-        //detailProductViewController.delegate = self
-        let navigationController: UINavigationController = UINavigationController.init(rootViewController: detailProductViewController)
-        navigationController.modalPresentationStyle = .fullScreen
-        self.present(navigationController, animated: true, completion: nil)
-        
-        /// Presentamos el ViewController
-        collectionView.deselectItem(at: indexPath, animated: true)
+    
+    
+    // MARK: Private Functions
+    
+    fileprivate func activateActivityIndicator() {
+        activityIndicator.center = self.view.center
+        view.addSubview(self.activityIndicator)
+        activityIndicator.startAnimating()
+        self.view.isUserInteractionEnabled = false
+        searchController.searchBar.isUserInteractionEnabled = false
     }
-}
-
-
-// MARK: UICollectionView DataSource
-
-extension MainViewController: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.viewModel.numberOfItems(in: section)
-    }
-
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: ProductCell.self), for: indexPath) as? ProductCell else { fatalError() }
-        
-        let productViewModel: ProductCellViewModel = self.viewModel.getCellViewModel(at: indexPath)
-        
-        cell.configureCell(viewModel: productViewModel)
-        //cell.viewModel = viewModel.getCellViewModel(at: indexPath)
-        //collectionView.collectionViewLayout.invalidateLayout()
-        return cell
-    }
-}
-
-
-// MARK: UICollectionViewLayout Delegate
-
-extension MainViewController: PinterestLayoutDelegate {
-    func collectionView(_ collectionView: UICollectionView, heightForCellAtIndexPath indexPath: IndexPath) -> CGFloat {
-        //var totalHeight: CGFloat = 0
-        //totalHeight += viewModel.getCellViewModel(at: indexPath).productImage.image?.size.height ?? 0
-        //totalHeight += viewModel.getCellViewModel(at: indexPath).price.boun
-        //return viewModel.getCellViewModel(at: indexPath).productImage.size.height
-        return 180
+    
+    fileprivate func deactivateActivityIndicator() {
+        activityIndicator.stopAnimating()
+        view.isUserInteractionEnabled = true
+        searchController.searchBar.isUserInteractionEnabled = true
     }
 }
 
@@ -213,19 +175,30 @@ extension MainViewController: PinterestLayoutDelegate {
 extension MainViewController: MainViewModelDelegate {
     func productCellViewModelsCreated() {
         /// Paramos el indicador de actividad y recargamos el collection
-        activityIndicator.stopAnimating()
-        self.view.isUserInteractionEnabled = true
-        collectionView.reloadData()
+        self.deactivateActivityIndicator()
+        
+        DispatchQueue.main.async { [weak self] in
+            self?.collectionView.reloadData()
+        }
     }
     
     func filterApplied() {
-        /// Paramos el indicador de actividad y recargamos el collection
-        activityIndicator.stopAnimating()
-        self.view.isUserInteractionEnabled = true
-        collectionView.reloadData()
+        /// Si el texto del filtro no esta vacio es que venimos de la lista de busquedas personales en Profile
+        if !self.viewModel.getActualFilter().text.isEmpty {
+            /// Bloqueamos el uso del searchController y resto de la pantalla para la busqueda actual
+            self.activateActivityIndicator()
+            self.viewModel.filterByText(text: viewModel.getActualFilter().text)
+        }
+        
+        /// Paramos la animacion y liberamos el uso del searchController y del resto de la interface
+        self.deactivateActivityIndicator()
         
         /// Ofrecemos guardar la busquedea tras un filtrado
         saveSearchButton.isHidden = self.viewModel.showUpSaveSearchButton()
+        
+        DispatchQueue.main.async { [weak self] in
+            self?.collectionView.reloadData()
+        }
     }
 }
 
@@ -241,7 +214,7 @@ extension MainViewController: FiltersViewControllerDelegate {
 
 // MARK: ProductViewController Delegate
 
-extension MainViewController: ProductViewControllerDelegate {
+extension MainViewController: NewProductViewControllerDelegate {
     func productAdded() {
         DispatchQueue.main.async { [weak self] in
             self?.showAlert(title: Constants.Info, message: Constants.ProductUploaded)
@@ -254,6 +227,8 @@ extension MainViewController: ProductViewControllerDelegate {
 
 extension MainViewController: ProfileViewControllerDelegate {
     func searchSelected(search: Search) {
+        /// Primero se aplica la parte del filtro correspondiente a categorias y distancia
+        /// Al volver de applyFilter(), en filterApplied(), si hay algo en el texto del filtro tenemos que aplicarlo tambien
         self.viewModel.applyFilter(filter: search.filter)
     }
 }

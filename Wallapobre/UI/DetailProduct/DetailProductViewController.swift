@@ -72,30 +72,7 @@ class DetailProductViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        /// Arrancamos el manager y recuperamos el vendedor del producto
-        Managers.managerUserFirestore = UserFirestore()
-        self.viewModel.getSellerData(viewModel: viewModel, onSuccess: { user in
-            guard let _ = user else {
-                DispatchQueue.main.async { [weak self] in
-                    self?.showAlert(title: Constants.Error, message: Constants.MissingSeller)
-                }
-                self.dismiss(animated: true, completion: nil)
-                return
-            }
-            DispatchQueue.main.async { [weak self] in
-                self?.tableView.reloadData()
-            }
-            
-        }) { (error) in
-            DispatchQueue.main.async { [weak self] in
-                self?.showAlert(title: Constants.Error, message: error.localizedDescription)
-            }
-            self.dismiss(animated: true, completion: nil)
-        }
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        Managers.managerUserFirestore = nil
+        self.getSellerUser()
     }
     
     
@@ -103,6 +80,17 @@ class DetailProductViewController: UIViewController {
     
     @objc func backButtonTapped() {
         dismiss(animated: true, completion: nil)
+    }
+    
+    @objc func tapOnModify() {
+        let newProductViewModel: NewProductViewModel = NewProductViewModel(product: self.viewModel.product)
+        let newProductViewController: NewProductViewController = NewProductViewController(viewModel: newProductViewModel)
+        newProductViewController.modificationDelegate = self
+        let navigationController: UINavigationController = UINavigationController.init(rootViewController: newProductViewController)
+        navigationController.modalPresentationStyle = .automatic
+        
+        /// Presentamos el ViewController
+        self.present(navigationController, animated: true, completion: nil)
     }
     
     @objc private func tapOnChat() {
@@ -113,6 +101,53 @@ class DetailProductViewController: UIViewController {
         let navigationController: UINavigationController = UINavigationController.init(rootViewController: chatViewController)
         navigationController.modalPresentationStyle = .fullScreen
         self.present(navigationController, animated: true, completion: nil)
+    }
+    
+    
+    // MARK: Private Functions
+    
+    fileprivate func getSellerUser() {
+        /// Arrancamos el manager y recuperamos el vendedor del producto
+        Managers.managerUserFirestore = UserFirestore()
+        self.viewModel.getSellerData(viewModel: viewModel, onSuccess: { user in
+            guard let _ = user else {
+                DispatchQueue.main.async { [weak self] in
+                    self?.showAlert(forInput: false, onlyAccept: true, title: Constants.Error, message: Constants.MissingSeller) { _ in
+                        self?.dismiss(animated: true, completion: nil)
+                    }
+                }
+                return
+            }
+            
+            /// Necesitamos el seller para configurar correctamente
+            self.configureUI()
+            
+            DispatchQueue.main.async { [weak self] in
+                self?.tableView.reloadData()
+            }
+            
+        }) { (error) in
+            DispatchQueue.main.async { [weak self] in
+                self?.showAlert(forInput: false, onlyAccept: true, title: Constants.Error, message: error.localizedDescription) { _ in
+                    self?.dismiss(animated: true, completion: nil)
+                }
+            }
+        }
+    }
+    
+    fileprivate func configureUI() {
+        /// Boton superior para salir del chat
+        let leftBarButtonItem: UIBarButtonItem = UIBarButtonItem(image: UIImage(systemName: Constants.arrowIcon), style: .plain, target: self, action: #selector(backButtonTapped))
+        leftBarButtonItem.tintColor = .black
+        navigationItem.leftBarButtonItem = leftBarButtonItem
+        //navigationController?.navigationBar.alpha = 0.4
+        
+        if self.viewModel.seller?.sender.senderId == MainViewModel.user.sender.senderId {
+            let modifyRightBarButtonItem: UIBarButtonItem = UIBarButtonItem(title: Constants.Modify, style: .plain, target: self, action: #selector(tapOnModify))
+            //postLeftBarButtonItem.tintColor = UIColor.tangerine
+            navigationItem.rightBarButtonItem = modifyRightBarButtonItem
+            navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.fontStyle17SemiBold], for: .normal)
+        }
     }
 }
 
@@ -133,6 +168,19 @@ extension DetailProductViewController: ProductImagesCellDelegate {
             fullScreenController.modalPresentationStyle = .custom
             fullScreenController.transitioningDelegate = slideshowTransitioningDelegate
             present(fullScreenController, animated: true, completion: nil)
+        }
+    }
+}
+
+
+// MARK: ModifyProductViewController Delegate
+
+extension DetailProductViewController: ModifyProductViewControllerDelegate {
+    func productModified() {
+        DispatchQueue.main.async { [weak self] in
+            self?.showAlert(forInput: false, onlyAccept: true, title: Constants.Info, message: Constants.ProductUpdated) { _ in
+                self?.dismiss(animated: true, completion: nil)
+            }
         }
     }
 }

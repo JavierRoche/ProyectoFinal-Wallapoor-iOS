@@ -55,7 +55,9 @@ extension UIViewController {
                 
             } else {
                 /// Solo informativo
-                alert.addAction(UIAlertAction(title: actionTitle, style: .default, handler: nil))
+                alert.addAction(UIAlertAction(title: actionTitle, style: .default, handler: { action in
+                    actionHandler?(nil)
+                }))
             }
         }
         

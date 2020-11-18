@@ -11,9 +11,17 @@ import UIKit
 class NewProductViewModel {
     /// Objetos para almacenar datos de pantalla
     private let categories = [Category.motor, Category.textile, Category.homes, Category.informatic, Category.sports, Category.services]
-    
+    /// Se guarda la categoria seleccionada para el producto
     var categoryPicked: Category?
+    /// Instancia del producto cuando es una modificacion
+    let originalProduct: Product?
     
+    
+    // MARK: Inits
+    
+    init(product: Product?){
+        self.originalProduct = product
+    }
     
     // MARK: Public Functions
     
@@ -28,6 +36,9 @@ class NewProductViewModel {
     func uploadImages(images: [UIImage], onSuccess: @escaping (_ urlList: [String]) -> Void, onError: ErrorClosure?) {
         var urlList: [String] = [String]()
         var count: Int = 0
+        
+        /// Iniciamos el manager de almacenamiento
+        Managers.managerStorageFirebase = StorageFirebase()
         
         for image in images {
             let fileName = "\(UUID().uuidString).jpg"
@@ -54,7 +65,24 @@ class NewProductViewModel {
     }
     
     func insertProduct(product: Product, onSuccess: @escaping () -> Void, onError: ErrorClosure?) {
+        /// Iniciamos el manager e insertamos el producto
         Managers.managerProductFirestore!.insertProduct(product: product, onSuccess: {
+            DispatchQueue.main.async {
+                onSuccess()
+            }
+            
+        }) { error in
+            if let retError = onError {
+                DispatchQueue.main.async {
+                    retError(error)
+                }
+            }
+        }
+    }
+    
+    func modifyProduct(product: Product, onSuccess: @escaping () -> Void, onError: ErrorClosure?) {
+        /// Iniciamos el manager e insertamos el producto
+        Managers.managerProductFirestore!.modifyProduct(product: product, onSuccess: {
             DispatchQueue.main.async {
                 onSuccess()
             }

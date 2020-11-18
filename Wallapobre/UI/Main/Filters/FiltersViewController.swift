@@ -111,42 +111,36 @@ class FiltersViewController: UIViewController {
     
     lazy var motorSwitch: UISwitch = {
         let switchy: UISwitch = UISwitch()
-        //switchy.isOn = true
         switchy.translatesAutoresizingMaskIntoConstraints = false
         return switchy
     }()
     
     lazy var textileSwitch: UISwitch = {
         let switchy: UISwitch = UISwitch()
-        //switchy.isOn = true
         switchy.translatesAutoresizingMaskIntoConstraints = false
         return switchy
     }()
     
     lazy var homesSwitch: UISwitch = {
         let switchy: UISwitch = UISwitch()
-        //switchy.isOn = true
         switchy.translatesAutoresizingMaskIntoConstraints = false
         return switchy
     }()
     
     lazy var informaticSwitch: UISwitch = {
         let switchy: UISwitch = UISwitch()
-        //switchy.isOn = true
         switchy.translatesAutoresizingMaskIntoConstraints = false
         return switchy
     }()
     
     lazy var sportsSwitch: UISwitch = {
         let switchy: UISwitch = UISwitch()
-        //switchy.isOn = true
         switchy.translatesAutoresizingMaskIntoConstraints = false
         return switchy
     }()
     
     lazy var servicesSwitch: UISwitch = {
         let switchy: UISwitch = UISwitch()
-        //switchy.isOn = true
         switchy.translatesAutoresizingMaskIntoConstraints = false
         return switchy
     }()
@@ -172,7 +166,7 @@ class FiltersViewController: UIViewController {
     }()
     
     
-    /// Objeto del modelo que contiene las imagenes
+    /// Objeto del modelo que contiene las caracteristicasa del filtro
     let viewModel: FiltersViewModel
     /// Delegado para comunicar la creacion del filtro
     weak var delegate: FiltersViewControllerDelegate?

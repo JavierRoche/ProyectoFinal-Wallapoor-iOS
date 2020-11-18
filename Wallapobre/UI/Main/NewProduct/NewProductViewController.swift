@@ -8,8 +8,12 @@
 
 import UIKit
 
-protocol ProductViewControllerDelegate: class {
+protocol NewProductViewControllerDelegate: class {
     func productAdded()
+}
+
+protocol ModifyProductViewControllerDelegate: class {
+    func productModified()
 }
 
 class NewProductViewController: UIViewController {
@@ -198,8 +202,10 @@ class NewProductViewController: UIViewController {
         return image
     }()
     
-    /// Delegado para comunicar la creacion correcta del producto
-    weak var delegate: ProductViewControllerDelegate?
+    /// Delegado para comunicar la creacion correcta del producto a MainViewController
+    weak var creationDelegate: NewProductViewControllerDelegate?
+    /// Delegado para comunicar la creacion correcta del producto a ProfileViewController
+    weak var modificationDelegate: ModifyProductViewControllerDelegate?
     /// Objeto con el que acceder al manager de Productos
     let viewModel: NewProductViewModel
     
@@ -232,15 +238,11 @@ class NewProductViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        Managers.managerStorageFirebase = StorageFirebase()
-        Managers.managerProductFirestore = ProductFirestore()
-        
         configureUI()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         Managers.managerStorageFirebase = nil
-        Managers.managerProductFirestore = nil
     }
     
     
@@ -324,33 +326,114 @@ class NewProductViewController: UIViewController {
         /// El interespaciado de los stack hay que definirlo una vez el objeto creado
         firstStack.setCustomSpacing(32, after: photo1Image)
         secondStack.setCustomSpacing(32, after: photo3Image)
+        
+        /// Se informan los campos si se inicio el controller para modificacion
+        self.setProductToModify()
+    }
+    
+    fileprivate func setProductToModify() {
+        /// Si se inicio el ViewModel con producto es que estamos en una modificacion
+        guard let product = self.viewModel.originalProduct else { return }
+        
+        /// Cambiamos el valor del titulo y del boton
+        self.title = Constants.ModifyProduct
+        navigationItem.rightBarButtonItem?.title = Constants.Update
+        
+        /// Informamos las cajas de texto
+        titleTextField.text = product.title
+        categoryTextField.text = product.category.name
+        descriptionTextView.text = product.description
+        priceTextField.text = String(product.price)
+        
+        for (index, photo) in product.photos.enumerated() {
+            if let url = URL.init(string: photo) {
+                switch index {
+                case 0:
+                    self.photo1Image.kf.setImage(with: url) { result in
+                        switch result {
+                        case .success(let value):
+                            self.photo1Image.image = value.image
+                            
+                        case .failure(_):
+                            self.photo1Image.image = UIImage(systemName: Constants.WarningImage)
+                        }
+                    }
+                    
+                case 1:
+                    self.photo2Image.kf.setImage(with: url) { result in
+                        switch result {
+                        case .success(let value):
+                            self.photo2Image.image = value.image
+                            
+                        case .failure(_):
+                            self.photo2Image.image = UIImage(systemName: Constants.WarningImage)
+                        }
+                    }
+                    
+                case 2:
+                    self.photo3Image.kf.setImage(with: url) { result in
+                        switch result {
+                        case .success(let value):
+                            self.photo3Image.image = value.image
+                            
+                        case .failure(_):
+                            self.photo3Image.image = UIImage(systemName: Constants.WarningImage)
+                        }
+                    }
+                    
+                default:
+                    self.photo4Image.kf.setImage(with: url) { result in
+                        switch result {
+                        case .success(let value):
+                            self.photo4Image.image = value.image
+                            
+                        case .failure(_):
+                            self.photo4Image.image = UIImage(systemName: Constants.WarningImage)
+                        }
+                    }
+                }
+            }
+        }
     }
     
     fileprivate func areDataRight() -> Bool {
         guard let title = titleTextField.text, let description = descriptionTextView.text, let price = priceTextField.text, let category = categoryTextField.text else {
-            self.showAlert(title: Constants.Warning, message: Constants.MissingData)
+            DispatchQueue.main.async { [weak self] in
+                self?.showAlert(title: Constants.Warning, message: Constants.MissingData)
+            }
             return false
         }
+        
         if title.isEmpty || description.isEmpty || price.isEmpty || category.isEmpty {
-            self.showAlert(title: Constants.Warning, message: Constants.MissingData)
+            DispatchQueue.main.async { [weak self] in
+                self?.showAlert(title: Constants.Warning, message: Constants.MissingData)
+            }
             return false
         }
+        
         guard let _: Int = Int(price) else {
-            self.showAlert(title: Constants.Warning, message: Constants.PriceHasToBe)
+            DispatchQueue.main.async { [weak self] in
+                self?.showAlert(title: Constants.Warning, message: Constants.PriceHasToBe)
+            }
             return false
         }
+        
         if photo1Image.image != UIImage.init(systemName: Constants.cameraIcon) {
             if let image = photo1Image.image { imagesList.append(image) }
         }
+        
         if photo2Image.image != UIImage.init(systemName: Constants.cameraIcon) {
             if let image = photo2Image.image { imagesList.append(image) }
         }
+        
         if photo3Image.image != UIImage.init(systemName: Constants.cameraIcon) {
             if let image = photo3Image.image { imagesList.append(image) }
         }
+        
         if photo4Image.image != UIImage.init(systemName: Constants.cameraIcon) {
             if let image = photo4Image.image { imagesList.append(image) }
         }
+        
         if imagesList.count == 0 {
             DispatchQueue.main.async { [weak self] in
                 self?.showAlert(title: Constants.Warning, message: Constants.OnePhotoAtLess)
@@ -361,18 +444,62 @@ class NewProductViewController: UIViewController {
     }
     
     fileprivate func processProduct() {
+        if let _ = self.viewModel.originalProduct {
+            self.processModifyProduct()
+            
+        } else {
+            self.processNewProduct()
+        }
+    }
+    
+    fileprivate func processNewProduct() {
         /// Subimos las imagenes al Cloud Firebase y esperamos recibir la lista de urls
         self.viewModel.uploadImages(images: self.imagesList, onSuccess: { [weak self] urlList in
+            /// Creamos un producto con los datos introducidos
             let product: Product = Product.init(seller: MainViewModel.user.sender.id,
-                                                title: (self?.titleTextField.text!)!,
-                                                category: self?.viewModel.categoryPicked! ?? Category.homes,
-                                                description: (self?.descriptionTextView.text!)!,
-                                                price: Int((self?.priceTextField.text!)!)!, photos: urlList)
+                                                title: self?.titleTextField.text ?? String(),
+                                                category: self?.viewModel.categoryPicked ?? Category.homes,
+                                                description: self?.descriptionTextView.text ?? String(),
+                                                price: Int(self?.priceTextField.text ?? String()) ?? 0, photos: urlList)
+            
             /// Guardamos el producto en Firestore
             self?.viewModel.insertProduct(product: product, onSuccess: {
                 /// Paramos la animacion y avisamos al controlador para informar al usuario
                 self?.activityIndicator.stopAnimating()
-                self?.delegate?.productAdded()
+                self?.creationDelegate?.productAdded()
+                
+                self?.dismiss(animated: true, completion: nil)
+                
+            }, onError: { error in
+                DispatchQueue.main.async {
+                    self?.showAlert(title: Constants.Error, message: error.localizedDescription)
+                }
+            })
+            
+            
+        }) { [weak self] error in
+            DispatchQueue.main.async {
+                self?.showAlert(title: Constants.Error, message: error.localizedDescription)
+            }
+        }
+    }
+    
+    fileprivate func processModifyProduct() {
+        /// Subimos las imagenes al Cloud Firebase y esperamos recibir la lista de urls
+        self.viewModel.uploadImages(images: self.imagesList, onSuccess: { [weak self] urlList in
+            /// Modificamos el producto inicial antes de lanzar la actualizacion
+            guard let product: Product = self?.viewModel.originalProduct else { return }
+            product.title = self?.titleTextField.text ?? String()
+            product.category = self?.viewModel.categoryPicked ?? product.category
+            product.description = self?.descriptionTextView.text ?? String()
+            product.price = Int(self?.priceTextField.text ?? String()) ?? 0
+            product.photos = urlList
+            
+            /// Guardamos el producto en Firestore
+            self?.viewModel.modifyProduct(product: product, onSuccess: {
+                /// Paramos la animacion y avisamos al controlador para informar al usuario
+                self?.activityIndicator.stopAnimating()
+                self?.modificationDelegate?.productModified()
                 
                 self?.dismiss(animated: true, completion: nil)
                 

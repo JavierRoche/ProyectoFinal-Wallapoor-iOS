@@ -68,7 +68,6 @@ class ProductFirestore: ProductFirestoreManager {
         }
     }
         
-        
     public func insertProduct(product: Product, onSuccess: @escaping () -> Void, onError: ErrorClosure?) {
         /// Pasamos el producto al tipo QueryDocumentSnapshot
         let snapshot = Product.toSnapshot(product: product)
@@ -83,6 +82,41 @@ class ProductFirestore: ProductFirestoreManager {
                 }
                 DispatchQueue.main.async {
                     onSuccess()
+                }
+        }
+    }
+    
+    public func modifyProduct(product: Product, onSuccess: @escaping () -> Void, onError: ErrorClosure?) {
+        /// Primero intentamos recuperar el producto de BD
+        self.db
+            .whereField("productid", isEqualTo: product.productId)
+            .getDocuments { (snapshot, error) in
+                /// Raro que devuelva Firestore un error aqui
+                if let error = error, let retError = onError {
+                    DispatchQueue.main.async {
+                        retError(error)
+                    }
+                }
+                
+                /// Pasamos el producto modificado al tipo QueryDocumentSnapshot
+                let updatedSnapshot = Product.toSnapshot(product: product)
+                
+                /// El producto existe
+                if let snapshot = snapshot {
+                    /// Si no se puede recuperar del snapshot devolvemos inexistente
+                    guard let document: QueryDocumentSnapshot = snapshot.documents.first else { return }
+                    
+                    /// Realizamos el Update con el snapshot actualizado
+                    document.reference.updateData(updatedSnapshot) { error in
+                        if let error = error, let retError = onError {
+                            DispatchQueue.main.async {
+                                retError(error)
+                            }
+                        }
+                        DispatchQueue.main.async {
+                            onSuccess()
+                        }
+                    }
                 }
         }
     }
