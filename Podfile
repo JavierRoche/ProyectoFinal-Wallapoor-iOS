@@ -9,6 +9,7 @@ target 'Wallapobre' do
   pod 'Firebase/Analytics'
   pod 'Firebase/Firestore'
   pod 'FirebaseStorage'
+  pod 'Firebase/Messaging'
   
   pod 'Kingfisher'
   pod 'ImageSlideshow', '~> 1.9.0'
