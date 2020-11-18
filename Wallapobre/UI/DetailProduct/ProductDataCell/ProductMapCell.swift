@@ -90,8 +90,7 @@ class ProductMapCell: UITableViewCell {
     }
     
     fileprivate func setAddress(seller: User) {
-        let sellerLocation = CLLocation(latitude: seller.latitude!,
-                                        longitude: seller.longitude!)
+        let sellerLocation = CLLocation(latitude: seller.latitude, longitude: seller.longitude)
         
         /// Aplicamos geolocalizacion inversa con un CLGeocoder
         let geocoder = CLGeocoder()
@@ -118,7 +117,7 @@ class ProductMapCell: UITableViewCell {
     }
     
     fileprivate func setMapLocation(seller: User) {
-        let location2D = CLLocationCoordinate2D(latitude: seller.latitude!, longitude: seller.longitude!)
+        let location2D = CLLocationCoordinate2D(latitude: seller.latitude, longitude: seller.longitude)
         mapView.centerCoordinate = location2D
         mapView.addOverlay(MKCircle(center: location2D, radius: 1000))
         mapView.showsTraffic = false

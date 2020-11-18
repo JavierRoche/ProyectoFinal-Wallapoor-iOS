@@ -151,7 +151,7 @@ class MainViewModel {
     
     fileprivate func filterByDistance(productCellViewModels: [ProductCellViewModel], toDistance: Double = 50000.0, onSuccess: @escaping ([ProductCellViewModel]) -> Void) {
         /// Obtenemos la localizacion del usuario logueado
-        let userLocation: CLLocation = CLLocation(latitude: MainViewModel.user.latitude!, longitude: MainViewModel.user.longitude!)
+        let userLocation: CLLocation = CLLocation(latitude: MainViewModel.user.latitude, longitude: MainViewModel.user.longitude)
         
         /// Inicializamos valores para el algoritmo que buscara por cada usuario si esta en rango con el user logueado
         var filteredProductCellViewModels: [ProductCellViewModel] = [ProductCellViewModel]()
@@ -162,7 +162,7 @@ class MainViewModel {
                 /// Comprobamos que el usuario del producto se ha recuperado
                 if let user = user {
                     /// Con locations del producto calculamos la distancia al usuario en metros y linea recta
-                    let productLocation = CLLocation(latitude: user.latitude!, longitude: user.longitude!)
+                    let productLocation = CLLocation(latitude: user.latitude, longitude: user.longitude)
                     let distance = productLocation.distance(from: userLocation)
                     if distance <= toDistance {
                         filteredProductCellViewModels.append(productCellViewModel)

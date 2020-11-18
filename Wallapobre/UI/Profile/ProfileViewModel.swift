@@ -70,8 +70,7 @@ class ProfileViewModel {
     }
     
     func setAddress() {
-        let userLocation = CLLocation(latitude: MainViewModel.user.latitude!,
-                                      longitude: MainViewModel.user.longitude!)
+        let userLocation = CLLocation(latitude: MainViewModel.user.latitude, longitude: MainViewModel.user.longitude)
         
         /// Aplicamos geolocalizacion inversa con un CLGeocoder
         let geocoder = CLGeocoder()

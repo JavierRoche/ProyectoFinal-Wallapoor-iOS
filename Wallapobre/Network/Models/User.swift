@@ -13,13 +13,13 @@ class User {
     var sender: Sender
     var email: String
     var password: String?
-    var username: String?
-    var latitude: Double?
-    var longitude: Double?
-    var avatar: String?
-    var lovers: Int?
-    var shopping: Int?
-    var sales: Int?
+    var username: String
+    var latitude: Double
+    var longitude: Double
+    var avatar: String
+    var lovers: Int
+    var shopping: Int
+    var sales: Int
     
     
     // MARK: Inits
@@ -28,6 +28,13 @@ class User {
         self.sender = Sender.init(id: id, displayName: email)
         self.email = email
         self.password = password
+        self.username = String()
+        self.latitude = 0
+        self.longitude = 0
+        self.avatar = String()
+        self.lovers = 0
+        self.shopping = 0
+        self.sales = 0
     }
     
     convenience init(id: String, email: String, username: String, latitude: Double, longitude: Double, avatar: String, lovers: Int, shopping: Int, sales: Int) {

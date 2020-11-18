@@ -29,16 +29,10 @@ class LoginViewModel {
     func askForLocationPermissions() -> String? {
         if Managers.managerUserLocation!.neverRequested() {
             Managers.managerUserLocation!.handleAuthorizationStatus()
-            
-            if Managers.managerUserLocation!.userAuthorized() {
-                Managers.managerUserLocation!.requestLocation()
-            } else { return String() }
-            
-        } else {
-            if Managers.managerUserLocation!.userAuthorized() {
-                Managers.managerUserLocation!.requestLocation()
-            } else { return String() }
         }
+        if Managers.managerUserLocation!.userAuthorized() {
+            Managers.managerUserLocation!.requestLocation()
+        } else { return String() }
         
         return nil
     }
