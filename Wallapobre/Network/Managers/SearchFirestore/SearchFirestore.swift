@@ -21,22 +21,22 @@ class SearchFirestore: SearchFirestoreManager {
             .whereField("searcher", isEqualTo: MainViewModel.user.sender.senderId)
             /// No necesitamos listener y usamos .getDocuments
             .getDocuments { (snapshot, error) in
-            /// Raro que devuelva Firestore un error aqui
-            if let error = error, let retError = onError {
-                DispatchQueue.main.async {
-                    retError(error)
+                /// Raro que devuelva Firestore un error aqui
+                if let error = error, let retError = onError {
+                    DispatchQueue.main.async {
+                        retError(error)
+                    }
                 }
-            }
-            
-            /// Existen busquedas de usuario
-            if let snapshot = snapshot {
-                let searches: [Search] = snapshot.documents
-                    .compactMap({ Search.mapper(document: $0) })
                 
-                DispatchQueue.main.async {
-                    onSuccess(searches)
+                /// Existen busquedas de usuario
+                if let snapshot = snapshot {
+                    let searches: [Search] = snapshot.documents
+                        .compactMap({ Search.mapper(document: $0) })
+                    
+                    DispatchQueue.main.async {
+                        onSuccess(searches)
+                    }
                 }
-            }
         }
     }
     

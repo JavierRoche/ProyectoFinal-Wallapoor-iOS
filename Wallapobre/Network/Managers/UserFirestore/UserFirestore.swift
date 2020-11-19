@@ -17,6 +17,32 @@ class UserFirestore: UserFirestoreManager {
     
     // MARK: Public Functions
     
+    public func selectUsers(onSuccess: @escaping ([User]) -> Void, onError: ErrorClosure?) {
+        /// Realizamos la SELECT a Firebase.users
+        self.db
+            /// Ordenamos por nombre de usuario
+            .order(by: "username", descending: false)
+            /// No necesitamos listener y usamos .getDocuments
+            .getDocuments { (snapshot, error) in
+                /// Raro que devuelva Firestore un error aqui
+                if let error = error, let retError = onError {
+                    DispatchQueue.main.async {
+                        retError(error)
+                    }
+                }
+                
+                /// Existen busquedas de usuario
+                if let snapshot = snapshot {
+                    let users: [User] = snapshot.documents
+                        .compactMap({ User.mapper(document: $0) })
+                    
+                    DispatchQueue.main.async {
+                        onSuccess(users)
+                    }
+                }
+        }
+    }
+    
     public func selectUser(userId: String, onSuccess: @escaping (User?) -> Void, onError: ErrorClosure?) {
         /// Comprobamos la presencia del usuario en BD
         self.db

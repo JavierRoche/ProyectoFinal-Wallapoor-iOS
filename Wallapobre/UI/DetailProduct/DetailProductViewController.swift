@@ -142,7 +142,8 @@ class DetailProductViewController: UIViewController {
         navigationItem.leftBarButtonItem = leftBarButtonItem
         //navigationController?.navigationBar.alpha = 0.4
         
-        if self.viewModel.seller?.sender.senderId == MainViewModel.user.sender.senderId {
+        /// Saldra la opcion de modificar si el producto es del usuario y NO esta vendido
+        if self.viewModel.seller?.sender.senderId == MainViewModel.user.sender.senderId && self.viewModel.product.state != .sold{
             let modifyRightBarButtonItem: UIBarButtonItem = UIBarButtonItem(title: Constants.Modify, style: .plain, target: self, action: #selector(tapOnModify))
             //postLeftBarButtonItem.tintColor = UIColor.tangerine
             navigationItem.rightBarButtonItem = modifyRightBarButtonItem

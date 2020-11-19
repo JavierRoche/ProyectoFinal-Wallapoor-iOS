@@ -17,7 +17,6 @@ class User {
     var latitude: Double
     var longitude: Double
     var avatar: String
-    var rate: Int
     var shopping: Int
     var sales: Int
     
@@ -32,19 +31,17 @@ class User {
         self.latitude = 0
         self.longitude = 0
         self.avatar = String()
-        self.rate = 0
         self.shopping = 0
         self.sales = 0
     }
     
-    convenience init(id: String, email: String, username: String, latitude: Double, longitude: Double, avatar: String, rate: Int, shopping: Int, sales: Int) {
+    convenience init(id: String, email: String, username: String, latitude: Double, longitude: Double, avatar: String, shopping: Int, sales: Int) {
         self.init(id: id, email: email, password: String())
         
         self.username = username
         self.latitude = latitude
         self.longitude = longitude
         self.avatar = avatar
-        self.rate = rate
         self.shopping = shopping
         self.sales = sales
     }
@@ -61,12 +58,11 @@ class User {
         let latitude = json["latitude"] as? Double ?? 0.0
         let longitude = json["longitude"] as? Double ?? 0.0
         let avatar = json["avatar"] as? String ?? String()
-        let rate = json["rate"] as? Int ?? Int()
         let shopping = json["shopping"] as? Int ?? Int()
         let sales = json["sales"] as? Int ?? Int()
         
         /// Creamos y devolvemos el objeto User
-        return User.init(id: userId, email: email, username: username, latitude: latitude, longitude: longitude, avatar: avatar, rate: rate, shopping: shopping, sales: sales)
+        return User.init(id: userId, email: email, username: username, latitude: latitude, longitude: longitude, avatar: avatar, shopping: shopping, sales: sales)
     }
     
     
@@ -80,7 +76,6 @@ class User {
         snapshot["latitude"] = user.latitude
         snapshot["longitude"] = user.longitude
         snapshot["avatar"] = user.avatar
-        snapshot["rate"] = user.rate
         snapshot["shopping"] = user.shopping
         snapshot["sales"] = user.sales
         

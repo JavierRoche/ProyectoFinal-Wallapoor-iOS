@@ -19,6 +19,8 @@ class ProductFirestore: ProductFirestoreManager {
     public func selectProducts(onSuccess: @escaping ([Product]) -> Void, onError: ErrorClosure?) {
         /// Realizamos la SELECT a Firebase.products
         self.db
+            /// Filtramos los productos que no esten vendidos
+            .whereField("state", isEqualTo: 0)
             /// Ordenamos los productos mas actuales primero
             .order(by: "sentdate", descending: false)
             /// Ponemos un listener para que podamos actualizar la lista

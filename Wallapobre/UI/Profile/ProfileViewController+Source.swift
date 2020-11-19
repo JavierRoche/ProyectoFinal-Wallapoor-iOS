@@ -46,7 +46,7 @@ extension ProfileViewController: UICollectionViewDataSource {
 }
 
 
-// MARK: UICollectionView Delegate
+// MARK: UITableView Delegate
 
 extension ProfileViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

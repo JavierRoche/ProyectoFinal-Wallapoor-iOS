@@ -116,6 +116,7 @@ class MainViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         newProductButton.layer.cornerRadius = newProductButton.frame.size.height / 2
         saveSearchButton.layer.cornerRadius = saveSearchButton.frame.size.height / 2
+        self.navigationItem.searchController?.hidesNavigationBarDuringPresentation = false
     }
     
     

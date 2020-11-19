@@ -7,235 +7,289 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "F47DC5F4-F0F4-4A0D-8F67-A1945331EC06"
-            shouldBeEnabled = "No"
+            uuid = "1DBC4828-CE6C-4AC1-927C-2D50046D211A"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Wallapobre/Network/Managers/UserFirestore/UserAuthoritation.swift"
+            filePath = "Wallapobre/UI/DetailProduct/ChatViewController/SellingViewController/SellingViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "65"
-            endingLineNumber = "65"
-            landmarkName = "recoverPassword(user:onSuccess:onError:)"
+            startingLineNumber = "94"
+            endingLineNumber = "94"
+            landmarkName = "tableView(_:didSelectRowAt:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "9D990BB8-4FD0-4814-A899-C6B3C4632D57"
-            shouldBeEnabled = "No"
+            uuid = "8386DC49-F8C6-44AC-8A26-361D99DEC732"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Wallapobre/Network/Managers/UserFirestore/UserAuthoritation.swift"
+            filePath = "Wallapobre/UI/DetailProduct/ChatViewController/ChatViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "68"
-            endingLineNumber = "68"
-            landmarkName = "recoverPassword(user:onSuccess:onError:)"
+            startingLineNumber = "104"
+            endingLineNumber = "104"
+            landmarkName = "unknown"
+            landmarkType = "0">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "F042B538-25B8-40D5-844C-DD95F677EA4F"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Wallapobre/UI/DetailProduct/ChatViewController/ChatViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "117"
+            endingLineNumber = "117"
+            landmarkName = "buyerSelected(buyer:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "F042B538-25B8-40D5-844C-DD95F677EA4F - b8f18015a3902a1e"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; () in Wallapobre.ChatViewController.buyerSelected(buyer: Wallapobre.User) -&gt; ()"
+                  moduleName = "Wallapobre"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/apple/Documents/Proyecto/iOS/Wallapobre/Wallapobre/UI/DetailProduct/ChatViewController/ChatViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "117"
+                  endingLineNumber = "117"
+                  offsetFromSymbolStart = "311">
+               </Location>
+               <Location
+                  uuid = "F042B538-25B8-40D5-844C-DD95F677EA4F - 16540d16bf594842"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; () in closure #1 () -&gt; () in Wallapobre.ChatViewController.buyerSelected(buyer: Wallapobre.User) -&gt; ()"
+                  moduleName = "Wallapobre"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/apple/Documents/Proyecto/iOS/Wallapobre/Wallapobre/UI/DetailProduct/ChatViewController/ChatViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "120"
+                  endingLineNumber = "120"
+                  offsetFromSymbolStart = "92">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "2E38790E-4ECF-46F6-AAAD-97FF4D296B87"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Wallapobre/UI/DetailProduct/ChatViewController/ChatViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "121"
+            endingLineNumber = "121"
+            landmarkName = "buyerSelected(buyer:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "2E38790E-4ECF-46F6-AAAD-97FF4D296B87 - 16540d16bf594842"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; () in closure #1 () -&gt; () in Wallapobre.ChatViewController.buyerSelected(buyer: Wallapobre.User) -&gt; ()"
+                  moduleName = "Wallapobre"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/apple/Documents/Proyecto/iOS/Wallapobre/Wallapobre/UI/DetailProduct/ChatViewController/ChatViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "121"
+                  endingLineNumber = "121"
+                  offsetFromSymbolStart = "192">
+               </Location>
+               <Location
+                  uuid = "2E38790E-4ECF-46F6-AAAD-97FF4D296B87 - 4239a7ce8638e04"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; () in closure #1 () -&gt; () in closure #1 () -&gt; () in Wallapobre.ChatViewController.buyerSelected(buyer: Wallapobre.User) -&gt; ()"
+                  moduleName = "Wallapobre"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/apple/Documents/Proyecto/iOS/Wallapobre/Wallapobre/UI/DetailProduct/ChatViewController/ChatViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "122"
+                  endingLineNumber = "122"
+                  offsetFromSymbolStart = "19">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "E66AF67B-2835-44D8-A118-337F17B1DF42"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Wallapobre/UI/DetailProduct/ChatViewController/ChatViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "122"
+            endingLineNumber = "122"
+            landmarkName = "buyerSelected(buyer:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "B2C6D3BF-8690-4B1D-8A6C-5FACBCB53816"
+            uuid = "4AB3AAED-6A21-4390-B169-5361404AAD1C"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Wallapobre/UI/Login/LoginViewController.swift"
+            filePath = "Wallapobre/UI/DetailProduct/ChatViewController/ChatViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "211"
-            endingLineNumber = "211"
-            landmarkName = "tapOnRegister(sender:)"
+            startingLineNumber = "122"
+            endingLineNumber = "122"
+            landmarkName = "updateUser(user:onSuccess:onError:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "4AB3AAED-6A21-4390-B169-5361404AAD1C - d5bf51661dcda11f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Wallapobre.ChatViewModel.updateUser(user: Wallapobre.User, onSuccess: () -&gt; (), onError: Swift.Optional&lt;(Swift.Error) -&gt; ()&gt;) -&gt; ()"
+                  moduleName = "Wallapobre"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/apple/Documents/Proyecto/iOS/Wallapobre/Wallapobre/UI/DetailProduct/ChatViewController/ChatViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "122"
+                  endingLineNumber = "122"
+                  offsetFromSymbolStart = "206">
+               </Location>
+               <Location
+                  uuid = "4AB3AAED-6A21-4390-B169-5361404AAD1C - 222ff50b73f4def7"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; () in Wallapobre.ChatViewModel.updateUser(user: Wallapobre.User, onSuccess: () -&gt; (), onError: Swift.Optional&lt;(Swift.Error) -&gt; ()&gt;) -&gt; ()"
+                  moduleName = "Wallapobre"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/apple/Documents/Proyecto/iOS/Wallapobre/Wallapobre/UI/DetailProduct/ChatViewController/ChatViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "123"
+                  endingLineNumber = "123"
+                  offsetFromSymbolStart = "29">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "93770611-B020-4B57-808B-5C1E4696E468"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Wallapobre/UI/DetailProduct/ChatViewController/ChatViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "106"
+            endingLineNumber = "106"
+            landmarkName = "modifyProduct(product:onSuccess:onError:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "93770611-B020-4B57-808B-5C1E4696E468 - 6c856ec5021a3261"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Wallapobre.ChatViewModel.modifyProduct(product: Wallapobre.Product, onSuccess: () -&gt; (), onError: Swift.Optional&lt;(Swift.Error) -&gt; ()&gt;) -&gt; ()"
+                  moduleName = "Wallapobre"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/apple/Documents/Proyecto/iOS/Wallapobre/Wallapobre/UI/DetailProduct/ChatViewController/ChatViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "106"
+                  endingLineNumber = "106"
+                  offsetFromSymbolStart = "206">
+               </Location>
+               <Location
+                  uuid = "93770611-B020-4B57-808B-5C1E4696E468 - 22e5d80973860f6"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; () in Wallapobre.ChatViewModel.modifyProduct(product: Wallapobre.Product, onSuccess: () -&gt; (), onError: Swift.Optional&lt;(Swift.Error) -&gt; ()&gt;) -&gt; ()"
+                  moduleName = "Wallapobre"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/apple/Documents/Proyecto/iOS/Wallapobre/Wallapobre/UI/DetailProduct/ChatViewController/ChatViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "107"
+                  endingLineNumber = "107"
+                  offsetFromSymbolStart = "152">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "794597F6-4F98-4571-AD0C-B766FC099BF0"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Wallapobre/UI/DetailProduct/ChatViewController/ChatViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "108"
+            endingLineNumber = "108"
+            landmarkName = "modifyProduct(product:onSuccess:onError:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "3A5EECF0-766A-4700-8D35-73FF8F1E95EF"
+            uuid = "7452CAD7-8DEB-46B6-963D-A97D977F63D8"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Wallapobre/UI/Login/LoginViewModel.swift"
+            filePath = "Wallapobre/UI/DetailProduct/ChatViewController/ChatViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "30"
-            endingLineNumber = "30"
-            landmarkName = "askForLocationPermissions()"
+            startingLineNumber = "123"
+            endingLineNumber = "123"
+            landmarkName = "updateUser(user:onSuccess:onError:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "88DEFCD0-5BB2-4213-98FA-BF09329B01FA"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Wallapobre/UI/Login/LoginViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "294"
-            endingLineNumber = "294"
-            landmarkName = "LoginViewController"
-            landmarkType = "3">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "CBF51B79-72C2-4C2F-B547-7785BE69711F"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Wallapobre/UI/Login/LoginViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "296"
-            endingLineNumber = "296"
-            landmarkName = "register()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "962FDFF0-CE2D-4CF5-A56B-1BD90865FF38"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Wallapobre/UI/DetailProduct/DetailProductViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "182"
-            endingLineNumber = "182"
-            landmarkName = "DetailProductViewController"
-            landmarkType = "21">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "E1ED72C8-AC32-4A81-9A3F-EFADE48DC6AB"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Wallapobre/UI/Main/MainViewModel.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "84"
-            endingLineNumber = "84"
-            landmarkName = "applyFilter(filter:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "68AD8DA6-3B74-4325-BCF5-F038CC54B4D2"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Wallapobre/UI/Main/MainViewModel.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "95"
-            endingLineNumber = "95"
-            landmarkName = "applyFilter(filter:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "705D13FB-E79A-4192-9AD6-093D04709C1F"
+            uuid = "51979D3E-F16E-4D93-9CE8-7A9FF4D9094C"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Wallapobre/UI/Main/MainViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "210"
-            endingLineNumber = "210">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "D17A605D-141F-4A8B-875A-F854D7F3DB02"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Wallapobre/UI/Main/Filters/FiltersViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "209"
-            endingLineNumber = "209"
-            landmarkName = "viewWillDisappear(_:)"
+            startingLineNumber = "119"
+            endingLineNumber = "119"
+            landmarkName = "viewDidAppear(_:)"
             landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "E404D022-888F-4731-916B-12AEB89E4F22"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Wallapobre/UI/Main/MainViewModel.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "116"
-            endingLineNumber = "116"
-            landmarkName = "filterByText(text:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "26E56929-A491-42A4-A58D-A903B8F886B2"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Wallapobre/UI/Main/MainViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "232"
-            endingLineNumber = "232">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "3A9B3714-1555-46CA-8810-13FA1434F53D"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Wallapobre/UI/Main/MainViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "187"
-            endingLineNumber = "187"
-            landmarkName = "MainViewController"
-            landmarkType = "21">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "48512F41-954E-49B5-8AEC-3DDB799937C5"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Wallapobre/UI/Main/MainViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "194"
-            endingLineNumber = "194">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

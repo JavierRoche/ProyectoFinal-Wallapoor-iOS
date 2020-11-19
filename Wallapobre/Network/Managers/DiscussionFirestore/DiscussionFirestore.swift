@@ -23,26 +23,26 @@ class DiscussionFirestore: DiscussionFirestoreManager {
             .whereField("buyer", isEqualTo: discussion.buyer)
             /// No necesitamos listener y usamos .getDocuments
             .getDocuments { (snapshot, error) in
-            /// Raro que devuelva Firestore un error aqui
-            if let error = error, let retError = onError {
-                DispatchQueue.main.async {
-                    retError(error)
-                }
-            }
-            
-            /// La discussion existe
-            if let snapshot = snapshot {
-                /// Si no se puede recuperar por lo que sea
-                guard let document: QueryDocumentSnapshot = snapshot.documents.first else {
+                /// Raro que devuelva Firestore un error aqui
+                if let error = error, let retError = onError {
                     DispatchQueue.main.async {
-                        onNonexistent()
+                        retError(error)
                     }
-                    return
                 }
-                DispatchQueue.main.async {
-                    onSuccess(Discussion.mapper(document: document))
+                
+                /// La discussion existe
+                if let snapshot = snapshot {
+                    /// Si no se puede recuperar por lo que sea
+                    guard let document: QueryDocumentSnapshot = snapshot.documents.first else {
+                        DispatchQueue.main.async {
+                            onNonexistent()
+                        }
+                        return
+                    }
+                    DispatchQueue.main.async {
+                        onSuccess(Discussion.mapper(document: document))
+                    }
                 }
-            }
         }
     }
     

@@ -8,7 +8,7 @@
 
 import UIKit
 
-final class FiltersViewModel: Equatable {
+class FiltersViewModel: Equatable {
     var filter: Filter
     
     

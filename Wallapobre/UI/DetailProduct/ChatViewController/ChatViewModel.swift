@@ -100,5 +100,35 @@ class ChatViewModel {
             }
         }
     }
+    
+    func modifyProduct(product: Product, onSuccess: @escaping () -> Void, onError: ErrorClosure?) {
+        /// Iniciamos el manager e insertamos el producto
+        Managers.managerProductFirestore!.modifyProduct(product: product, onSuccess: {
+            DispatchQueue.main.async {
+                onSuccess()
+            }
+            
+        }) { error in
+            if let retError = onError {
+                DispatchQueue.main.async {
+                    retError(error)
+                }
+            }
+        }
+    }
+    
+    func updateUser(user: User, onSuccess: @escaping () -> Void, onError: ErrorClosure?) {
+        /// Primero subimos la foto
+        Managers.managerUserFirestore!.updateUser(user: user, onSuccess: {
+            onSuccess()
+                
+        }) { error in
+            if let retError = onError {
+                DispatchQueue.main.async {
+                    retError(error)
+                }
+            }
+        }
+    }
 }
 

@@ -57,6 +57,10 @@
 		18B63E04255C2AD900831053 /* MessageFirestore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B63E03255C2AD900831053 /* MessageFirestore.swift */; };
 		18B63E06255C2AE300831053 /* MessageFirestoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B63E05255C2AE300831053 /* MessageFirestoreManager.swift */; };
 		18B63E08255C3F2A00831053 /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B63E07255C3F2A00831053 /* ChatViewModel.swift */; };
+		18BE17AF25668B08000CEE3A /* ChatViewController+Source.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18BE17AE25668B08000CEE3A /* ChatViewController+Source.swift */; };
+		18BE17B22566A404000CEE3A /* SellingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18BE17B12566A404000CEE3A /* SellingViewController.swift */; };
+		18BE17B42566A54E000CEE3A /* SellingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18BE17B32566A54E000CEE3A /* SellingViewModel.swift */; };
+		18BE17B62566C439000CEE3A /* ChatViewController+InputBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18BE17B52566C439000CEE3A /* ChatViewController+InputBar.swift */; };
 		18BFA3EE25640F8E00CA1B24 /* ProfileViewController+Source.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18BFA3ED25640F8E00CA1B24 /* ProfileViewController+Source.swift */; };
 		18C2F7D0254CA19100D74E74 /* FiltersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C2F7CF254CA19100D74E74 /* FiltersViewController.swift */; };
 		18C2F7D2254CA6E000D74E74 /* UIFontAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C2F7D1254CA6E000D74E74 /* UIFontAdditions.swift */; };
@@ -143,6 +147,10 @@
 		18B63E03255C2AD900831053 /* MessageFirestore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageFirestore.swift; sourceTree = "<group>"; };
 		18B63E05255C2AE300831053 /* MessageFirestoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageFirestoreManager.swift; sourceTree = "<group>"; };
 		18B63E07255C3F2A00831053 /* ChatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModel.swift; sourceTree = "<group>"; };
+		18BE17AE25668B08000CEE3A /* ChatViewController+Source.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatViewController+Source.swift"; sourceTree = "<group>"; };
+		18BE17B12566A404000CEE3A /* SellingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SellingViewController.swift; sourceTree = "<group>"; };
+		18BE17B32566A54E000CEE3A /* SellingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SellingViewModel.swift; sourceTree = "<group>"; };
+		18BE17B52566C439000CEE3A /* ChatViewController+InputBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatViewController+InputBar.swift"; sourceTree = "<group>"; };
 		18BFA3ED25640F8E00CA1B24 /* ProfileViewController+Source.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProfileViewController+Source.swift"; sourceTree = "<group>"; };
 		18C2F7CF254CA19100D74E74 /* FiltersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiltersViewController.swift; sourceTree = "<group>"; };
 		18C2F7D1254CA6E000D74E74 /* UIFontAdditions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFontAdditions.swift; sourceTree = "<group>"; };
@@ -411,7 +419,10 @@
 		18B63DFA255C0D4A00831053 /* ChatViewController */ = {
 			isa = PBXGroup;
 			children = (
+				18BE17B02566A3DF000CEE3A /* SellingViewController */,
 				18B63DFB255C0DA900831053 /* ChatViewController.swift */,
+				18BE17AE25668B08000CEE3A /* ChatViewController+Source.swift */,
+				18BE17B52566C439000CEE3A /* ChatViewController+InputBar.swift */,
 				18B63E07255C3F2A00831053 /* ChatViewModel.swift */,
 			);
 			path = ChatViewController;
@@ -433,6 +444,15 @@
 				18B63E03255C2AD900831053 /* MessageFirestore.swift */,
 			);
 			path = MessageFirestore;
+			sourceTree = "<group>";
+		};
+		18BE17B02566A3DF000CEE3A /* SellingViewController */ = {
+			isa = PBXGroup;
+			children = (
+				18BE17B12566A404000CEE3A /* SellingViewController.swift */,
+				18BE17B32566A54E000CEE3A /* SellingViewModel.swift */,
+			);
+			path = SellingViewController;
 			sourceTree = "<group>";
 		};
 		18C2F7CE254CA15A00D74E74 /* Filters */ = {
@@ -649,11 +669,13 @@
 				1825BAF12551D1EA00C3CDFA /* ProfileViewController.swift in Sources */,
 				1898179E2552CD1E0088BFB2 /* LoginViewModel.swift in Sources */,
 				185B33372555ADDF00778CE4 /* ProductFirestoreManager.swift in Sources */,
+				18BE17AF25668B08000CEE3A /* ChatViewController+Source.swift in Sources */,
 				18B5055C2562D9140034D28B /* NavigationManager.swift in Sources */,
 				18C2F7D7254D936F00D74E74 /* NewProductViewController.swift in Sources */,
 				189817A325531BE80088BFB2 /* Managers.swift in Sources */,
 				1851CE5F2558945C00435F78 /* ProductCell.swift in Sources */,
 				18B63DFF255C233D00831053 /* DiscussionFirestore.swift in Sources */,
+				18BE17B42566A54E000CEE3A /* SellingViewModel.swift in Sources */,
 				1825BAEE2551BFFC00C3CDFA /* LoginViewController+Animation.swift in Sources */,
 				18B215FF254C75C6008027D1 /* MainViewController.swift in Sources */,
 				18A513F02561B21D00387355 /* FiltersViewController+Constraints.swift in Sources */,
@@ -686,8 +708,10 @@
 				18BFA3EE25640F8E00CA1B24 /* ProfileViewController+Source.swift in Sources */,
 				1825BAEC2551B56200C3CDFA /* User.swift in Sources */,
 				189817A12552F97E0088BFB2 /* UserLocation.swift in Sources */,
+				18BE17B22566A404000CEE3A /* SellingViewController.swift in Sources */,
 				185B333D2555B71400778CE4 /* StorageFirebaseManager.swift in Sources */,
 				182C9A1A2559BC4B0074C9E9 /* ProductMapCell.swift in Sources */,
+				18BE17B62566C439000CEE3A /* ChatViewController+InputBar.swift in Sources */,
 				18A513F62561B3BE00387355 /* ProfileViewController+Constraints.swift in Sources */,
 				18A513EE2561AFDB00387355 /* MainViewController+Constraints.swift in Sources */,
 				18B63E04255C2AD900831053 /* MessageFirestore.swift in Sources */,

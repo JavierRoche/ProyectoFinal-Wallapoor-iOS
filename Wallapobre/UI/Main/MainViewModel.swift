@@ -19,11 +19,11 @@ class MainViewModel {
     static var user: User = User(id: String(), email: String(), password: String())
     weak var delegate: MainViewModelDelegate?
     /// Lista original con todos los productos descargados de Firebase DB
-    private var originalProductList: [ProductCellViewModel] = []
+    private var originalProductList = [ProductCellViewModel]()
     /// Es la foto tras volver de la scena de seleccion de filtros
-    private var auxiliarProductList: [ProductCellViewModel] = []
+    private var auxiliarProductList = [ProductCellViewModel]()
     /// Es la lista de la que tira el CollectionView principal
-    private var actualProductList: [ProductCellViewModel] = []
+    private var actualProductList = [ProductCellViewModel]()
     /// Dos referencias para almacenar el filtro original y el actual
     private var originalFilter: Filter = Filter()
     private var actualFilter: Filter = Filter()
@@ -60,11 +60,11 @@ class MainViewModel {
         })
     }
 
-    func numberOfItems(in section: Int) -> Int {
+    func numberOfProducts(in section: Int) -> Int {
         return actualProductList.count
     }
 
-    func getCellViewModel(at indexPath: IndexPath) -> ProductCellViewModel {
+    func getProductViewModel(at indexPath: IndexPath) -> ProductCellViewModel {
         return actualProductList[indexPath.row]
     }
     

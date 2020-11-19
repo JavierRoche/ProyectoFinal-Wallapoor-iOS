@@ -99,8 +99,17 @@ class ProductCell: UICollectionViewCell {
     }
     
     fileprivate func setInfo(viewModel: ProductCellViewModel) {
-        let url = URL.init(string: viewModel.product.photos[0])
-        imageView.kf.setImage(with: url) { result in
+        DispatchQueue.global(qos:.userInitiated).async { [weak self] in
+            guard let url = URL.init(string: viewModel.product.photos[0]) else { return }
+            guard let data = try? Data(contentsOf: url) else { return }
+
+            DispatchQueue.main.async {
+                self?.imageView.image = UIImage(data: data)
+                self?.imageView.setNeedsLayout()
+            }
+        }
+        
+        /*imageView.kf.setImage(with: url) { result in
             switch result {
             case .success(let value):
                 self.imageView.image = value.image
@@ -108,7 +117,7 @@ class ProductCell: UICollectionViewCell {
             case .failure(_):
                 self.imageView.image = UIImage(systemName: Constants.WarningImage)
             }
-        }
+        }*/
         
         DispatchQueue.main.async {
             self.priceLabel.text = String(viewModel.product.price)
