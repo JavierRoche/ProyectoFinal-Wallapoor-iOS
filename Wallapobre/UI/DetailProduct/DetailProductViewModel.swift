@@ -30,8 +30,8 @@ class DetailProductViewModel {
     
     // MARK: Public Functions
     
-    func getSellerData(viewModel: DetailProductViewModel, onSuccess: @escaping (User?) -> Void, onError: ErrorClosure?) {
-        Managers.managerUserFirestore!.selectUser(userId: viewModel.product.seller, onSuccess: { user in
+    func getSellerData(onSuccess: @escaping (User?) -> Void, onError: ErrorClosure?) {
+        Managers.managerUserFirestore!.selectUser(userId: self.product.seller, onSuccess: { user in
             self.seller = user
             DispatchQueue.main.async {
                 onSuccess(user)
@@ -44,5 +44,21 @@ class DetailProductViewModel {
                 }
             }
         }
+    }
+    
+    func deleteProduct(onSuccess: @escaping () -> Void, onError: ErrorClosure?) {
+        /// Iniciamos el manager y borramos el producto
+        Managers.managerProductFirestore!.deleteProduct(product: self.product, onSuccess: {
+            DispatchQueue.main.async {
+                onSuccess()
+            }
+            
+        }, onError: { error in
+            if let retError = onError {
+                DispatchQueue.main.async {
+                    retError(error)
+                }
+            }
+        })
     }
 }

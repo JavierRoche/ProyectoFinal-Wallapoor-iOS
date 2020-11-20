@@ -216,14 +216,14 @@ class FiltersViewController: UIViewController {
     
     // MARK: User Interactions
     
-    @objc func sliderValueDidChange(sender: UISlider!) {
+    @objc private func sliderValueDidChange(sender: UISlider!) {
         sender.value = round(sender.value / 10) * 10
         DispatchQueue.main.async { [weak self] in
             self?.sliderLabel.text = String(Int(sender.value))
         }
     }
     
-    @objc func acceptFilter(sender: UIButton!) {
+    @objc private func acceptFilter(sender: UIButton!) {
         dismiss(animated: true, completion: nil)
     }
 }

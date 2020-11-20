@@ -9,6 +9,10 @@
 import UIKit
 import ImageSlideshow
 
+protocol DetailProductViewControllerDelegate: class {
+    func productDeleted()
+}
+
 class DetailProductViewController: UIViewController {
     lazy var tableView: UITableView = {
         let table: UITableView = UITableView(frame: .zero, style: UITableView.Style.plain)
@@ -45,9 +49,21 @@ class DetailProductViewController: UIViewController {
         return button
     }()
     
+    lazy var deleteProductButton: UIButton = {
+        let button: UIButton = UIButton(type: UIButton.ButtonType.system)
+        button.setTitle(Constants.DeleteProduct, for: .normal)
+        button.tintColor = UIColor.black
+        button.backgroundColor = UIColor.red
+        button.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapOnDelete)))
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
     
     /// Objeto del modelo que contiene las imagenes
     let viewModel: DetailProductViewModel
+    /// Delegado para comunicar el borrado correcto del producto a MainViewController
+    weak var delegate: DetailProductViewControllerDelegate?
     
     
     // MARK: Inits
@@ -78,11 +94,11 @@ class DetailProductViewController: UIViewController {
     
     // MARK: User Interactors
     
-    @objc func backButtonTapped() {
+    @objc private func backButtonTapped() {
         dismiss(animated: true, completion: nil)
     }
     
-    @objc func tapOnModify() {
+    @objc private func tapOnModify() {
         let newProductViewModel: NewProductViewModel = NewProductViewModel(product: self.viewModel.product)
         let newProductViewController: NewProductViewController = NewProductViewController(viewModel: newProductViewModel)
         newProductViewController.modificationDelegate = self
@@ -103,16 +119,34 @@ class DetailProductViewController: UIViewController {
         self.present(navigationController, animated: true, completion: nil)
     }
     
+    @objc private func tapOnDelete() {
+        DispatchQueue.main.async { [weak self] in
+            self?.showAlert(forInput: false, onlyAccept: false, title: Constants.DeleteProduct, message: Constants.GoingToDelete) { _ in
+                /// Borramos el producto de la base de datos de Firestore
+                self?.viewModel.deleteProduct(onSuccess: {
+                    /// Informamos al MainViewController para que notifique al usuario
+                    self?.delegate?.productDeleted()
+                    self?.dismiss(animated: true, completion: nil)
+                    
+                }, onError: { error in
+                    DispatchQueue.main.async { [weak self] in
+                        self?.showAlert(title: Constants.Error, message: error.localizedDescription)
+                    }
+                })
+            }
+        }
+    }
+    
     
     // MARK: Private Functions
     
     fileprivate func getSellerUser() {
         /// Arrancamos el manager y recuperamos el vendedor del producto
         Managers.managerUserFirestore = UserFirestore()
-        self.viewModel.getSellerData(viewModel: viewModel, onSuccess: { user in
+        self.viewModel.getSellerData(onSuccess: { user in
             guard let _ = user else {
                 DispatchQueue.main.async { [weak self] in
-                    self?.showAlert(forInput: false, onlyAccept: true, title: Constants.Error, message: Constants.MissingSeller) { _ in
+                    self?.showAlert(title: Constants.Error, message: Constants.MissingSeller) { _ in
                         self?.dismiss(animated: true, completion: nil)
                     }
                 }
@@ -128,7 +162,7 @@ class DetailProductViewController: UIViewController {
             
         }) { (error) in
             DispatchQueue.main.async { [weak self] in
-                self?.showAlert(forInput: false, onlyAccept: true, title: Constants.Error, message: error.localizedDescription) { _ in
+                self?.showAlert(title: Constants.Error, message: error.localizedDescription) { _ in
                     self?.dismiss(animated: true, completion: nil)
                 }
             }
@@ -143,11 +177,21 @@ class DetailProductViewController: UIViewController {
         //navigationController?.navigationBar.alpha = 0.4
         
         /// Saldra la opcion de modificar si el producto es del usuario y NO esta vendido
-        if self.viewModel.seller?.sender.senderId == MainViewModel.user.sender.senderId && self.viewModel.product.state != .sold{
+        if self.viewModel.seller?.sender.senderId == MainViewModel.user.sender.senderId && self.viewModel.product.state != .sold {
             let modifyRightBarButtonItem: UIBarButtonItem = UIBarButtonItem(title: Constants.Modify, style: .plain, target: self, action: #selector(tapOnModify))
             //postLeftBarButtonItem.tintColor = UIColor.tangerine
             navigationItem.rightBarButtonItem = modifyRightBarButtonItem
             navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.fontStyle17SemiBold], for: .normal)
+        }
+        
+        /// Saldra la opcion de borrar y no chatear si el producto es del usuario
+        if self.viewModel.seller?.sender.senderId == MainViewModel.user.sender.senderId {
+            chatButton.isHidden = true
+            deleteProductButton.isHidden = false
+            
+        } else {
+            chatButton.isHidden = false
+            deleteProductButton.isHidden = true
         }
     }
 }
@@ -179,7 +223,7 @@ extension DetailProductViewController: ProductImagesCellDelegate {
 extension DetailProductViewController: ModifyProductViewControllerDelegate {
     func productModified() {
         DispatchQueue.main.async { [weak self] in
-            self?.showAlert(forInput: false, onlyAccept: true, title: Constants.Info, message: Constants.ProductUpdated) { _ in
+            self?.showAlert(title: Constants.Info, message: Constants.ProductUpdated) { _ in
                 self?.dismiss(animated: true, completion: nil)
             }
         }

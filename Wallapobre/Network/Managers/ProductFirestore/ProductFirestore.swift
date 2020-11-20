@@ -122,4 +122,36 @@ class ProductFirestore: ProductFirestoreManager {
                 }
         }
     }
+    
+    public func deleteProduct(product: Product, onSuccess: @escaping () -> Void, onError: ErrorClosure?) {
+        /// Primero intentamos recuperar el producto de BD
+        self.db
+            .whereField("productid", isEqualTo: product.productId)
+            .getDocuments { (snapshot, error) in
+                /// Raro que devuelva Firestore un error aqui
+                if let error = error, let retError = onError {
+                    DispatchQueue.main.async {
+                        retError(error)
+                    }
+                }
+                
+                /// El producto existe
+                if let snapshot = snapshot {
+                    /// Si no se puede recuperar del snapshot devolvemos inexistente
+                    guard let document: QueryDocumentSnapshot = snapshot.documents.first else { return }
+                    
+                    /// Realizamos el Update con el snapshot actualizado
+                    document.reference.delete { error in
+                        if let error = error, let retError = onError {
+                            DispatchQueue.main.async {
+                                retError(error)
+                            }
+                        }
+                        DispatchQueue.main.async {
+                            onSuccess()
+                        }
+                    }
+                }
+        }
+    }
 }

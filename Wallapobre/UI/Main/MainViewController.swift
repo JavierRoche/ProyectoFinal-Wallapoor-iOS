@@ -122,7 +122,7 @@ class MainViewController: UIViewController {
     
     // MARK: User Interactions
     
-    @objc func tapOnNewProduct(sender: UIButton!) {
+    @objc private func tapOnNewProduct(sender: UIButton!) {
         let newProductViewModel: NewProductViewModel = NewProductViewModel(product: nil)
         let newProductViewController: NewProductViewController = NewProductViewController(viewModel: newProductViewModel)
         newProductViewController.creationDelegate = self
@@ -133,7 +133,7 @@ class MainViewController: UIViewController {
         self.present(navigationController, animated: true, completion: nil)
     }
     
-    @objc func tapOnSaveSearch(sender: UIButton!) {
+    @objc private func tapOnSaveSearch(sender: UIButton!) {
         DispatchQueue.main.async { [weak self] in
             self?.showAlert(forInput: true, onlyAccept: false, title: Constants.SaveSearch, message: Constants.NameForPersonal, inputKeyboardType: UIKeyboardType.alphabet) { inputText in
                 /// Nos aseguramos de que el usuario ha introducido un nombre
@@ -143,7 +143,7 @@ class MainViewController: UIViewController {
                 
                 /// Guardamos la Search en Firestore
                 self?.viewModel.insertSearch(search: actualSearch, onSuccess: {
-                    self?.showAlert(forInput: false, onlyAccept: true, title: Constants.Success, message: Constants.PersonalSearchSaved)
+                    self?.showAlert(title: Constants.Success, message: Constants.PersonalSearchSaved)
                     
                 }, onError: { error in
                     self?.showAlert(title: Constants.Error, message: error.localizedDescription)
@@ -213,7 +213,7 @@ extension MainViewController: FiltersViewControllerDelegate {
 }
 
 
-// MARK: ProductViewController Delegate
+// MARK: NewProductViewController Delegate
 
 extension MainViewController: NewProductViewControllerDelegate {
     func productAdded() {
@@ -231,5 +231,16 @@ extension MainViewController: ProfileViewControllerDelegate {
         /// Primero se aplica la parte del filtro correspondiente a categorias y distancia
         /// Al volver de applyFilter(), en filterApplied(), si hay algo en el texto del filtro tenemos que aplicarlo tambien
         self.viewModel.applyFilter(filter: search.filter)
+    }
+}
+
+
+// MARK: ProfileViewController Delegate
+
+extension MainViewController: DetailProductViewControllerDelegate {
+    func productDeleted() {
+        DispatchQueue.main.async { [weak self] in
+            self?.showAlert(title: Constants.Info, message: Constants.ProductDeleted)
+        }
     }
 }

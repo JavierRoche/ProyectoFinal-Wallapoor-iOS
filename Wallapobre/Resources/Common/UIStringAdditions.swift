@@ -43,7 +43,8 @@ enum Constants {
     static let Upload: String = "Upload"
     static let Update: String = "Update"
     static let UploadProduct: String = "Upload product"
-    static let GoingToUpload: String = "Se subirá un producto"
+    static let GoingToUpload: String = "Going to upload a product"
+    static let GoingToDelete: String = "Going to delete a product"
     static let SellProduct: String = "Sell product"
     static let GoingToSell: String = "Going to sell a product"
     static let SelectABuyer: String = "Going to select a buyer"
@@ -86,6 +87,7 @@ enum Constants {
     static let UpdateProfile: String = "Update profile"
     static let UpdatePurchase: String = "Update purchase"
     static let PurchaseCompleted: String = "Purchase completed"
+    static let ProductDeleted: String = "Product deleted"
     static let GoingToUpdate: String = "Going to update profile"
     static let AvatarUpdated: String = "Avatar updated"
     static let Shopping: String = "shopping |"
@@ -95,6 +97,7 @@ enum Constants {
     static let Modify: String = "Modify"
     static let AddedPurchaseToBuyer: String = "Added purchase to buyer"
     static let TransactionCompleted: String = "Transaction completed"
+    static let DeleteProduct: String = "Delete product"
     
     
     

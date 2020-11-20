@@ -96,7 +96,7 @@ class ChatViewController: MessagesViewController {
     
     fileprivate func confirmPurchase() {
         DispatchQueue.main.async { [weak self] in
-            self?.showAlert(forInput: false, onlyAccept: true, title: Constants.Success, message: Constants.PurchaseCompleted)
+            self?.showAlert(title: Constants.Success, message: Constants.PurchaseCompleted)
         }
     }
 }
@@ -122,19 +122,19 @@ extension ChatViewController: SellingViewControllerDelegate {
                     self.confirmPurchase()
                     
                 }, onError: { error in
-                    self.showAlert(forInput: false, onlyAccept: true, title: Constants.Error, message: error.localizedDescription) { _ in
+                    self.showAlert(title: Constants.Error, message: error.localizedDescription) { _ in
                         self.dismiss(animated: true, completion: nil)
                     }
                 })
                 
             }, onError: { error in
-                self.showAlert(forInput: false, onlyAccept: true, title: Constants.Error, message: error.localizedDescription) { _ in
+                self.showAlert(title: Constants.Error, message: error.localizedDescription) { _ in
                     self.dismiss(animated: true, completion: nil)
                 }
             })
             
         }, onError: { error in
-            self.showAlert(forInput: false, onlyAccept: true, title: Constants.Error, message: error.localizedDescription) { _ in
+            self.showAlert(title: Constants.Error, message: error.localizedDescription) { _ in
                 self.dismiss(animated: true, completion: nil)
             }
         })

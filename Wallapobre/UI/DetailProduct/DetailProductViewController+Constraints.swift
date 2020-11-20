@@ -15,6 +15,7 @@ extension DetailProductViewController {
         view.addSubview(tableView)
         view.addSubview(footerView)
         view.addSubview(chatButton)
+        view.addSubview(deleteProductButton)
     }
     
     func setConstraints() {
@@ -38,6 +39,13 @@ extension DetailProductViewController {
             chatButton.bottomAnchor.constraint(equalTo: footerView.bottomAnchor, constant: -16.0),
             chatButton.leadingAnchor.constraint(equalTo: footerView.leadingAnchor, constant: 16.0),
             chatButton.trailingAnchor.constraint(equalTo: footerView.trailingAnchor, constant: -16.0)
+        ])
+        
+        NSLayoutConstraint.activate([
+            deleteProductButton.topAnchor.constraint(equalTo: footerView.topAnchor, constant: 16.0),
+            deleteProductButton.bottomAnchor.constraint(equalTo: footerView.bottomAnchor, constant: -16.0),
+            deleteProductButton.leadingAnchor.constraint(equalTo: footerView.leadingAnchor, constant: 16.0),
+            deleteProductButton.trailingAnchor.constraint(equalTo: footerView.trailingAnchor, constant: -16.0)
         ])
     }
 }

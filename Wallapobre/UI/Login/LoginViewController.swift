@@ -182,7 +182,7 @@ class LoginViewController: UIViewController {
         /// Indicamos usuario logueado si venimos de un logout
         if viewModel.logoutMessage {
             DispatchQueue.main.async { [weak self] in
-                self?.showAlert(forInput: false, onlyAccept: true, title: Constants.Logout, message: Constants.UserLogout)
+                self?.showAlert(title: Constants.Logout, message: Constants.UserLogout)
             }
         }
         
@@ -190,7 +190,7 @@ class LoginViewController: UIViewController {
         guard let _ = viewModel.askForLocationPermissions() else { return }
         
         DispatchQueue.main.async { [weak self] in
-            self?.showAlert(forInput: false, onlyAccept: true, title: Constants.Error, message: "\(Constants.fatalErrorAuth)\n\(Constants.fatalErrorNeedLoc)")
+            self?.showAlert(title: Constants.Error, message: "\(Constants.fatalErrorAuth)\n\(Constants.fatalErrorNeedLoc)")
         }
     }
     
@@ -203,11 +203,11 @@ class LoginViewController: UIViewController {
     
     // MARK: User Interactions
     
-    @objc func tapOnLogin(sender: UIButton!) {
+    @objc private func tapOnLogin(sender: UIButton!) {
         self.login()
     }
     
-    @objc func tapOnRegister(sender: UIButton!) {
+    @objc private func tapOnRegister(sender: UIButton!) {
         /// Abrimos el panel de registro o lanzamos el registro
         if !onRegisterInterface {
             self.openRegisterInterface()
@@ -221,16 +221,16 @@ class LoginViewController: UIViewController {
             
             /// Si no hay permisos de localizacion damos un mensaje informativo
             DispatchQueue.main.async { [weak self] in
-                self?.showAlert(forInput: false, onlyAccept: true, title: Constants.Error, message: "\(Constants.fatalErrorAuth)\n\(Constants.fatalErrorNeedLoc)")
+                self?.showAlert(title: Constants.Error, message: "\(Constants.fatalErrorAuth)\n\(Constants.fatalErrorNeedLoc)")
             }
         }
     }
     
-    @objc func tapOnHideUsername(sender: UIButton!) {
+    @objc private func tapOnHideUsername(sender: UIButton!) {
         self.closeRegisterInterface()
     }
     
-    @objc func tapOnRecover(sender: UIButton!) {
+    @objc private func tapOnRecover(sender: UIButton!) {
         self.recover()
     }
     
