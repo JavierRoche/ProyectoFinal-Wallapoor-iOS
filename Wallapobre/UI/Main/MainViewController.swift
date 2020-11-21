@@ -17,7 +17,6 @@ class MainViewController: UIViewController {
 
     lazy var flowLayout: UICollectionViewFlowLayout = {
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-        //layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
         layout.itemSize = CGSize(width: 160.0, height: 160.0)
         layout.minimumInteritemSpacing = 16.0
         layout.sectionInset = UIEdgeInsets(top: 32.0, left: 32.0, bottom: 32.0, right: 32.0)
@@ -25,8 +24,8 @@ class MainViewController: UIViewController {
     }()
     
     lazy var collectionView: UICollectionView = {
-        let collection = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
-        collection.backgroundColor = UIColor.gray
+        let collection = UICollectionView(frame: .zero, collectionViewLayout: pinterestLayout)
+        collection.backgroundColor = UIColor.white
         collection.dataSource = self
         collection.delegate = self
         collection.register(ProductCell.self, forCellWithReuseIdentifier: String(describing: ProductCell.self))
@@ -76,15 +75,17 @@ class MainViewController: UIViewController {
         return button
     }()
 
+    
     /// Objeto del modelo que contiene las imagenes
     let viewModel: MainViewModel
+    
     
     // MARK: Inits
 
     init(viewModel: MainViewModel) {
         self.viewModel = viewModel
         
-        super.init(nibName: nil, bundle: nil)
+        super.init(nibName: String(describing: MainViewController.self), bundle: nil)
     }
 
     required init?(coder: NSCoder) {
@@ -116,6 +117,7 @@ class MainViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         newProductButton.layer.cornerRadius = newProductButton.frame.size.height / 2
         saveSearchButton.layer.cornerRadius = saveSearchButton.frame.size.height / 2
+        /// Evitamos que al volver de otras pantallas sin NavigationBar, esta no aparezca
         self.navigationItem.searchController?.hidesNavigationBarDuringPresentation = false
     }
     

@@ -114,3 +114,23 @@ enum ProductState: Int {
 }
 
 public typealias ErrorClosure = (Error) -> Void
+
+
+
+extension UIImage {
+    /// Funcion que scala una imagen a un maximo de pixels sin alterar el aspect radio
+    func scaleToWidth(scale: CGFloat) -> UIImage {
+        let oldWidth = self.size.width
+        let scaleFactor = scale / oldWidth
+
+        let newHeight = self.size.height * scaleFactor
+        let newWidth = oldWidth * scaleFactor;
+
+        UIGraphicsBeginImageContext(CGSize(width: newWidth, height: newHeight))
+        _ = CGRect(x: 0, y: 0, width: newWidth, height: newHeight)
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return newImage!
+    }
+}

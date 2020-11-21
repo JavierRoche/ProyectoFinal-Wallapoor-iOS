@@ -14,12 +14,11 @@ class StorageFirebase: StorageFirebaseManager {
         /// Inicializamos en el Storage de Firebase el archivo
         let ref = Storage.storage().reference().child(fileName)
         /// Pasamos la UIImage a Data de Firebase redimensionando al 25%
-        if let imageData: Data = image.jpegData(compressionQuality: 0.15){
+        if let imageData: Data = image.jpegData(compressionQuality: 0.30) {
             
             /// Objeto de tipo StorageMetadata que contiene las caracteristicas del fichero
             let metadata: StorageMetadata = StorageMetadata()
             metadata.contentType = Constants.jpegDirectory
-            //metadata.customMetadata = ["productid": "productid"]
 
             /// Intentamos guardar el fichero en Cloud Storage con la imagen en Data y el StorageMetadata
             ref.putData(imageData, metadata: metadata) { (metadata, error) in

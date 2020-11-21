@@ -179,8 +179,12 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        /// Indicamos usuario logueado si venimos de un logout
+        /// Indicamos usuario deslogueado si venimos de un logout
         if viewModel.logoutMessage {
+            /// Reinicializamos el manager necesario
+            Managers.managerUserLocation = UserLocation()
+            Managers.managerUserAuthoritation = UserAuthoritation()
+            
             DispatchQueue.main.async { [weak self] in
                 self?.showAlert(title: Constants.Logout, message: Constants.UserLogout)
             }

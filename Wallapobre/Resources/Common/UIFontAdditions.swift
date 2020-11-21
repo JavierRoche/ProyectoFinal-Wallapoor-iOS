@@ -29,6 +29,10 @@ extension UIFont {
         return UIFont.systemFont(ofSize: 22.0, weight: .regular)
     }
     
+    class var fontStyle20Bold: UIFont {
+        return UIFont.systemFont(ofSize: 20.0, weight: .bold)
+    }
+    
     class var fontStyle18Bold: UIFont {
         return UIFont.systemFont(ofSize: 18.0, weight: .bold)
     }

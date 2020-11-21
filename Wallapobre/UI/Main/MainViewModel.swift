@@ -60,11 +60,11 @@ class MainViewModel {
         })
     }
 
-    func numberOfProducts(in section: Int) -> Int {
+    func numberOfItems(in section: Int) -> Int {
         return actualProductList.count
     }
 
-    func getProductViewModel(at indexPath: IndexPath) -> ProductCellViewModel {
+    func getCellViewModel(at indexPath: IndexPath) -> ProductCellViewModel {
         return actualProductList[indexPath.row]
     }
     

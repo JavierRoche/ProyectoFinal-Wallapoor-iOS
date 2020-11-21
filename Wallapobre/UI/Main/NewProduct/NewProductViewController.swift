@@ -202,13 +202,14 @@ class NewProductViewController: UIViewController {
         return image
     }()
     
+    
     /// Delegado para comunicar la creacion correcta del producto a MainViewController
     weak var creationDelegate: NewProductViewControllerDelegate?
     /// Delegado para comunicar la creacion correcta del producto a ProfileViewController
     weak var modificationDelegate: ModifyProductViewControllerDelegate?
     /// Objeto con el que acceder al manager de Productos
     let viewModel: NewProductViewModel
-    
+    /// Listas de apoyo
     private var imageHolderPressed = UIImageView()
     private var imagesList: [UIImage] = [UIImage]()
     
@@ -455,12 +456,13 @@ class NewProductViewController: UIViewController {
     fileprivate func processNewProduct() {
         /// Subimos las imagenes al Cloud Firebase y esperamos recibir la lista de urls
         self.viewModel.uploadImages(images: self.imagesList, onSuccess: { [weak self] urlList in
+            /// Para layout Pinterest necesito guardar la altura de la imagen principal
+            // Tushe - Pinterest
+            guard let mainImage = self?.imagesList[0] else { return }
+            let height = self?.viewModel.getHeightMainImage(image: mainImage)
+            
             /// Creamos un producto con los datos introducidos
-            let product: Product = Product.init(seller: MainViewModel.user.sender.id,
-                                                title: self?.titleTextField.text ?? String(),
-                                                category: self?.viewModel.categoryPicked ?? Category.homes,
-                                                description: self?.descriptionTextView.text ?? String(),
-                                                price: Int(self?.priceTextField.text ?? String()) ?? 0, photos: urlList)
+            let product: Product = Product.init(seller: MainViewModel.user.sender.id, title: self?.titleTextField.text ?? String(), category: self?.viewModel.categoryPicked ?? Category.homes, description: self?.descriptionTextView.text ?? String(), price: Int(self?.priceTextField.text ?? String()) ?? 0, photos: urlList, heightMainphoto: height ?? 0)
             
             /// Guardamos el producto en Firestore
             self?.viewModel.insertProduct(product: product, onSuccess: {

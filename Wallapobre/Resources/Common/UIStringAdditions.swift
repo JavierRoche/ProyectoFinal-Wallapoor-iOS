@@ -74,7 +74,7 @@ enum Constants {
     static let fatalErrorAuth: String = "Configure Wallapoor authorization from options"
     static let fatalErrorNeedLoc: String = "Wallapoor needs to get the locations to work"
     static let usersFirebase: String = "users"
-    static let productsFirebase: String = "products"
+    static let productsFirebase: String = "productsxx"
     static let jpegDirectory: String = "image/jpeg"
     static let discussionsFirebase: String = "discussions"
     static let messagesFirebase: String = "messages"

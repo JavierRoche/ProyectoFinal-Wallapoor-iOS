@@ -16,8 +16,10 @@ class Product {
     var category: Category
     var description: String
     var price: Int
+    var viewers: Int
     var sentDate: Date
     var photos: [String]
+    var heightMainphoto: Double
     
     
     // MARK: Inits
@@ -29,8 +31,10 @@ class Product {
                 category: Category.RawValue,
                 description: String,
                 price: Int,
+                viewers: Int,
                 sentDate: Date,
-                photos: [String]){
+                photos: [String],
+                heightMainphoto: Double) {
         self.productId = productId
         self.seller = seller
         self.state = state
@@ -38,8 +42,10 @@ class Product {
         self.category = Category(rawValue: category)!
         self.description = description
         self.price = price
+        self.viewers = viewers
         self.sentDate = sentDate
         self.photos = photos
+        self.heightMainphoto = heightMainphoto
     }
     
     convenience init(seller: String,
@@ -47,7 +53,8 @@ class Product {
                      category: Category,
                      description: String,
                      price: Int,
-                     photos: [String]) {
+                     photos: [String],
+                     heightMainphoto: Double) {
         self.init(productId: UUID().uuidString,
                   seller: seller,
                   state: ProductState.selling,
@@ -55,8 +62,10 @@ class Product {
                   category: category.rawValue,
                   description: description,
                   price: price,
+                  viewers: 0,
                   sentDate: Date(),
-                  photos: photos)
+                  photos: photos,
+                  heightMainphoto: heightMainphoto)
     }
     
     
@@ -72,7 +81,9 @@ class Product {
         let category = json["category"] as? Category.RawValue ?? 2 /// Categoria Hogar si no puede mapear
         let description = json["description"] as? String ?? String()
         let price = json["price"] as? Int ?? 0
+        let viewers = json["viewers"] as? Int ?? 0
         let sentDate = json["sentDate"] as? Date ?? Date()
+        let heightMainphoto = json["heightmainphoto"] as? Double ?? 0.0
         let photo2 = json["photo2"] as? String ?? String()
         let photo3 = json["photo3"] as? String ?? String()
         let photo4 = json["photo4"] as? String ?? String()
@@ -90,7 +101,7 @@ class Product {
         }
         
         /// Creamos y devolvemos el objeto Product
-        return Product.init(productId: productId, seller: seller, state: ProductState(rawValue: state)!, title: title, category: category, description: description, price: price, sentDate: sentDate, photos: photos)
+        return Product.init(productId: productId, seller: seller, state: ProductState(rawValue: state)!, title: title, category: category, description: description, price: price, viewers: viewers, sentDate: sentDate, photos: photos, heightMainphoto: heightMainphoto)
     }
     
     class func toSnapshot(product: Product) -> [String: Any] {
@@ -104,7 +115,9 @@ class Product {
         snapshot["category"] = product.category.rawValue
         snapshot["description"] = product.description
         snapshot["price"] = product.price
+        snapshot["viewers"] = product.viewers
         snapshot["sentdate"] = product.sentDate
+        snapshot["heightmainphoto"] = product.heightMainphoto
         snapshot["photo1"] = product.photos[0]
         
         switch product.photos.count {

@@ -8,27 +8,19 @@
 
 import UIKit
 import Kingfisher
+import QuartzCore
 
 class ProductCell: UICollectionViewCell {
-    lazy var backgroundViewCell: UIView = {
-        let view: UIView = UIView(frame: self.contentView.bounds)
-        view.backgroundColor = UIColor.white
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-    
     lazy var imageView: UIImageView = {
         let image: UIImageView = UIImageView()
-        image.contentMode = .scaleAspectFit
-        image.layer.masksToBounds = false
-        image.layer.cornerRadius = 8.0
+        image.contentMode = .scaleAspectFill
         image.translatesAutoresizingMaskIntoConstraints = false
         return image
     }()
     
     lazy var priceLabel: UILabel = {
         let label: UILabel = UILabel()
-        label.font = UIFont.fontStyle17Bold
+        label.font = UIFont.fontStyle20Bold
         label.textColor = UIColor.black
         label.numberOfLines = 1
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -37,58 +29,62 @@ class ProductCell: UICollectionViewCell {
     
     lazy var titleLabel: UILabel = {
         let label: UILabel = UILabel()
-        label.font = UIFont.fontStyle14Regular
+        label.font = UIFont.fontStyle16Regular
         label.textColor = UIColor.black
-        label.numberOfLines = 2
+        label.numberOfLines = 1
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     
-    //  cell.viewModel = viewModel.viewModel(at: indexPath)
-    
-    //lazy var cellHeight: CGFloat = 0
-    
     var viewModel: ProductCellViewModel? {
         didSet {
             guard let viewModel = viewModel else { return }
-            
-            /*let url = URL.init(string: viewModel.productImage)
-            imageView.kf.setImage(with: url, placeholder: nil, options: nil, progressBlock: nil) { (image,_,_,_) in
-                if let image = image {
-                    self.imageView.image = image
+            guard let url = URL.init(string: viewModel.product.photos[0]) else { return }
+            /// Aqui puntualmente no uso KingFisher porque da mejor resultado el nativo
+            DispatchQueue.global(qos:.userInitiated).async {
+                guard let data = try? Data(contentsOf: url) else { return }
+
+                DispatchQueue.main.async {
+                    self.imageView.image = UIImage(data: data)
+                    self.imageView.setNeedsLayout()
                 }
-            }*/
-            //imageView.image = viewModel.productImage
-            DispatchQueue.main.async { [weak self] in
-                self?.priceLabel.text = String(viewModel.product.price)
-                self?.titleLabel.text = viewModel.product.title
             }
-            
-            self.setViewsHierarchy()
-            self.setConstraints()
+            priceLabel.text = String(viewModel.product.price)
+            titleLabel.text = viewModel.product.title
         }
     }
     
+    
     //MARK: Life Cycle
     
-    public func configureCell(viewModel: ProductCellViewModel) {
-        /// Aplicamos la jerarquia de vistas y propiedades
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        /// Borde
+        self.layer.cornerRadius = 8.0
+        self.layer.masksToBounds = true
+        self.layer.borderWidth = 0.3
+        self.layer.borderColor = UIColor.lightGray.cgColor
+        
+        /// Sombra
+        self.layer.shadowColor = UIColor.black.cgColor
+        self.layer.shadowOffset = CGSize(width: 0, height: 1.0)
+        self.layer.shadowRadius = 2.0
+        self.layer.shadowOpacity = 0.5
+        
+        /// Borde de la imagen
+        imageView.layer.masksToBounds = true
+        imageView.layer.cornerRadius = 8.0
+        
         self.setViewsHierarchy()
-        /// Pintamos la foto
-        self.setInfo(viewModel: viewModel)
-        /// Fijamos las constraints de los elementos
         self.setConstraints()
     }
-
-
-    /*override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-        contentView.layer.cornerRadius = 8.0
-        contentView.layer.masksToBounds = true
-    }*/
-
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     
     // MARK: Private Functions
         
@@ -98,50 +94,24 @@ class ProductCell: UICollectionViewCell {
         self.addSubview(titleLabel)
     }
     
-    fileprivate func setInfo(viewModel: ProductCellViewModel) {
-        DispatchQueue.global(qos:.userInitiated).async { [weak self] in
-            guard let url = URL.init(string: viewModel.product.photos[0]) else { return }
-            guard let data = try? Data(contentsOf: url) else { return }
-
-            DispatchQueue.main.async {
-                self?.imageView.image = UIImage(data: data)
-                self?.imageView.setNeedsLayout()
-            }
-        }
-        
-        /*imageView.kf.setImage(with: url) { result in
-            switch result {
-            case .success(let value):
-                self.imageView.image = value.image
-                
-            case .failure(_):
-                self.imageView.image = UIImage(systemName: Constants.WarningImage)
-            }
-        }*/
-        
-        DispatchQueue.main.async {
-            self.priceLabel.text = String(viewModel.product.price)
-            self.titleLabel.text = viewModel.product.title
-            //self.imageView.setNeedsLayout()
-        }
-    }
-    
     fileprivate func setConstraints() {
         NSLayoutConstraint.activate([
-            imageView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            imageView.topAnchor.constraint(equalTo: self.topAnchor),
-            imageView.widthAnchor.constraint(equalToConstant: 160),
-            imageView.heightAnchor.constraint(equalToConstant: 160)
+            imageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 0.6),
+            imageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 0.6),
+            imageView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 0.6),
         ])
         
         NSLayoutConstraint.activate([
-            priceLabel.topAnchor.constraint(equalTo: imageView.topAnchor, constant: 16.0),
-            priceLabel.trailingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: -16.0)
+            priceLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 8.0),
+            priceLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 8.0),
+            priceLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -8.0)
         ])
         
         NSLayoutConstraint.activate([
-            titleLabel.bottomAnchor.constraint(equalTo: imageView.bottomAnchor, constant: -16.0),
-            titleLabel.leadingAnchor.constraint(equalTo: imageView.leadingAnchor, constant: 16.0)
+            titleLabel.topAnchor.constraint(equalTo: priceLabel.bottomAnchor, constant: 8.0),
+            titleLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -8.0),
+            titleLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 8.0),
+            titleLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -8.0)
         ])
     }
 }

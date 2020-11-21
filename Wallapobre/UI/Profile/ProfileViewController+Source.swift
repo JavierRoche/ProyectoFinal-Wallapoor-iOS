@@ -36,11 +36,10 @@ extension ProfileViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: ProductCell.self), for: indexPath) as? ProductCell else { fatalError() }
         
-        let productViewModel: ProductCellViewModel = self.viewModel.getCellViewModel(at: indexPath)
+        //let productViewModel: ProductCellViewModel = self.viewModel.getCellViewModel(at: indexPath)
         
-        cell.configureCell(viewModel: productViewModel)
-        //cell.viewModel = viewModel.getCellViewModel(at: indexPath)
-        //collectionView.collectionViewLayout.invalidateLayout()
+        //cell.configureCell(viewModel: productViewModel)
+        cell.viewModel = viewModel.getCellViewModel(at: indexPath)
         return cell
     }
 }

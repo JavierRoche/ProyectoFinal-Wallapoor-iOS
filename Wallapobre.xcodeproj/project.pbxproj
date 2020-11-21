@@ -231,11 +231,11 @@
 		1825BAE52551B12100C3CDFA /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				18C2F7DB254D9B0E00D74E74 /* Product.swift */,
 				1825BAEB2551B56200C3CDFA /* User.swift */,
+				18C2F7DB254D9B0E00D74E74 /* Product.swift */,
+				18E26C3D255FF82400A64CD9 /* Search.swift */,
 				18B63DF6255C08F300831053 /* Discussion.swift */,
 				18B63DF8255C09ED00831053 /* Message.swift */,
-				18E26C3D255FF82400A64CD9 /* Search.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -380,10 +380,10 @@
 		18B2161D254C7601008027D1 /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				18B2161E254C7615008027D1 /* PinterestLayout.swift */,
 				18C2F7D1254CA6E000D74E74 /* UIFontAdditions.swift */,
 				18E26C3F25604B1B00A64CD9 /* UIStringAdditions.swift */,
 				18E26C4125604B6B00A64CD9 /* UIColorAdditions.swift */,
+				18B2161E254C7615008027D1 /* PinterestLayout.swift */,
 				18C2F7E1254EFE0400D74E74 /* Extensions.swift */,
 			);
 			path = Common;

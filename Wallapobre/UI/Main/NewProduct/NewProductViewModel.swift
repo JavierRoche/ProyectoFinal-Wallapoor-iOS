@@ -95,5 +95,12 @@ class NewProductViewModel {
             }
         }
     }
+    
+    func getHeightMainImage(image: UIImage) -> Double {
+        print(CGSize(width: image.size.width * image.scale, height: image.size.height * image.scale))
+        let scaledImage = image.scaleToWidth(scale: UIScreen.main.bounds.width)
+        print(CGSize(width: scaledImage.size.width * scaledImage.scale, height: scaledImage.size.height * scaledImage.scale))
+        return Double((scaledImage.size.height * scaledImage.scale) / 2)
+    }
 }
 

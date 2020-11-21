@@ -83,7 +83,7 @@ class ChatViewController: MessagesViewController {
             item.image = UIImage(named: Constants.Deal) //?.withRenderingMode(.alwaysTemplate)
             item.setSize(CGSize(width: 80, height: 80), animated: true)
             item.onSelected { _ in
-                item.tintColor = UIColor(red: 69/255, green: 193/255, blue: 89/255, alpha: 1)
+                item.tintColor = UIColor.gray
                 self.runTransaction()
             }
             item.onDeselected { _ in
