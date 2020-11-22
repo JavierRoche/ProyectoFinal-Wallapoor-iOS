@@ -8,7 +8,6 @@
 
 import UIKit
 import Kingfisher
-import QuartzCore
 
 class ProductCell: UICollectionViewCell {
     lazy var imageView: UIImageView = {
@@ -29,7 +28,7 @@ class ProductCell: UICollectionViewCell {
     
     lazy var titleLabel: UILabel = {
         let label: UILabel = UILabel()
-        label.font = UIFont.fontStyle16Regular
+        label.font = UIFont.fontStyle18Regular
         label.textColor = UIColor.black
         label.numberOfLines = 1
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -41,16 +40,17 @@ class ProductCell: UICollectionViewCell {
         didSet {
             guard let viewModel = viewModel else { return }
             guard let url = URL.init(string: viewModel.product.photos[0]) else { return }
-            /// Aqui puntualmente no uso KingFisher porque da mejor resultado el nativo
-            DispatchQueue.global(qos:.userInitiated).async {
-                guard let data = try? Data(contentsOf: url) else { return }
-
-                DispatchQueue.main.async {
-                    self.imageView.image = UIImage(data: data)
-                    self.imageView.setNeedsLayout()
+            self.imageView.kf.setImage(with: url) { [weak self] result in
+                switch result {
+                case .success(let value):
+                    self?.imageView.bounds.size.height = CGFloat(viewModel.product.heightMainphoto)
+                    self?.imageView.image = value.image
+                    
+                case .failure(_):
+                    self?.imageView.image = UIImage(systemName: Constants.WarningImage)
                 }
             }
-            priceLabel.text = String(viewModel.product.price)
+            priceLabel.text = "\(String(viewModel.product.price))\(Constants.Euro)"
             titleLabel.text = viewModel.product.title
         }
     }
@@ -85,33 +85,38 @@ class ProductCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    /// Necesario al redibujar el contenido de una celda para evitar varios tipos de errores de dibujado
+    override func prepareForReuse() {
+        imageView.image = nil
+    }
+    
     
     // MARK: Private Functions
         
     fileprivate func setViewsHierarchy() {
-        self.addSubview(imageView)
-        self.addSubview(priceLabel)
-        self.addSubview(titleLabel)
+        contentView.addSubview(imageView)
+        contentView.addSubview(priceLabel)
+        contentView.addSubview(titleLabel)
     }
     
     fileprivate func setConstraints() {
         NSLayoutConstraint.activate([
-            imageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 0.6),
-            imageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 0.6),
-            imageView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 0.6),
+            imageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 0.6),
+            imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 0.6),
+            imageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: 0.6),
         ])
         
         NSLayoutConstraint.activate([
             priceLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 8.0),
-            priceLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 8.0),
-            priceLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -8.0)
+            priceLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8.0),
+            priceLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8.0)
         ])
         
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: priceLabel.bottomAnchor, constant: 8.0),
-            titleLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -8.0),
-            titleLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 8.0),
-            titleLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -8.0)
+            titleLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8.0),
+            titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8.0),
+            titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8.0)
         ])
     }
 }

@@ -17,9 +17,9 @@ class MainViewController: UIViewController {
 
     lazy var flowLayout: UICollectionViewFlowLayout = {
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: 160.0, height: 160.0)
+        layout.itemSize = CGSize(width: (UIScreen.main.bounds.width / 2) - (layout.minimumInteritemSpacing * 3), height: 180.0)
         layout.minimumInteritemSpacing = 16.0
-        layout.sectionInset = UIEdgeInsets(top: 32.0, left: 32.0, bottom: 32.0, right: 32.0)
+        layout.sectionInset = UIEdgeInsets(top: 16.0, left: 16.0, bottom: 16.0, right: 16.0)
         return layout
     }()
     
@@ -119,6 +119,7 @@ class MainViewController: UIViewController {
         saveSearchButton.layer.cornerRadius = saveSearchButton.frame.size.height / 2
         /// Evitamos que al volver de otras pantallas sin NavigationBar, esta no aparezca
         self.navigationItem.searchController?.hidesNavigationBarDuringPresentation = false
+        self.navigationItem.searchController = searchController
     }
     
     
@@ -220,7 +221,9 @@ extension MainViewController: FiltersViewControllerDelegate {
 extension MainViewController: NewProductViewControllerDelegate {
     func productAdded() {
         DispatchQueue.main.async { [weak self] in
-            self?.showAlert(title: Constants.Info, message: Constants.ProductUploaded)
+            self?.showAlert(forInput: false, onlyAccept: true, title: Constants.Info, message: Constants.ProductUploaded, actionHandler: { _ in
+                self?.collectionView.reloadData()
+            })
         }
     }
 }

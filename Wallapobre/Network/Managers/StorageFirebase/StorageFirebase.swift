@@ -14,7 +14,7 @@ class StorageFirebase: StorageFirebaseManager {
         /// Inicializamos en el Storage de Firebase el archivo
         let ref = Storage.storage().reference().child(fileName)
         /// Pasamos la UIImage a Data de Firebase redimensionando al 25%
-        if let imageData: Data = image.jpegData(compressionQuality: 0.30) {
+        if let imageData: Data = image.jpegData(compressionQuality: 0.75) {
             
             /// Objeto de tipo StorageMetadata que contiene las caracteristicas del fichero
             let metadata: StorageMetadata = StorageMetadata()

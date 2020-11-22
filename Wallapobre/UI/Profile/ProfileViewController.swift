@@ -246,18 +246,15 @@ class ProfileViewController: UIViewController {
         shoppingSalesLabel.text = "\(MainViewModel.user.shopping) \(Constants.Shopping) \(MainViewModel.user.sales) \(Constants.Sales)"
         
         /// Avatar de usuario
-        if MainViewModel.user.avatar.isEmpty {
-            self.avatarImageView.image = UIImage(systemName: Constants.faceIcon)
-            
-        } else {
+        if !MainViewModel.user.avatar.isEmpty {
             guard let url = URL.init(string: MainViewModel.user.avatar) else { return }
-            avatarImageView.kf.setImage(with: url) { result in
+            avatarImageView.kf.setImage(with: url) { [weak self] result in
                 switch result {
                 case .success(let value):
-                    self.avatarImageView.image = value.image
+                    self?.avatarImageView.image = value.image
                     
                 case .failure(_):
-                    self.avatarImageView.image = UIImage(systemName: Constants.faceIcon)
+                    self?.avatarImageView.image = UIImage(systemName: Constants.faceIcon)
                 }
             }
         }

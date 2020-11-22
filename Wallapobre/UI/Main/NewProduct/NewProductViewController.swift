@@ -350,46 +350,46 @@ class NewProductViewController: UIViewController {
             if let url = URL.init(string: photo) {
                 switch index {
                 case 0:
-                    self.photo1Image.kf.setImage(with: url) { result in
+                    self.photo1Image.kf.setImage(with: url) { [weak self] result in
                         switch result {
                         case .success(let value):
-                            self.photo1Image.image = value.image
+                            self?.photo1Image.image = value.image
                             
                         case .failure(_):
-                            self.photo1Image.image = UIImage(systemName: Constants.WarningImage)
+                            self?.photo1Image.image = UIImage(systemName: Constants.WarningImage)
                         }
                     }
                     
                 case 1:
-                    self.photo2Image.kf.setImage(with: url) { result in
+                    self.photo2Image.kf.setImage(with: url) { [weak self] result in
                         switch result {
                         case .success(let value):
-                            self.photo2Image.image = value.image
+                            self?.photo2Image.image = value.image
                             
                         case .failure(_):
-                            self.photo2Image.image = UIImage(systemName: Constants.WarningImage)
+                            self?.photo2Image.image = UIImage(systemName: Constants.WarningImage)
                         }
                     }
                     
                 case 2:
-                    self.photo3Image.kf.setImage(with: url) { result in
+                    self.photo3Image.kf.setImage(with: url) { [weak self] result in
                         switch result {
                         case .success(let value):
-                            self.photo3Image.image = value.image
+                            self?.photo3Image.image = value.image
                             
                         case .failure(_):
-                            self.photo3Image.image = UIImage(systemName: Constants.WarningImage)
+                            self?.photo3Image.image = UIImage(systemName: Constants.WarningImage)
                         }
                     }
                     
                 default:
-                    self.photo4Image.kf.setImage(with: url) { result in
+                    self.photo4Image.kf.setImage(with: url) { [weak self] result in
                         switch result {
                         case .success(let value):
-                            self.photo4Image.image = value.image
+                            self?.photo4Image.image = value.image
                             
                         case .failure(_):
-                            self.photo4Image.image = UIImage(systemName: Constants.WarningImage)
+                            self?.photo4Image.image = UIImage(systemName: Constants.WarningImage)
                         }
                     }
                 }

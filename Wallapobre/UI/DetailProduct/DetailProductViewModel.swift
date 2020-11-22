@@ -46,6 +46,12 @@ class DetailProductViewModel {
         }
     }
     
+    func modifyProduct(product: Product) {
+        /// Iniciamos el manager e insertamos el producto
+        Managers.managerProductFirestore!.modifyProduct(product: product, onSuccess: {
+        }) { error in }
+    }
+    
     func deleteProduct(onSuccess: @escaping () -> Void, onError: ErrorClosure?) {
         /// Iniciamos el manager y borramos el producto
         Managers.managerProductFirestore!.deleteProduct(product: self.product, onSuccess: {

@@ -88,7 +88,10 @@ class DetailProductViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        /// Recuperamos el vendedor del producto para configurar el detalle
         self.getSellerUser()
+        /// Añadimos un viewer al producto
+        self.addViewerToProduct()
     }
     
     
@@ -193,6 +196,12 @@ class DetailProductViewController: UIViewController {
             chatButton.isHidden = false
             deleteProductButton.isHidden = true
         }
+    }
+    
+    fileprivate func addViewerToProduct() {
+        /// Añadimos un viewer al producto y lanzamos la modificacion
+        self.viewModel.product.viewers += 1
+        self.viewModel.modifyProduct(product: self.viewModel.product)
     }
 }
 
