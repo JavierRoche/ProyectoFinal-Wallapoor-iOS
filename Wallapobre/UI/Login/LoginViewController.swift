@@ -36,7 +36,6 @@ class LoginViewController: UIViewController {
         textField.keyboardType = UIKeyboardType.emailAddress
         textField.returnKeyType = UIReturnKeyType.done
         textField.clearButtonMode = UITextField.ViewMode.whileEditing
-        //textField.delegate = (self as! UITextFieldDelegate)
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
@@ -62,7 +61,6 @@ class LoginViewController: UIViewController {
         textField.returnKeyType = UIReturnKeyType.done
         textField.isSecureTextEntry = true
         textField.clearButtonMode = UITextField.ViewMode.whileEditing
-        //textField.delegate = (self as! UITextFieldDelegate)
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
@@ -89,7 +87,6 @@ class LoginViewController: UIViewController {
         textField.keyboardType = UIKeyboardType.default
         textField.returnKeyType = UIReturnKeyType.done
         textField.clearButtonMode = UITextField.ViewMode.whileEditing
-        //textField.delegate = (self as! UITextFieldDelegate)
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
@@ -131,27 +128,7 @@ class LoginViewController: UIViewController {
         return button
     }()
     
-    lazy var registerAnimation: CABasicAnimation = {
-        let animation: CABasicAnimation = CABasicAnimation(keyPath: Constants.keyPathPosition)
-        animation.duration = 1.5
-        animation.fillMode = CAMediaTimingFillMode.forwards
-        animation.isRemovedOnCompletion = false
-        animation.delegate = self
-        animation.timingFunction = CAMediaTimingFunction(name: .linear)
-        return animation
-    }()
     
-    lazy var loginAnimation: CABasicAnimation = {
-        let animation: CABasicAnimation = CABasicAnimation(keyPath: Constants.keyPathPosition)
-        animation.duration = 1.5
-        animation.fillMode = CAMediaTimingFillMode.forwards
-        animation.isRemovedOnCompletion = false
-        animation.timingFunction = CAMediaTimingFunction(name: .linear)
-        return animation
-    }()
-    
-    lazy var registerPosition: CGPoint = CGPoint(x: 0, y: 0)
-    lazy var loginPosition: CGPoint = CGPoint(x: 0, y: 0)
     var onRegisterInterface: Bool = false
     let viewModel: LoginViewModel
     
@@ -181,27 +158,17 @@ class LoginViewController: UIViewController {
         
         /// Indicamos usuario deslogueado si venimos de un logout
         if viewModel.logoutMessage {
-            /// Reinicializamos el manager necesario
+            /// Reinicializamos los managers necesarios
             Managers.managerUserLocation = UserLocation()
             Managers.managerUserAuthoritation = UserAuthoritation()
             
-            DispatchQueue.main.async { [weak self] in
-                self?.showAlert(title: Constants.Logout, message: Constants.UserLogout)
-            }
+            self.showAlert(title: Constants.Logout, message: Constants.UserLogout)
         }
         
         /// Solicitamos permisos de geolocalizacion al usuario
         guard let _ = viewModel.askForLocationPermissions() else { return }
         
-        DispatchQueue.main.async { [weak self] in
-            self?.showAlert(title: Constants.Error, message: "\(Constants.fatalErrorAuth)\n\(Constants.fatalErrorNeedLoc)")
-        }
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        /// Inicializamos valores globales para una CAAnimation
-        registerPosition = CGPoint(x: registerButton.layer.position.x, y: registerButton.layer.position.y)
-        loginPosition = CGPoint(x: loginButton.layer.position.x, y: loginButton.layer.position.y)
+        self.showAlert(title: Constants.Error, message: "\(Constants.fatalErrorAuth)\n\(Constants.fatalErrorNeedLoc)")
     }
     
     
@@ -224,9 +191,7 @@ class LoginViewController: UIViewController {
             }
             
             /// Si no hay permisos de localizacion damos un mensaje informativo
-            DispatchQueue.main.async { [weak self] in
-                self?.showAlert(title: Constants.Error, message: "\(Constants.fatalErrorAuth)\n\(Constants.fatalErrorNeedLoc)")
-            }
+            self.showAlert(title: Constants.Error, message: "\(Constants.fatalErrorAuth)\n\(Constants.fatalErrorNeedLoc)")
         }
     }
     
@@ -242,37 +207,49 @@ class LoginViewController: UIViewController {
     // MARK: Private Functions
     
     fileprivate func openRegisterInterface() {
-        /// Creamos posicion inicial y final aplicando traslacion vertical para botones de registro y login
-        var startPosition: CGPoint = CGPoint(x: registerPosition.x, y: registerPosition.y)
-        registerAnimation.fromValue = startPosition
-        registerAnimation.toValue = startPosition.applying(.init(translationX: 0.0, y: 90))
-        registerButton.layer.add(registerAnimation, forKey: Constants.keyPathPosition)
+        let originalTransform = registerButton.transform
+        let translatedTransform = originalTransform.translatedBy(x: 0.0, y: 90.0)
         
-        startPosition = CGPoint(x: loginPosition.x, y: loginPosition.y)
-        loginAnimation.fromValue = startPosition
-        loginAnimation.toValue = startPosition.applying(.init(translationX: 0.0, y: 90))
-        loginButton.layer.add(loginAnimation, forKey: Constants.keyPathPosition)
+        UIView.animate(withDuration: 2.0, animations: {
+            self.registerButton.transform = translatedTransform
+            self.loginButton.transform = translatedTransform
+            
+        }) { _ in
+            self.onRegisterInterface = true
+            /// Mostramos interface de registro
+            self.loginButton.isHidden = true
+            self.hideButton.isHidden = false
+            self.usernameLabel.isHidden = false
+            self.usernameTextField.isHidden = false
+        }
     }
     
     fileprivate func closeRegisterInterface() {
-        /// Creamos posicion inicial y final aplicando traslacion vertical para botones de registro y login
-        var startPosition: CGPoint = CGPoint(x: registerPosition.x, y: registerPosition.y)
-        registerAnimation.fromValue = startPosition
-        registerAnimation.toValue = startPosition.applying(.init(translationX: 0.0, y: -90))
-        registerButton.layer.add(registerAnimation, forKey: Constants.keyPathPosition)
+        self.onRegisterInterface = false
+        /// Ocultamos interface de registro
+        self.loginButton.isHidden = false
+        self.hideButton.isHidden = true
+        self.usernameLabel.isHidden = true
+        self.usernameTextField.isHidden = true
         
-        startPosition = CGPoint(x: loginPosition.x, y: loginPosition.y)
-        loginAnimation.fromValue = startPosition
-        loginAnimation.toValue = startPosition.applying(.init(translationX: 0.0, y: -90))
-        loginButton.layer.add(loginAnimation, forKey: Constants.keyPathPosition)
+        let originalTransform = registerButton.transform
+        let translatedTransform = originalTransform.translatedBy(x: 0.0, y: -90.0)
+        
+        UIView.animate(withDuration: 2.0, animations: {
+            self.registerButton.transform = translatedTransform
+            self.loginButton.transform = translatedTransform
+        })
     }
     
     fileprivate func login() {
-        /// Comprobamos que el usuario ha introducido un email y un pass
+        /// Comprobamos que el usuario ha introducido un email y un pass y que los campos no esten vacios
         guard let email = emailTextField.text?.lowercased(), let password = passwordTextField.text else {
-            DispatchQueue.main.async {
-                self.showAlert(title: Constants.Warning, message: Constants.MissingData)
-            }
+            self.showAlert(title: Constants.Warning, message: Constants.MissingData)
+            return
+        }
+        
+        if email.isEmpty || password.isEmpty {
+            self.showAlert(title: Constants.Warning, message: Constants.MissingData)
             return
         }
         
@@ -284,74 +261,63 @@ class LoginViewController: UIViewController {
                 self?.createMainScene(user: user)
                 
             }) { (error) in
-                DispatchQueue.main.async {
-                    self?.showAlert(title: Constants.Error, message: error.localizedDescription)
-                }
+                self?.showAlert(title: Constants.Error, message: error.localizedDescription)
             }
             
         }) { [weak self] error in
-            DispatchQueue.main.async {
-                self?.showAlert(title: Constants.Error, message: error.localizedDescription)
-            }
+            self?.showAlert(title: Constants.Error, message: error.localizedDescription)
         }
     }
     
     fileprivate func register() {
-        /// Comprobamos que el usuario ha introducido un email y un pass
+        /// Comprobamos que el usuario ha introducido un email, un pass y un username, y que los campos no esten vacios
         guard let email = emailTextField.text?.lowercased(), let password = passwordTextField.text, let username = usernameTextField.text else {
-            DispatchQueue.main.async { [weak self] in
-                self?.showAlert(title: Constants.Warning, message: Constants.MissingData)
-            }
+            self.showAlert(title: Constants.Warning, message: Constants.MissingData)
             return
         }
         
         if email.isEmpty || password.isEmpty || username.isEmpty {
-            DispatchQueue.main.async { [weak self] in
-                self?.showAlert(title: Constants.Warning, message: Constants.MissingData)
-            }
+            self.showAlert(title: Constants.Warning, message: Constants.MissingData)
             return
         }
         
         /// Inicializamos un User con los datos introducidos por el usuario y registramos
         let user: User = User.init(id: String(), email: email, password: password)
+        
         self.viewModel.registerUser(user: user, onSuccess: { [weak self] user in
             user.username = username
             self?.viewModel.getUserLogged(user: user, onSuccess: { (user) in
                 self?.createMainScene(user: user)
                 
             }) { (error) in
-                DispatchQueue.main.async {
-                    self?.showAlert(title: Constants.Error, message: error.localizedDescription)
-                }
+                self?.showAlert(title: Constants.Error, message: error.localizedDescription)
             }
             
         }) { [weak self] error in
-            DispatchQueue.main.async {
-                self?.showAlert(title: Constants.Error, message: error.localizedDescription)
-            }
+            self?.showAlert(title: Constants.Error, message: error.localizedDescription)
         }
     }
     
     fileprivate func recover() {
-        /// Comprobamos que el usuario ha introducido un email
-        guard let email = emailTextField.text else {
-            DispatchQueue.main.async { [weak self] in
-                self?.showAlert(title: Constants.Warning, message: Constants.MissingData)
-            }
+        /// Comprobamos que el usuario ha introducido un email y que los campos no esten vacios
+        guard let email = emailTextField.text?.lowercased() else {
+            self.showAlert(title: Constants.Warning, message: Constants.MissingData)
+            return
+        }
+        
+        if email.isEmpty {
+            self.showAlert(title: Constants.Warning, message: Constants.MissingData)
             return
         }
         
         /// Inicializamos un User con los datos introducidos por el usuario
         let user = User.init(id: String(), email: email, password: nil)
+        
         self.viewModel.recoverUser(user: user, onSuccess: {
-            DispatchQueue.main.async { [weak self] in
-                self?.showAlert(title: Constants.Password, message: Constants.PasswordRecovered)
-            }
+            self.showAlert(title: Constants.Password, message: Constants.PasswordRecovered)
             
         }) { [weak self] error in
-            DispatchQueue.main.async {
-                self?.showAlert(title: Constants.Error, message: error.localizedDescription)
-            }
+            self?.showAlert(title: Constants.Error, message: error.localizedDescription)
         }
     }
     
@@ -369,7 +335,6 @@ class LoginViewController: UIViewController {
         tabBarProvider.userLoggedIn(user: user)
         sceneDelegate.window?.rootViewController = tabBarProvider.activeTab()
         
-        /// Eliminamos el controlador del login
         self.dismiss(animated: true, completion: nil)
     }
 }

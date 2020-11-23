@@ -257,16 +257,15 @@ class NewProductViewController: UIViewController {
     @objc private func tapOnUpload() {
         /// Chequeo de datos y confirmacion de usuario
         if areDataRight() {
-            DispatchQueue.main.async { [weak self] in
-                self?.showAlert(forInput: false, onlyAccept: false, title: Constants.UploadProduct, message: Constants.GoingToUpload) { _ in
-                    /// Iniciamos la animacion de waiting y bloqueamos la pantalla
-                    self?.activityIndicator.center = self!.view.center
-                    self?.activityIndicator.startAnimating()
-                    self?.view.addSubview(self!.activityIndicator)
-                    self?.view.isUserInteractionEnabled = false
+            self.showAlert(forInput: false, onlyAccept: false, title: Constants.UploadProduct, message: Constants.GoingToUpload) { [weak self] _ in
+                /// Iniciamos la animacion de waiting y bloqueamos la pantalla
+                guard let position = self?.view.center, let activityIndicator = self?.activityIndicator else { return }
+                self?.activityIndicator.center = position
+                self?.activityIndicator.startAnimating()
+                self?.view.addSubview(activityIndicator)
+                self?.view.isUserInteractionEnabled = false
                     
-                    self?.processProduct()
-                }
+                self?.processProduct()
             }
         }
     }
@@ -399,23 +398,17 @@ class NewProductViewController: UIViewController {
     
     fileprivate func areDataRight() -> Bool {
         guard let title = titleTextField.text, let description = descriptionTextView.text, let price = priceTextField.text, let category = categoryTextField.text else {
-            DispatchQueue.main.async { [weak self] in
-                self?.showAlert(title: Constants.Warning, message: Constants.MissingData)
-            }
+            self.showAlert(title: Constants.Warning, message: Constants.MissingData)
             return false
         }
         
         if title.isEmpty || description.isEmpty || price.isEmpty || category.isEmpty {
-            DispatchQueue.main.async { [weak self] in
-                self?.showAlert(title: Constants.Warning, message: Constants.MissingData)
-            }
+            self.showAlert(title: Constants.Warning, message: Constants.MissingData)
             return false
         }
         
         guard let _: Int = Int(price) else {
-            DispatchQueue.main.async { [weak self] in
-                self?.showAlert(title: Constants.Warning, message: Constants.PriceHasToBe)
-            }
+            self.showAlert(title: Constants.Warning, message: Constants.PriceHasToBe)
             return false
         }
         
@@ -436,9 +429,7 @@ class NewProductViewController: UIViewController {
         }
         
         if imagesList.count == 0 {
-            DispatchQueue.main.async { [weak self] in
-                self?.showAlert(title: Constants.Warning, message: Constants.OnePhotoAtLess)
-            }
+            self.showAlert(title: Constants.Warning, message: Constants.OnePhotoAtLess)
             return false
         }
         return true
@@ -472,17 +463,13 @@ class NewProductViewController: UIViewController {
                 
                 self?.dismiss(animated: true, completion: nil)
                 
-            }, onError: { error in
-                DispatchQueue.main.async {
-                    self?.showAlert(title: Constants.Error, message: error.localizedDescription)
-                }
+            }, onError: { [weak self] error in
+                self?.showAlert(title: Constants.Error, message: error.localizedDescription)
             })
             
             
         }) { [weak self] error in
-            DispatchQueue.main.async {
-                self?.showAlert(title: Constants.Error, message: error.localizedDescription)
-            }
+            self?.showAlert(title: Constants.Error, message: error.localizedDescription)
         }
     }
     
@@ -506,16 +493,12 @@ class NewProductViewController: UIViewController {
                 self?.dismiss(animated: true, completion: nil)
                 
             }, onError: { error in
-                DispatchQueue.main.async {
-                    self?.showAlert(title: Constants.Error, message: error.localizedDescription)
-                }
+                self?.showAlert(title: Constants.Error, message: error.localizedDescription)
             })
             
             
         }) { [weak self] error in
-            DispatchQueue.main.async {
-                self?.showAlert(title: Constants.Error, message: error.localizedDescription)
-            }
+            self?.showAlert(title: Constants.Error, message: error.localizedDescription)
         }
     }
 }

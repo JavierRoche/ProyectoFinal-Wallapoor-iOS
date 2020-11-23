@@ -90,7 +90,7 @@ class ProductSellerCell: UITableViewCell {
             }
         }
         usernameLabel.text = seller.username
-        shoppingSalesLabel.text = "\(seller.shopping) \(Constants.Shopping) \(seller.sales) \(Constants.Sales)"
+        shoppingSalesLabel.text = "\(seller.shopping) \(Constants.shopping) \(seller.sales) \(Constants.sales)"
     }
 }
 

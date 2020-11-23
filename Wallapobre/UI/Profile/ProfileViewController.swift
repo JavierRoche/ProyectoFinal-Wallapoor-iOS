@@ -160,31 +160,27 @@ class ProfileViewController: UIViewController {
     // MARK: User Interactions
     
     @objc private func tapOnLogout() {
-        DispatchQueue.main.async { [weak self] in
-            self?.showAlert(forInput: false, onlyAccept: false, title: Constants.UpdateProfile, message: Constants.GoingToUpdate) { _ in
-                /// Arrancamos el manager y deslogueamos
-                Managers.managerUserAuthoritation = UserAuthoritation()
-                Managers.managerUserAuthoritation!.logout(onSuccess: {
-                    self?.createLoginScene()
+        self.showAlert(forInput: false, onlyAccept: false, title: Constants.UpdateProfile, message: Constants.GoingToUpdate) { [weak self] _ in
+            /// Arrancamos el manager y deslogueamos
+            Managers.managerUserAuthoritation = UserAuthoritation()
+            Managers.managerUserAuthoritation!.logout(onSuccess: {
+                self?.createLoginScene()
                     
-                }) { error in
-                    self?.showAlert(title: Constants.Error, message: error.localizedDescription)
-                }
+            }) { error in
+                self?.showAlert(title: Constants.Error, message: error.localizedDescription)
             }
         }
     }
     
     @objc private func tapOnSaveUser() {
-        DispatchQueue.main.async { [weak self] in
-            self?.showAlert(forInput: false, onlyAccept: false, title: Constants.UploadProduct, message: Constants.GoingToUpload) { _ in
-                self?.viewModel.updateProfile(image: self!.avatarImageView.image!, onSuccess: {
-                    self?.showAlert(title: Constants.Success, message: Constants.AvatarUpdated)
-                    self?.navigationItem.rightBarButtonItem?.isEnabled = false
+        self.showAlert(forInput: false, onlyAccept: false, title: Constants.UploadProduct, message: Constants.GoingToUpload) { [weak self] _ in
+            self?.viewModel.updateProfile(image: self!.avatarImageView.image!, onSuccess: {
+                self?.showAlert(title: Constants.Success, message: Constants.AvatarUpdated)
+                self?.navigationItem.rightBarButtonItem?.isEnabled = false
                     
-                }, onError: { error in
-                    self?.showAlert(title: Constants.Error, message: error.localizedDescription)
-                })
-            }
+            }, onError: { error in
+                self?.showAlert(title: Constants.Error, message: error.localizedDescription)
+            })
         }
     }
     
@@ -243,7 +239,7 @@ class ProfileViewController: UIViewController {
         
         /// Informacion de usuario
         usernameLabel.text = MainViewModel.user.username
-        shoppingSalesLabel.text = "\(MainViewModel.user.shopping) \(Constants.Shopping) \(MainViewModel.user.sales) \(Constants.Sales)"
+        shoppingSalesLabel.text = "\(MainViewModel.user.shopping) \(Constants.shopping) \(MainViewModel.user.sales) \(Constants.sales)"
         
         /// Avatar de usuario
         if !MainViewModel.user.avatar.isEmpty {

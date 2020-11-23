@@ -44,9 +44,7 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
                     //self.messagesCollectionView.insertSections([self.viewModel.messages.count - 1])
                     
                 }) { error in
-                    DispatchQueue.main.async { [weak self] in
-                        self?.showAlert(title: Constants.Error, message: error.localizedDescription)
-                    }
+                    self.showAlert(title: Constants.Error, message: error.localizedDescription)
                 }
             }
         }

@@ -23,9 +23,7 @@ extension ChatViewController: MessagesDataSource {
             self.messagesCollectionView.scrollToBottom()
             
         }) { error in
-            DispatchQueue.main.async { [weak self] in
-                self?.showAlert(title: Constants.Error, message: error.localizedDescription)
-            }
+            self.showAlert(title: Constants.Error, message: error.localizedDescription)
         }
     }
     

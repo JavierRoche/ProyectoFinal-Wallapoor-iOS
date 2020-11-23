@@ -43,20 +43,17 @@ class ChatViewController: MessagesViewController {
     
     fileprivate func runTransaction() {
         /// Pedimos confirmacion al vendedor y lanzamos la transaccion
-        DispatchQueue.main.async { [weak self] in
-            self?.showAlert(forInput: false, onlyAccept: false, title: Constants.SellProduct, message: Constants.GoingToSell) { _ in
+        self.showAlert(forInput: false, onlyAccept: false, title: Constants.SellProduct, message: Constants.GoingToSell) { [weak self] _ in
+            /// Creamos la escena con el modelo de Filter del ultimo Filter almacenado
+            let sellingViewModel: SellingViewModel = SellingViewModel()
+            let sellingViewController: SellingViewController = SellingViewController(viewModel: sellingViewModel)
+            sellingViewController.delegate = self
+            let navigationController: UINavigationController = UINavigationController.init(rootViewController: sellingViewController)
+            navigationController.modalPresentationStyle = .formSheet
+            navigationController.navigationBar.isHidden = true
                 
-                /// Creamos la escena con el modelo de Filter del ultimo Filter almacenado
-                let sellingViewModel: SellingViewModel = SellingViewModel()
-                let sellingViewController: SellingViewController = SellingViewController(viewModel: sellingViewModel)
-                sellingViewController.delegate = self
-                let navigationController: UINavigationController = UINavigationController.init(rootViewController: sellingViewController)
-                navigationController.modalPresentationStyle = .formSheet
-                navigationController.navigationBar.isHidden = true
-                
-                /// Presentamos el modal con las ultimas opciones de filtrado almacenadas
-                self?.present(navigationController, animated: true, completion: nil)
-            }
+            /// Presentamos el modal con las ultimas opciones de filtrado almacenadas
+            self?.present(navigationController, animated: true, completion: nil)
         }
     }
     
@@ -95,9 +92,7 @@ class ChatViewController: MessagesViewController {
     }
     
     fileprivate func confirmPurchase() {
-        DispatchQueue.main.async { [weak self] in
-            self?.showAlert(title: Constants.Success, message: Constants.PurchaseCompleted)
-        }
+        self.showAlert(title: Constants.Success, message: Constants.PurchaseCompleted)
     }
 }
 
@@ -122,9 +117,7 @@ extension ChatViewController: SellingViewControllerDelegate {
                     self.confirmPurchase()
                     
                 }, onError: { error in
-                    self.showAlert(title: Constants.Error, message: error.localizedDescription) { _ in
-                        self.dismiss(animated: true, completion: nil)
-                    }
+                    self.dismiss(animated: true, completion: nil)
                 })
                 
             }, onError: { error in

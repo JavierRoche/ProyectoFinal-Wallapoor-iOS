@@ -23,192 +23,32 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "F4CCA634-DE5C-464D-B21A-F510BAFD72D9"
+            uuid = "26D59738-03A4-4923-92D5-EE622570188F"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Wallapobre/UI/Main/MainViewController.swift"
+            filePath = "Wallapobre/UI/Login/LoginViewController+Animation.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "225"
-            endingLineNumber = "225"
-            landmarkName = "productAdded()"
+            startingLineNumber = "15"
+            endingLineNumber = "15"
+            landmarkName = "animationDidStop(_:finished:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "48AF8ABF-B010-45AA-8C7A-82FD8C1334B8"
+            uuid = "A73B3D7B-E73A-48DA-B75F-5EB8CA7E95F7"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Wallapobre/Network/Managers/ProductFirestore/ProductFirestore.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "66"
-            endingLineNumber = "66"
-            landmarkName = "selectProductBySeller(userId:onSuccess:onError:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "48AF8ABF-B010-45AA-8C7A-82FD8C1334B8 - 89dfd95c92165108"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.Optional&lt;__C.FIRQuerySnapshot&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in Wallapobre.ProductFirestore.selectProductBySeller(userId: Swift.String, onSuccess: (Swift.Array&lt;Wallapobre.Product&gt;) -&gt; (), onError: Swift.Optional&lt;(Swift.Error) -&gt; ()&gt;) -&gt; ()"
-                  moduleName = "Wallapobre"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/apple/Documents/Proyecto/iOS/Wallapobre/Wallapobre/Network/Managers/ProductFirestore/ProductFirestore.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "66"
-                  endingLineNumber = "66"
-                  offsetFromSymbolStart = "1415">
-               </Location>
-               <Location
-                  uuid = "48AF8ABF-B010-45AA-8C7A-82FD8C1334B8 - b4267035fde54fce"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #3 () -&gt; () in closure #1 (Swift.Optional&lt;__C.FIRQuerySnapshot&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in Wallapobre.ProductFirestore.selectProductBySeller(userId: Swift.String, onSuccess: (Swift.Array&lt;Wallapobre.Product&gt;) -&gt; (), onError: Swift.Optional&lt;(Swift.Error) -&gt; ()&gt;) -&gt; ()"
-                  moduleName = "Wallapobre"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/apple/Documents/Proyecto/iOS/Wallapobre/Wallapobre/Network/Managers/ProductFirestore/ProductFirestore.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "67"
-                  endingLineNumber = "67"
-                  offsetFromSymbolStart = "41">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "8283D1B8-66D4-4B44-BCFF-A05C040D0FF9"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Wallapobre/UI/Profile/ProfileViewModel.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "41"
-            endingLineNumber = "41"
-            landmarkName = "numberOfItems(in:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "5B19B883-686F-49B3-8C64-4710989B57FB"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Wallapobre/UI/Profile/ProfileViewModel.swift"
+            filePath = "Wallapobre/UI/Login/LoginViewController+Animation.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "45"
             endingLineNumber = "45"
-            landmarkName = "getCellViewModel(at:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "EA664571-544E-415D-8452-84C72BCBA870"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Wallapobre/UI/Profile/ProfileViewModel.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "134"
-            endingLineNumber = "134"
-            landmarkName = "getUserProducts()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "644F106F-55D7-4016-888B-35155E240F09"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Wallapobre/UI/Profile/ProfileViewModel.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "129"
-            endingLineNumber = "129"
-            landmarkName = "getUserProducts()"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "644F106F-55D7-4016-888B-35155E240F09 - 9ee67e1e3676a8e6"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Wallapobre.ProfileViewModel.(getUserProducts in _A89FF1B0E70100D4106C5492D11EA285)() -&gt; ()"
-                  moduleName = "Wallapobre"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/apple/Documents/Proyecto/iOS/Wallapobre/Wallapobre/UI/Profile/ProfileViewModel.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "129"
-                  endingLineNumber = "129"
-                  offsetFromSymbolStart = "44">
-               </Location>
-               <Location
-                  uuid = "644F106F-55D7-4016-888B-35155E240F09 - 9e755b290d76e51e"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.Array&lt;Wallapobre.Product&gt;) -&gt; () in Wallapobre.ProfileViewModel.(getUserProducts in _A89FF1B0E70100D4106C5492D11EA285)() -&gt; ()"
-                  moduleName = "Wallapobre"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/apple/Documents/Proyecto/iOS/Wallapobre/Wallapobre/UI/Profile/ProfileViewModel.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "129"
-                  endingLineNumber = "129"
-                  offsetFromSymbolStart = "47">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "11DBC3E1-6F13-411B-B7C0-13077593CC8D"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Wallapobre/UI/Profile/ProfileViewModel.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "33"
-            endingLineNumber = "33"
-            landmarkName = "viewWasLoaded()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "AE114D22-002A-49E3-AD50-B1A4767C03E4"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Wallapobre/Network/Managers/ProductFirestore/ProductFirestore.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "50"
-            endingLineNumber = "50"
-            landmarkName = "selectProductBySeller(userId:onSuccess:onError:)"
+            landmarkName = "animationDidStart(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

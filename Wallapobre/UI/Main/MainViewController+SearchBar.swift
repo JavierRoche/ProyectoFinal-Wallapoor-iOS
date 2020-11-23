@@ -37,8 +37,15 @@ extension MainViewController: UISearchBarDelegate  {
 
         DispatchQueue.main.async { [weak self] in
             self?.collectionView.reloadData()
-            self?.saveSearchButton.isHidden = self!.viewModel.showUpSaveSearchButton()
         }
+        
+        if self.viewModel.showUpSaveSearchButton() {
+            self.saveButtonFadeOut()
+            
+        } else {
+            self.saveButtonFadeIn()
+        }
+        
         return true
     }
     
@@ -46,28 +53,26 @@ extension MainViewController: UISearchBarDelegate  {
     /// Funcion delegada de UISearchBar para controlar el click en Enter o Buscar
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
         guard let text: String = self.searchController.searchBar.text?.lowercased() else { return }
-        if text != String() {
+        if !text.isEmpty {
             /// Bloqueamos el uso del searchController y resto de la pantalla para la busqueda actual
-            searchController.searchBar.isUserInteractionEnabled = false
-            self.view.isUserInteractionEnabled = false
-            
-            /// Iniciamos la animacion de waiting
-            self.activityIndicator.center = self.view.center
-            self.activityIndicator.startAnimating()
-            self.view.addSubview(activityIndicator)
+            self.activateActivityIndicator()
                 
             /// Aplicamos el filtro textual a la lista ACTUAL, NO a la original que tiene todo
             self.viewModel.filterByText(text: text)
             
             DispatchQueue.main.async { [weak self] in
                 self?.collectionView.reloadData()
-                self?.saveSearchButton.isHidden = self!.viewModel.showUpSaveSearchButton()
+            }
+            
+            if self.viewModel.showUpSaveSearchButton() {
+                self.saveButtonFadeOut()
+                
+            } else {
+                self.saveButtonFadeIn()
             }
             
             /// Paramos la animacion y liberamos el uso del searchController y del resto de la interface
-            self.searchController.searchBar.isUserInteractionEnabled = true
-            self.view.isUserInteractionEnabled = true
-            self.activityIndicator.stopAnimating()
+            self.deactivateActivityIndicator()
         }
     }
     
@@ -95,7 +100,13 @@ extension MainViewController: UISearchBarDelegate  {
         
         DispatchQueue.main.async { [weak self] in
             self?.collectionView.reloadData()
-            self?.saveSearchButton.isHidden = self!.viewModel.showUpSaveSearchButton()
+        }
+        
+        if self.viewModel.showUpSaveSearchButton() {
+            self.saveButtonFadeOut()
+            
+        } else {
+            self.saveButtonFadeIn()
         }
     }
 }

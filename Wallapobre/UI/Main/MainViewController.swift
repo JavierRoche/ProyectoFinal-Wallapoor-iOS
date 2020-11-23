@@ -53,10 +53,11 @@ class MainViewController: UIViewController {
     }()
     
     lazy var newProductButton: UIButton = {
-        let button: UIButton = UIButton()
-        button.setTitle(Constants.plusIcon, for: .normal)
-        button.tintColor = UIColor.black
-        button.backgroundColor = UIColor.black
+        let button: UIButton = UIButton(frame: CGRect(x: 0.0, y: 0.0, width: 48.0, height: 48.0))
+        button.setImage(UIImage(systemName: Constants.plusIcon, withConfiguration: UIImage.SymbolConfiguration(pointSize: 20, weight: .bold, scale: .large)), for: .normal)
+        button.layer.cornerRadius = button.frame.size.height / 2
+        button.backgroundColor = UIColor.tangerine
+        button.tintColor = UIColor.white
         button.layer.masksToBounds = true
         button.addTarget(self, action: #selector (tapOnNewProduct), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -64,12 +65,15 @@ class MainViewController: UIViewController {
     }()
     
     lazy var saveSearchButton: UIButton = {
-        let button: UIButton = UIButton()
-        button.setImage(UIImage(systemName: Constants.starIcon), for: .normal)
-        button.tintColor = UIColor.black
-        button.backgroundColor = UIColor.yellow
+        let button: UIButton = UIButton(frame: CGRect(x: 0.0, y: 0.0, width: 48.0, height: 48.0))
+        button.setImage(UIImage(systemName: Constants.starIcon, withConfiguration: UIImage.SymbolConfiguration(pointSize: 20, weight: .bold, scale: .large)), for: .normal)
+        button.layer.cornerRadius = button.frame.size.height / 2
+        button.backgroundColor = UIColor.white
+        button.tintColor = UIColor.tangerine
+        button.layer.borderWidth = 1
+        button.layer.borderColor = UIColor.tangerine.cgColor
         button.layer.masksToBounds = true
-        button.isHidden = true
+        //button.isHidden = true
         button.addTarget(self, action: #selector (tapOnSaveSearch), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -112,11 +116,11 @@ class MainViewController: UIViewController {
         
         /// Asignacion del UISearchController
         self.navigationItem.searchController = searchController
+
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        newProductButton.layer.cornerRadius = newProductButton.frame.size.height / 2
-        saveSearchButton.layer.cornerRadius = saveSearchButton.frame.size.height / 2
         /// Evitamos que al volver de otras pantallas sin NavigationBar, esta no aparezca
         self.navigationItem.searchController?.hidesNavigationBarDuringPresentation = false
         self.navigationItem.searchController = searchController
@@ -137,28 +141,26 @@ class MainViewController: UIViewController {
     }
     
     @objc private func tapOnSaveSearch(sender: UIButton!) {
-        DispatchQueue.main.async { [weak self] in
-            self?.showAlert(forInput: true, onlyAccept: false, title: Constants.SaveSearch, message: Constants.NameForPersonal, inputKeyboardType: UIKeyboardType.alphabet) { inputText in
-                /// Nos aseguramos de que el usuario ha introducido un nombre
-                guard let text = inputText else { return }
-                /// Creamos la Search actual
-                let actualSearch: Search = Search.init(searcher: MainViewModel.user.sender.senderId, title: text, filter: self?.viewModel.getActualFilter() ?? Filter())
+        self.showAlert(forInput: true, onlyAccept: false, title: Constants.SaveSearch, message: Constants.NameForPersonal, inputKeyboardType: UIKeyboardType.alphabet) { inputText in
+            /// Nos aseguramos de que el usuario ha introducido un nombre
+            guard let text = inputText else { return }
+            /// Creamos la Search actual
+            let actualSearch: Search = Search.init(searcher: MainViewModel.user.sender.senderId, title: text, filter: self.viewModel.getActualFilter())
                 
-                /// Guardamos la Search en Firestore
-                self?.viewModel.insertSearch(search: actualSearch, onSuccess: {
-                    self?.showAlert(title: Constants.Success, message: Constants.PersonalSearchSaved)
+            /// Guardamos la Search en Firestore
+            self.viewModel.insertSearch(search: actualSearch, onSuccess: {
+                self.showAlert(title: Constants.Success, message: Constants.PersonalSearchSaved)
                     
-                }, onError: { error in
-                    self?.showAlert(title: Constants.Error, message: error.localizedDescription)
-                })
-            }
+            }, onError: { error in
+                self.showAlert(title: Constants.Error, message: error.localizedDescription)
+            })
         }
     }
     
     
-    // MARK: Private Functions
+    // MARK: Public Functions
     
-    fileprivate func activateActivityIndicator() {
+    func activateActivityIndicator() {
         activityIndicator.center = self.view.center
         view.addSubview(self.activityIndicator)
         activityIndicator.startAnimating()
@@ -166,10 +168,36 @@ class MainViewController: UIViewController {
         searchController.searchBar.isUserInteractionEnabled = false
     }
     
-    fileprivate func deactivateActivityIndicator() {
+    func deactivateActivityIndicator() {
         activityIndicator.stopAnimating()
         view.isUserInteractionEnabled = true
         searchController.searchBar.isUserInteractionEnabled = true
+    }
+    
+    func saveButtonFadeIn() {
+        let saveSearchButtonOriginalTransform = saveSearchButton.transform
+        let newProductButtonOriginalTransform = newProductButton.transform
+        let movement = (UIScreen.main.bounds.width / 2) - (newProductButton.bounds.size.width / 2)
+        let saveSearchButtonTranslatedTransform = saveSearchButtonOriginalTransform.translatedBy(x: movement, y: 0.0)
+        let newProductButtonTranslatedTransform = newProductButtonOriginalTransform.translatedBy(x: 24.0, y: 0.0)
+        
+        UIView.animate(withDuration: 1.0, animations: {
+            self.saveSearchButton.transform = saveSearchButtonTranslatedTransform
+            self.newProductButton.transform = newProductButtonTranslatedTransform
+        })
+    }
+    
+    func saveButtonFadeOut() {
+        let saveSearchButtonOriginalTransform = saveSearchButton.transform
+        let newProductButtonOriginalTransform = newProductButton.transform
+        let movement = (UIScreen.main.bounds.width / 2) - (newProductButton.bounds.size.width / 2)
+        let saveSearchButtonTranslatedTransform = saveSearchButtonOriginalTransform.translatedBy(x: -movement, y: 0.0)
+        let newProductButtonTranslatedTransform = newProductButtonOriginalTransform.translatedBy(x: -24.0, y: 0.0)
+        
+        UIView.animate(withDuration: 1.0, animations: {
+            self.saveSearchButton.transform = saveSearchButtonTranslatedTransform
+            self.newProductButton.transform = newProductButtonTranslatedTransform
+        })
     }
 }
 
@@ -198,7 +226,12 @@ extension MainViewController: MainViewModelDelegate {
         self.deactivateActivityIndicator()
         
         /// Ofrecemos guardar la busquedea tras un filtrado
-        saveSearchButton.isHidden = self.viewModel.showUpSaveSearchButton()
+        if self.viewModel.showUpSaveSearchButton() {
+            self.saveButtonFadeOut()
+            
+        } else {
+            self.saveButtonFadeIn()
+        }
         
         DispatchQueue.main.async { [weak self] in
             self?.collectionView.reloadData()
@@ -220,11 +253,11 @@ extension MainViewController: FiltersViewControllerDelegate {
 
 extension MainViewController: NewProductViewControllerDelegate {
     func productAdded() {
-        DispatchQueue.main.async { [weak self] in
-            self?.showAlert(forInput: false, onlyAccept: true, title: Constants.Info, message: Constants.ProductUploaded, actionHandler: { _ in
+        self.showAlert(forInput: false, onlyAccept: true, title: Constants.Info, message: Constants.ProductUploaded, actionHandler: { [weak self] _ in
+            DispatchQueue.main.async {
                 self?.collectionView.reloadData()
-            })
-        }
+            }
+        })
     }
 }
 
@@ -244,8 +277,6 @@ extension MainViewController: ProfileViewControllerDelegate {
 
 extension MainViewController: DetailProductViewControllerDelegate {
     func productDeleted() {
-        DispatchQueue.main.async { [weak self] in
-            self?.showAlert(title: Constants.Info, message: Constants.ProductDeleted)
-        }
+        self.showAlert(title: Constants.Info, message: Constants.ProductDeleted)
     }
 }

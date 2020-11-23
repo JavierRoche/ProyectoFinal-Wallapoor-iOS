@@ -87,13 +87,11 @@ extension SellingViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        DispatchQueue.main.async { [weak self] in
-            self?.showAlert(forInput: false, onlyAccept: false, title: Constants.UpdatePurchase, message: Constants.SelectABuyer) { _ in
-                guard let user = self?.viewModel.getUser(at: indexPath) else { return }
-                /// Devolvemos el control al ChatViewController que se encargara de actualizar todo
-                self?.delegate?.buyerSelected(buyer: user)
-                self?.dismiss(animated: true, completion: nil)
-            }
+        self.showAlert(forInput: false, onlyAccept: false, title: Constants.UpdatePurchase, message: Constants.SelectABuyer) { [weak self] _ in
+            guard let user = self?.viewModel.getUser(at: indexPath) else { return }
+            /// Devolvemos el control al ChatViewController que se encargara de actualizar todo
+            self?.delegate?.buyerSelected(buyer: user)
+            self?.dismiss(animated: true, completion: nil)
         }
     }
 }

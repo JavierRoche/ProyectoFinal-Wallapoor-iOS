@@ -123,20 +123,16 @@ class DetailProductViewController: UIViewController {
     }
     
     @objc private func tapOnDelete() {
-        DispatchQueue.main.async { [weak self] in
-            self?.showAlert(forInput: false, onlyAccept: false, title: Constants.DeleteProduct, message: Constants.GoingToDelete) { _ in
-                /// Borramos el producto de la base de datos de Firestore
-                self?.viewModel.deleteProduct(onSuccess: {
-                    /// Informamos al MainViewController para que notifique al usuario
-                    self?.delegate?.productDeleted()
-                    self?.dismiss(animated: true, completion: nil)
+        self.showAlert(forInput: false, onlyAccept: false, title: Constants.DeleteProduct, message: Constants.GoingToDelete) { [weak self] _ in
+            /// Borramos el producto de la base de datos de Firestore
+            self?.viewModel.deleteProduct(onSuccess: {
+                /// Informamos al MainViewController para que notifique al usuario
+                self?.delegate?.productDeleted()
+                self?.dismiss(animated: true, completion: nil)
                     
-                }, onError: { error in
-                    DispatchQueue.main.async { [weak self] in
-                        self?.showAlert(title: Constants.Error, message: error.localizedDescription)
-                    }
-                })
-            }
+            }, onError: { error in
+                self?.showAlert(title: Constants.Error, message: error.localizedDescription)
+            })
         }
     }
     
@@ -146,28 +142,24 @@ class DetailProductViewController: UIViewController {
     fileprivate func getSellerUser() {
         /// Arrancamos el manager y recuperamos el vendedor del producto
         Managers.managerUserFirestore = UserFirestore()
-        self.viewModel.getSellerData(onSuccess: { user in
+        self.viewModel.getSellerData(onSuccess: { [weak self] user in
             guard let _ = user else {
-                DispatchQueue.main.async { [weak self] in
-                    self?.showAlert(title: Constants.Error, message: Constants.MissingSeller) { _ in
-                        self?.dismiss(animated: true, completion: nil)
-                    }
+                self?.showAlert(title: Constants.Error, message: Constants.MissingSeller) { _ in
+                    self?.dismiss(animated: true, completion: nil)
                 }
                 return
             }
             
             /// Necesitamos el seller para configurar correctamente
-            self.configureUI()
+            self?.configureUI()
             
-            DispatchQueue.main.async { [weak self] in
+            DispatchQueue.main.async {
                 self?.tableView.reloadData()
             }
             
-        }) { (error) in
-            DispatchQueue.main.async { [weak self] in
-                self?.showAlert(title: Constants.Error, message: error.localizedDescription) { _ in
-                    self?.dismiss(animated: true, completion: nil)
-                }
+        }) { [weak self] error in
+            self?.showAlert(title: Constants.Error, message: error.localizedDescription) { _ in
+                self?.dismiss(animated: true, completion: nil)
             }
         }
     }
@@ -231,10 +223,8 @@ extension DetailProductViewController: ProductImagesCellDelegate {
 
 extension DetailProductViewController: ModifyProductViewControllerDelegate {
     func productModified() {
-        DispatchQueue.main.async { [weak self] in
-            self?.showAlert(title: Constants.Info, message: Constants.ProductUpdated) { _ in
-                self?.dismiss(animated: true, completion: nil)
-            }
+        self.showAlert(title: Constants.Info, message: Constants.ProductUpdated) { _ in
+            self.dismiss(animated: true, completion: nil)
         }
     }
 }

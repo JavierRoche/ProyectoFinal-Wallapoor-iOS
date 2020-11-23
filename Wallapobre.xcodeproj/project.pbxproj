@@ -11,7 +11,6 @@
 		1825BAE82551B1C700C3CDFA /* UserAuthoritation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1825BAE72551B1C700C3CDFA /* UserAuthoritation.swift */; };
 		1825BAEA2551B1DB00C3CDFA /* UserAuthorizationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1825BAE92551B1DB00C3CDFA /* UserAuthorizationManager.swift */; };
 		1825BAEC2551B56200C3CDFA /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1825BAEB2551B56200C3CDFA /* User.swift */; };
-		1825BAEE2551BFFC00C3CDFA /* LoginViewController+Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1825BAED2551BFFC00C3CDFA /* LoginViewController+Animation.swift */; };
 		1825BAF12551D1EA00C3CDFA /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1825BAF02551D1EA00C3CDFA /* ProfileViewController.swift */; };
 		1825BAF32551D23500C3CDFA /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1825BAF22551D23500C3CDFA /* ProfileViewModel.swift */; };
 		182C9A1325596E360074C9E9 /* DetailProductViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 182C9A1225596E360074C9E9 /* DetailProductViewController.swift */; };
@@ -97,7 +96,6 @@
 		1825BAE72551B1C700C3CDFA /* UserAuthoritation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAuthoritation.swift; sourceTree = "<group>"; };
 		1825BAE92551B1DB00C3CDFA /* UserAuthorizationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAuthorizationManager.swift; sourceTree = "<group>"; };
 		1825BAEB2551B56200C3CDFA /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
-		1825BAED2551BFFC00C3CDFA /* LoginViewController+Animation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LoginViewController+Animation.swift"; sourceTree = "<group>"; };
 		1825BAF02551D1EA00C3CDFA /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		1825BAF22551D23500C3CDFA /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		182C9A1225596E360074C9E9 /* DetailProductViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailProductViewController.swift; sourceTree = "<group>"; };
@@ -198,7 +196,6 @@
 			children = (
 				1825BADF25502BC700C3CDFA /* LoginViewController.swift */,
 				18A513EB2561AF9300387355 /* LoginViewController+Constraints.swift */,
-				1825BAED2551BFFC00C3CDFA /* LoginViewController+Animation.swift */,
 				1898179D2552CD1E0088BFB2 /* LoginViewModel.swift */,
 			);
 			path = Login;
@@ -676,7 +673,6 @@
 				1851CE5F2558945C00435F78 /* ProductCell.swift in Sources */,
 				18B63DFF255C233D00831053 /* DiscussionFirestore.swift in Sources */,
 				18BE17B42566A54E000CEE3A /* SellingViewModel.swift in Sources */,
-				1825BAEE2551BFFC00C3CDFA /* LoginViewController+Animation.swift in Sources */,
 				18B215FF254C75C6008027D1 /* MainViewController.swift in Sources */,
 				18A513F02561B21D00387355 /* FiltersViewController+Constraints.swift in Sources */,
 				18B215FB254C75C6008027D1 /* AppDelegate.swift in Sources */,
@@ -870,6 +866,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 5NGAV2U6RN;
 				INFOPLIST_FILE = Wallapobre/Resources/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -889,6 +886,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 5NGAV2U6RN;
 				INFOPLIST_FILE = Wallapobre/Resources/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

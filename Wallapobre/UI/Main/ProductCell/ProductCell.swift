@@ -19,21 +19,23 @@ class ProductCell: UICollectionViewCell {
     
     lazy var priceLabel: UILabel = {
         let label: UILabel = UILabel()
-        label.font = UIFont.fontStyle20Bold
-        label.textColor = UIColor.black
-        label.numberOfLines = 1
+        label.font = UIFont.fontStyle28Bold
+        label.textColor = UIColor.tangerine
+        //label.alpha = 0.5
+        label.shadowColor = UIColor.lightGray
+        label.shadowOffset = CGSize(width: 1.0, height: 1.0)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
-    lazy var titleLabel: UILabel = {
+    /*lazy var titleLabel: UILabel = {
         let label: UILabel = UILabel()
         label.font = UIFont.fontStyle18Regular
         label.textColor = UIColor.black
         label.numberOfLines = 1
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
-    }()
+    }()*/
     
     
     var viewModel: ProductCellViewModel? {
@@ -51,7 +53,7 @@ class ProductCell: UICollectionViewCell {
                 }
             }
             priceLabel.text = "\(String(viewModel.product.price))\(Constants.Euro)"
-            titleLabel.text = viewModel.product.title
+            //titleLabel.text = viewModel.product.title
         }
     }
     
@@ -62,16 +64,16 @@ class ProductCell: UICollectionViewCell {
         super.init(frame: frame)
         
         /// Borde
-        self.layer.cornerRadius = 8.0
-        self.layer.masksToBounds = true
-        self.layer.borderWidth = 0.3
-        self.layer.borderColor = UIColor.lightGray.cgColor
+        contentView.layer.cornerRadius = 8.0
+        contentView.layer.masksToBounds = false
+        //self.layer.borderWidth = 0.4
+        //self.layer.borderColor = UIColor.tangerine.cgColor
         
         /// Sombra
-        self.layer.shadowColor = UIColor.black.cgColor
-        self.layer.shadowOffset = CGSize(width: 0, height: 1.0)
-        self.layer.shadowRadius = 2.0
-        self.layer.shadowOpacity = 0.5
+        contentView.layer.shadowColor = UIColor.lightGray.cgColor
+        contentView.layer.shadowOffset = CGSize(width: 1.0, height: 1.0)
+        contentView.layer.shadowRadius = 1.5
+        contentView.layer.shadowOpacity = 0.8
         
         /// Borde de la imagen
         imageView.layer.masksToBounds = true
@@ -87,6 +89,8 @@ class ProductCell: UICollectionViewCell {
     
     /// Necesario al redibujar el contenido de una celda para evitar varios tipos de errores de dibujado
     override func prepareForReuse() {
+        super.prepareForReuse()
+        //imageView.kf.cancelDownloadTask()
         imageView.image = nil
     }
     
@@ -96,27 +100,30 @@ class ProductCell: UICollectionViewCell {
     fileprivate func setViewsHierarchy() {
         contentView.addSubview(imageView)
         contentView.addSubview(priceLabel)
-        contentView.addSubview(titleLabel)
+        //contentView.addSubview(titleLabel)
     }
     
     fileprivate func setConstraints() {
         NSLayoutConstraint.activate([
-            imageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 0.6),
-            imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 0.6),
-            imageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: 0.6),
+            imageView.topAnchor.constraint(equalTo: contentView.topAnchor), //, constant: 0.6),
+            imageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor), //, constant: 0.6),
+            imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor), //, constant: 0.6),
+            imageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor) //, constant: 0.6),
         ])
         
         NSLayoutConstraint.activate([
-            priceLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 8.0),
+            /*priceLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 8.0),
             priceLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8.0),
-            priceLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8.0)
+            priceLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8.0)*/
+            priceLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16.0),
+            priceLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16.0)
         ])
         
-        NSLayoutConstraint.activate([
+        /*NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: priceLabel.bottomAnchor, constant: 8.0),
             titleLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8.0),
             titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8.0),
             titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8.0)
-        ])
+        ])*/
     }
 }

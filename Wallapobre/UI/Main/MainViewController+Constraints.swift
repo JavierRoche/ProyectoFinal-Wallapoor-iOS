@@ -29,17 +29,16 @@ extension MainViewController {
         NSLayoutConstraint.activate([
             newProductButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             newProductButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20.0),
-            //newProductButton.trailingAnchor.constraint(equalTo: saveSearchButton.leadingAnchor, constant: 32.0),
-            newProductButton.widthAnchor.constraint(equalToConstant: 64.0),
-            newProductButton.heightAnchor.constraint(equalToConstant: 64.0)
+            newProductButton.widthAnchor.constraint(equalToConstant: 48.0),
+            newProductButton.heightAnchor.constraint(equalToConstant: 48.0)
         ])
         
         NSLayoutConstraint.activate([
             //saveSearchButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             saveSearchButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20.0),
-            saveSearchButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16.0),
-            saveSearchButton.widthAnchor.constraint(equalToConstant: 64.0),
-            saveSearchButton.heightAnchor.constraint(equalToConstant: 64.0)
+            saveSearchButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: -48.0),
+            saveSearchButton.widthAnchor.constraint(equalToConstant: 48.0),
+            saveSearchButton.heightAnchor.constraint(equalToConstant: 48.0)
         ])
     }
 }

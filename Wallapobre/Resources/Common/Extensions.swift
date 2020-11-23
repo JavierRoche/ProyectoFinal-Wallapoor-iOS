@@ -9,19 +9,13 @@
 import UIKit
 import MessageKit
 
+
 // MARK: UIViewController Personal Utilities
+
 extension UIViewController {
-    /// Mensajes de alerta informativos
-    /*func showAlert(input: Bool, title: String, message: String) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Accept", style: .default, handler: nil))
-        present(alert, animated: true, completion: nil)
-    }*/
-    
-    
     func showAlert(forInput: Bool = false, onlyAccept: Bool = true,
-                   title: String? = nil, message: String? = nil, actionTitle: String? = "Accept",
-                   cancelTitle: String? = "Cancel", inputPlaceholder: String? = nil,
+                   title: String? = nil, message: String? = nil, actionTitle: String? = Constants.Accept,
+                   cancelTitle: String? = Constants.Cancel, inputPlaceholder: String? = nil,
                    inputKeyboardType: UIKeyboardType = UIKeyboardType.alphabet,
                    cancelHandler: ((UIAlertAction) -> Swift.Void)? = nil,
                    actionHandler: ((_ text: String?) -> Void)? = nil) {
@@ -35,7 +29,7 @@ extension UIViewController {
                 textField.keyboardType = inputKeyboardType
             }
             
-            alert.addAction(UIAlertAction(title: actionTitle, style: .default, handler: { action in
+            alert.addAction(UIAlertAction(title: actionTitle, style: .destructive, handler: { action in
                 guard let textField =  alert.textFields?.first else {
                     actionHandler?(nil)
                     return
@@ -48,7 +42,7 @@ extension UIViewController {
             
             /// Si es para aceptar o cancelar
             if !onlyAccept {
-                alert.addAction(UIAlertAction(title: actionTitle, style: .default, handler: { action in
+                alert.addAction(UIAlertAction(title: actionTitle, style: .destructive, handler: { action in
                     actionHandler?(nil)
                 }))
                 alert.addAction(UIAlertAction(title: cancelTitle, style: .cancel, handler: nil))
@@ -62,6 +56,27 @@ extension UIViewController {
         }
         
         self.present(alert, animated: true, completion: nil)
+    }
+}
+
+
+// MARK: UIImage Personal Utilities
+
+extension UIImage {
+    /// Funcion que scala una imagen a un maximo de pixels sin alterar el aspect radio
+    func scaleToWidth(scale: CGFloat) -> UIImage {
+        let oldWidth = self.size.width
+        let scaleFactor = scale / oldWidth
+
+        let newHeight = self.size.height * scaleFactor
+        let newWidth = oldWidth * scaleFactor;
+
+        UIGraphicsBeginImageContext(CGSize(width: newWidth, height: newHeight))
+        _ = CGRect(x: 0, y: 0, width: newWidth, height: newHeight)
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return newImage!
     }
 }
 
@@ -117,20 +132,4 @@ public typealias ErrorClosure = (Error) -> Void
 
 
 
-extension UIImage {
-    /// Funcion que scala una imagen a un maximo de pixels sin alterar el aspect radio
-    func scaleToWidth(scale: CGFloat) -> UIImage {
-        let oldWidth = self.size.width
-        let scaleFactor = scale / oldWidth
 
-        let newHeight = self.size.height * scaleFactor
-        let newWidth = oldWidth * scaleFactor;
-
-        UIGraphicsBeginImageContext(CGSize(width: newWidth, height: newHeight))
-        _ = CGRect(x: 0, y: 0, width: newWidth, height: newHeight)
-        let newImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        
-        return newImage!
-    }
-}

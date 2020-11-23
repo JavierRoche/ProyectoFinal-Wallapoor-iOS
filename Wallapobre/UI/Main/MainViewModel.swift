@@ -17,6 +17,7 @@ protocol MainViewModelDelegate: class {
 class MainViewModel {
     /// Usuario logueado en la App
     static var user: User = User(id: String(), email: String(), password: String())
+    /// Delegado de comunicacion con el controlador
     weak var delegate: MainViewModelDelegate?
     /// Lista original con todos los productos descargados de Firebase DB
     private var originalProductList = [ProductCellViewModel]()
@@ -130,7 +131,9 @@ class MainViewModel {
             
         }) { error in
             if let retError = onError {
-                retError(error)
+                DispatchQueue.main.async {
+                    retError(error)
+                }
             }
         }
     }
