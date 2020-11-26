@@ -45,14 +45,6 @@ class ProductDataCell: UITableViewCell {
         self.setData(viewModel: viewModel)
     }
 
-
-    /*override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-        contentView.layer.cornerRadius = 8.0
-        contentView.layer.masksToBounds = true
-    }*/
-
     
     // MARK: Private Functions
         
@@ -70,7 +62,7 @@ class ProductDataCell: UITableViewCell {
     
     fileprivate func setConstraints() {
         NSLayoutConstraint.activate([
-            priceLabel.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 16.0),
+            priceLabel.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 32.0),
             priceLabel.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 16.0),
             priceLabel.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -16.0)
         ])

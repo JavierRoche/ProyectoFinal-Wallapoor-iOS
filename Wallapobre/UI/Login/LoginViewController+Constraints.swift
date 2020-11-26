@@ -13,6 +13,7 @@ extension LoginViewController {
         view = UIView()
         
         view.addSubview(backgroundView)
+        view.addSubview(appImageView)
         view.addSubview(emailLabel)
         view.addSubview(emailTextField)
         view.addSubview(passwordLabel)
@@ -34,9 +35,16 @@ extension LoginViewController {
         ])
         
         NSLayoutConstraint.activate([
+            appImageView.bottomAnchor.constraint(equalTo: emailLabel.topAnchor, constant: -32.0),
+            appImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            appImageView.widthAnchor.constraint(equalToConstant: 160.0),
+            appImageView.heightAnchor.constraint(equalToConstant: 160.0)
+        ])
+        
+        NSLayoutConstraint.activate([
             emailLabel.bottomAnchor.constraint(equalTo: emailTextField.topAnchor, constant: -8.0),
-            emailLabel.leadingAnchor.constraint(equalTo: emailTextField.leadingAnchor),
-            passwordLabel.trailingAnchor.constraint(equalTo: emailTextField.trailingAnchor)
+            emailLabel.leadingAnchor.constraint(equalTo: passwordLabel.leadingAnchor),
+            emailLabel.trailingAnchor.constraint(equalTo: passwordLabel.trailingAnchor)
         ])
         
         NSLayoutConstraint.activate([
@@ -46,28 +54,28 @@ extension LoginViewController {
         ])
         
         NSLayoutConstraint.activate([
-            passwordLabel.bottomAnchor.constraint(equalTo: passwordTextField.topAnchor, constant: -8.0),
-            passwordLabel.leadingAnchor.constraint(equalTo: passwordTextField.leadingAnchor),
-            passwordLabel.trailingAnchor.constraint(equalTo: passwordTextField.trailingAnchor)
+            passwordLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 64),
+            passwordLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -64),
+            passwordLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            passwordLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
         
         NSLayoutConstraint.activate([
-            passwordTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 64),
-            passwordTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            passwordTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -64),
-            passwordTextField.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            passwordTextField.topAnchor.constraint(equalTo: passwordLabel.bottomAnchor, constant: 8.0),
+            passwordTextField.leadingAnchor.constraint(equalTo: passwordLabel.leadingAnchor),
+            passwordTextField.trailingAnchor.constraint(equalTo: passwordLabel.trailingAnchor)
         ])
         
         NSLayoutConstraint.activate([
             usernameLabel.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 32.0),
-            usernameLabel.leadingAnchor.constraint(equalTo: passwordTextField.leadingAnchor),
-            usernameLabel.trailingAnchor.constraint(equalTo: passwordTextField.trailingAnchor)
+            usernameLabel.leadingAnchor.constraint(equalTo: passwordLabel.leadingAnchor),
+            usernameLabel.trailingAnchor.constraint(equalTo: passwordLabel.trailingAnchor)
         ])
         
         NSLayoutConstraint.activate([
             usernameTextField.topAnchor.constraint(equalTo: usernameLabel.bottomAnchor, constant: 8),
-            usernameTextField.leadingAnchor.constraint(equalTo: usernameLabel.leadingAnchor),
-            usernameTextField.trailingAnchor.constraint(equalTo: usernameLabel.trailingAnchor)
+            usernameTextField.leadingAnchor.constraint(equalTo: passwordLabel.leadingAnchor),
+            usernameTextField.trailingAnchor.constraint(equalTo: passwordLabel.trailingAnchor)
         ])
         
         NSLayoutConstraint.activate([
@@ -86,7 +94,7 @@ extension LoginViewController {
         ])
         
         NSLayoutConstraint.activate([
-            recoverButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -64.0),
+            recoverButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -32.0),
             recoverButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 64.0)
         ])
     }

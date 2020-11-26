@@ -26,8 +26,7 @@ class ProductSocialNetworksCell: UITableViewCell {
         image.contentMode = .scaleAspectFit
         image.isUserInteractionEnabled = true
         image.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(shareOnFacebook)))
-        image.layer.cornerRadius = 8.0
-        image.image = UIImage(named: "facebook_icon")
+        image.image = UIImage(named: Constants.iconFacebook)
         image.translatesAutoresizingMaskIntoConstraints = false
         return image
     }()
@@ -37,8 +36,7 @@ class ProductSocialNetworksCell: UITableViewCell {
         image.contentMode = .scaleAspectFit
         image.isUserInteractionEnabled = true
         image.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(shareOnTwitter)))
-        image.layer.cornerRadius = 8.0
-        image.image = UIImage(named: "twitter_icon")
+        image.image = UIImage(named: Constants.iconTwitter)
         image.translatesAutoresizingMaskIntoConstraints = false
         return image
     }()
@@ -48,8 +46,7 @@ class ProductSocialNetworksCell: UITableViewCell {
         image.contentMode = .scaleAspectFit
         image.isUserInteractionEnabled = true
         image.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(shareOnWhatsApp)))
-        image.layer.cornerRadius = 8.0
-        image.image = UIImage(named: "whatsapp_icon")
+        image.image = UIImage(named: Constants.iconWhatsapp)
         image.translatesAutoresizingMaskIntoConstraints = false
         return image
     }()
@@ -63,17 +60,10 @@ class ProductSocialNetworksCell: UITableViewCell {
     public func configureCell() {
         self.setViewsHierarchy()
         self.setConstraints()
+        
         /// El interespaciado de los stack hay que definirlo una vez el objeto creado
         stackView.setCustomSpacing(40, after: facebookImageView)
         stackView.setCustomSpacing(40, after: twitterImageView)
-    }
-
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-        //contentView.layer.cornerRadius = 8.0
-        //contentView.layer.masksToBounds = true
     }
 
     
@@ -138,21 +128,6 @@ class ProductSocialNetworksCell: UITableViewCell {
             stackView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 32.0),
             stackView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -32.0),
             stackView.centerXAnchor.constraint(equalTo: self.centerXAnchor)
-        ])
-        
-        NSLayoutConstraint.activate([
-            facebookImageView.widthAnchor.constraint(equalToConstant: 32.0),
-            facebookImageView.heightAnchor.constraint(equalToConstant: 32.0)
-        ])
-        
-        NSLayoutConstraint.activate([
-            twitterImageView.widthAnchor.constraint(equalToConstant: 32.0),
-            twitterImageView.heightAnchor.constraint(equalToConstant: 32.0)
-        ])
-        
-        NSLayoutConstraint.activate([
-            whatsappImageView.widthAnchor.constraint(equalToConstant: 32.0),
-            whatsappImageView.heightAnchor.constraint(equalToConstant: 32.0)
         ])
     }
 }

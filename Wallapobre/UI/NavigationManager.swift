@@ -68,7 +68,7 @@ class NavigationManager: UITabBarController {
     }
     
     func closeApp(error: String) {
-        let alert = UIAlertController(title: Constants.Error, message: error, preferredStyle: .alert)
+        let alert = UIAlertController(title: Constants.error, message: error, preferredStyle: .alert)
         alert.showAlert()
         /// Abortamos la App pues hay algun problema en Firestore
         UIControl().sendAction(#selector(NSXPCConnection.suspend), to: UIApplication.shared, for: nil)
@@ -82,8 +82,8 @@ class NavigationManager: UITabBarController {
         let profileViewController: ProfileViewController = ProfileViewController(viewModel: profileViewModel)
         profileViewController.delegate = mainViewController
         
-        mainViewController.tabBarItem = UITabBarItem.init(title: Constants.Shopping, image: UIImage.init(systemName: Constants.iconArchieveboxFill), tag: 0)
-        profileViewController.tabBarItem = UITabBarItem.init(title: Constants.Perfil, image: UIImage.init(systemName: Constants.iconPersonFill), tag: 1)
+        mainViewController.tabBarItem = UITabBarItem.init(title: Constants.shopping, image: UIImage.init(systemName: Constants.iconArchieveboxFill), tag: 0)
+        profileViewController.tabBarItem = UITabBarItem.init(title: Constants.profile, image: UIImage.init(systemName: Constants.iconPersonFill), tag: 1)
 
         let mainNavigationController: UINavigationController = UINavigationController.init(rootViewController: mainViewController)
         let profileNavigationController: UINavigationController = UINavigationController.init(rootViewController: profileViewController)

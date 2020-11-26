@@ -10,25 +10,37 @@ import Foundation
 import MessageKit
 
 class ChatViewModel {
-    var product: Product!
-    var discussion: Discussion!
+    var discussion: Discussion?
     var messages: [MessageType] = []
+    var product: Product!
 
 
     // MARK: Inits
 
-    init(product: Product){
+    convenience init(product: Product) {
+        self.init()
+        
         self.product = product
-        self.discussion = Discussion.init(discussionId: String(), productId: String(), seller: String(), buyer: String())
+    }
+    
+    convenience init(discussion: Discussion, product: Product) {
+        self.init()
+        
+        self.discussion = discussion
+        self.product = product
     }
     
     
     // MARK: Public Functions
     
     func initDiscussionChat(onSuccess: @escaping () -> Void, onError: ErrorClosure?) {
-        /// Buscamos una Discussion por Producto - Vendedor - Usuario (logged)
-        let discussion: Discussion = Discussion.init(discussionId: String(), productId: self.product.productId, seller: self.product.seller, buyer: MainViewModel.user.sender.senderId)
-        Managers.managerDiscussionFirestore!.selectDiscussion(discussion: discussion, onSuccess: { discussion in
+        /// Comprobamos si se ha inicializado el modelo con una Discussion existente
+        if self.discussion == nil {
+            /// Buscamos una Discussion por Producto - Vendedor - Usuario (logged)
+            self.discussion = Discussion.init(discussionId: String(), productId: self.product.productId, seller: self.product.seller, buyer: MainViewModel.user.sender.senderId)
+        }
+        
+        Managers.managerDiscussionFirestore!.selectDiscussion(discussion: self.discussion!, onSuccess: { discussion in
             self.discussion = discussion
             
             /// Buscamos los mensajes de la Discussion recuperada

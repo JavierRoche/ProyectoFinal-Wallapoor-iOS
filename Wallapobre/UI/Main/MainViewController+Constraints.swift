@@ -22,8 +22,8 @@ extension MainViewController {
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            collectionView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 6.0),
-            collectionView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -6.0)
+            collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 6.0),
+            collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -6.0)
         ])
         
         NSLayoutConstraint.activate([
@@ -34,7 +34,6 @@ extension MainViewController {
         ])
         
         NSLayoutConstraint.activate([
-            //saveSearchButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             saveSearchButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20.0),
             saveSearchButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: -48.0),
             saveSearchButton.widthAnchor.constraint(equalToConstant: 48.0),

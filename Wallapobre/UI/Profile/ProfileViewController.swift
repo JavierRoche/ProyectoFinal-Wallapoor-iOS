@@ -22,24 +22,23 @@ class ProfileViewController: UIViewController {
     }()
     
     lazy var avatarImageView: UIImageView = {
-        let image: UIImageView = UIImageView()
-        image.contentMode = .scaleAspectFit
+        let image: UIImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 96, height: 96))
+        image.contentMode = .scaleAspectFill
         image.isUserInteractionEnabled = true
+        image.layer.masksToBounds = true
         image.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapOnAvatar)))
         image.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(deleteAvatar)))
-        image.image = UIImage(systemName: Constants.faceIcon)
-        image.tintColor = UIColor.black
-        image.backgroundColor = UIColor.purple
-        image.layer.cornerRadius = 8.0
+        image.image = UIImage(systemName: Constants.iconAvatarHolder)
+        image.tintColor = UIColor.tangerine
+        image.layer.cornerRadius = 48.0
         image.translatesAutoresizingMaskIntoConstraints = false
         return image
     }()
     
     lazy var usernameLabel: UILabel = {
         let label: UILabel = UILabel()
-        label.font = UIFont.fontStyle16SemiBold
+        label.font = UIFont.fontStyle18Bold
         label.textColor = UIColor.black
-        label.numberOfLines = 1
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -48,7 +47,6 @@ class ProfileViewController: UIViewController {
         let label: UILabel = UILabel()
         label.font = UIFont.fontStyle16Regular
         label.textColor = UIColor.black
-        label.numberOfLines = 1
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -57,7 +55,6 @@ class ProfileViewController: UIViewController {
         let label: UILabel = UILabel()
         label.font = UIFont.fontStyle16Regular
         label.textColor = UIColor.black
-        label.numberOfLines = 1
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -65,27 +62,25 @@ class ProfileViewController: UIViewController {
     lazy var segmentControl: UISegmentedControl = {
         let segment: UISegmentedControl = UISegmentedControl()
         segment.backgroundColor = UIColor.tangerine
-        segment.insertSegment(withTitle: Constants.Selling, at: 0, animated: true)
-        segment.insertSegment(withTitle: Constants.Sold, at: 1, animated: true)
-        segment.insertSegment(withTitle: Constants.Searches, at: 2, animated: true)
+        segment.insertSegment(withTitle: Constants.selling, at: 0, animated: true)
+        segment.insertSegment(withTitle: Constants.sold, at: 1, animated: true)
+        segment.insertSegment(withTitle: Constants.searches, at: 2, animated: true)
+        segment.insertSegment(withTitle: Constants.messages, at: 3, animated: true)
         segment.selectedSegmentIndex = 0
-        segment.layer.cornerRadius = 5.0
+        segment.layer.cornerRadius = 4.0
         segment.addTarget(self, action: #selector(changeSegment), for: UIControl.Event.valueChanged)
         return segment
     }()
     
-    lazy var flowLayout: UICollectionViewFlowLayout = {
-        let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-        //layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
-        layout.itemSize = CGSize(width: 160.0, height: 160.0)
-        layout.minimumInteritemSpacing = 16.0
-        layout.sectionInset = UIEdgeInsets(top: 32.0, left: 32.0, bottom: 32.0, right: 32.0)
-        return layout
+    lazy var pinterestLayout: PinterestLayout = {
+        let pinterestLayout = PinterestLayout()
+        pinterestLayout.delegate = self
+        return pinterestLayout
     }()
     
     lazy var collectionView: UICollectionView = {
-        let collection = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
-        collection.backgroundColor = UIColor.red
+        let collection = UICollectionView(frame: .zero, collectionViewLayout: pinterestLayout)
+        collection.backgroundColor = UIColor.white
         collection.dataSource = self
         collection.delegate = self
         collection.register(ProductCell.self, forCellWithReuseIdentifier: String(describing: ProductCell.self))
@@ -93,12 +88,27 @@ class ProfileViewController: UIViewController {
         return collection
     }()
     
-    lazy var tableView: UITableView = {
+    lazy var searchesTableView: UITableView = {
         let table = UITableView(frame: .zero, style: UITableView.Style.plain)
+        table.register(UITableViewCell.self, forCellReuseIdentifier: Constants.cell)
+        table.tableFooterView = UIView()
         table.isHidden = true
         table.dataSource = self
         table.delegate = self
-        table.register(UITableViewCell.self, forCellReuseIdentifier: Constants.Cell)
+        table.separatorColor = UIColor.clear
+        table.translatesAutoresizingMaskIntoConstraints = false
+        return table
+    }()
+    
+    lazy var discussionsTableView: UITableView = {
+        let table = UITableView(frame: .zero, style: UITableView.Style.plain)
+        table.register(DiscussionCell.self, forCellReuseIdentifier: String(describing: DiscussionCell.self))
+        table.tableFooterView = UIView()
+        table.estimatedRowHeight = 30
+        table.isHidden = true
+        table.dataSource = self
+        table.delegate = self
+        table.separatorColor = UIColor.clear
         table.translatesAutoresizingMaskIntoConstraints = false
         return table
     }()
@@ -131,13 +141,13 @@ class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
+        /// Recuperacion de datos y configuramos la interface
+        self.viewModel.delegate = self
+        self.viewModel.viewWasLoaded()
+        self.configureUI()
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        //newProductButton.layer.cornerRadius = newProductButton.frame.size.height / 2
-        //saveSearchButton.layer.cornerRadius = saveSearchButton.frame.size.height / 2
-        
         segmentControl.frame = CGRect(x: 32, y: 250, width: (self.view.bounds.width - 64), height: 31)
         view.addSubview(segmentControl)
         /*NSLayoutConstraint.activate([
@@ -148,38 +158,34 @@ class ProfileViewController: UIViewController {
             segmentControl.heightAnchor.constraint(equalToConstant: 31.0)
         ])*/
         
-        /// Hacemos la recuperacion de datos y la configuracion de la UI aqui porque si vengo de una modificacion quiero que se actualice
-        self.viewModel.delegate = self
-        self.viewModel.viewWasLoaded()
-        
-        /// Configuramos la interface y cargamos las fotos en el CollectionView
-        self.configureUI()
+        /// Los productos se cargan aqui por si ha entrado desde el profile a modifcarlo
+        self.viewModel.viewWasAppear()
     }
     
     
     // MARK: User Interactions
     
     @objc private func tapOnLogout() {
-        self.showAlert(forInput: false, onlyAccept: false, title: Constants.UpdateProfile, message: Constants.GoingToUpdate) { [weak self] _ in
+        self.showAlert(forInput: false, onlyAccept: false, title: Constants.userLogout, message: Constants.goingToLogout) { [weak self] _ in
             /// Arrancamos el manager y deslogueamos
             Managers.managerUserAuthoritation = UserAuthoritation()
             Managers.managerUserAuthoritation!.logout(onSuccess: {
                 self?.createLoginScene()
                     
             }) { error in
-                self?.showAlert(title: Constants.Error, message: error.localizedDescription)
+                self?.showAlert(title: Constants.error, message: error.localizedDescription)
             }
         }
     }
     
     @objc private func tapOnSaveUser() {
-        self.showAlert(forInput: false, onlyAccept: false, title: Constants.UploadProduct, message: Constants.GoingToUpload) { [weak self] _ in
+        self.showAlert(forInput: false, onlyAccept: false, title: Constants.updateProfile, message: Constants.goingToUpdate) { [weak self] _ in
             self?.viewModel.updateProfile(image: self!.avatarImageView.image!, onSuccess: {
-                self?.showAlert(title: Constants.Success, message: Constants.AvatarUpdated)
+                self?.showAlert(title: Constants.success, message: Constants.profileUpdated)
                 self?.navigationItem.rightBarButtonItem?.isEnabled = false
                     
             }, onError: { error in
-                self?.showAlert(title: Constants.Error, message: error.localizedDescription)
+                self?.showAlert(title: Constants.error, message: error.localizedDescription)
             })
         }
     }
@@ -195,7 +201,7 @@ class ProfileViewController: UIViewController {
     @objc private func deleteAvatar(_ sender: UILongPressGestureRecognizer) {
         /// Recibimos el imageHolder del LongPress para ponerle el holder
         DispatchQueue.main.async { [weak self] in
-            self?.avatarImageView.image = UIImage(systemName: Constants.faceIcon)
+            self?.avatarImageView.image = UIImage(systemName: Constants.iconAvatarHolder)
         }
         self.navigationItem.rightBarButtonItem?.isEnabled = !self.navigationItem.rightBarButtonItem!.isEnabled
     }
@@ -205,16 +211,24 @@ class ProfileViewController: UIViewController {
         case 0:
             self.viewModel.filterByState(state: .selling)
             collectionView.isHidden = false
-            tableView.isHidden = true
+            searchesTableView.isHidden = true
+            discussionsTableView.isHidden = true
             
         case 1:
             self.viewModel.filterByState(state: .sold)
             collectionView.isHidden = false
-            tableView.isHidden = true
+            searchesTableView.isHidden = true
+            discussionsTableView.isHidden = true
             
         case 2:
             collectionView.isHidden = true
-            tableView.isHidden = false
+            searchesTableView.isHidden = false
+            discussionsTableView.isHidden = true
+        
+        case 3:
+            collectionView.isHidden = true
+            searchesTableView.isHidden = true
+            discussionsTableView.isHidden = false
             
         default:
             break
@@ -226,20 +240,20 @@ class ProfileViewController: UIViewController {
     
     fileprivate func configureUI() {
         /// Creacion del boton de logout y editar
-        let logoutLeftBarButtonItem: UIBarButtonItem = UIBarButtonItem(title: Constants.Logout, style: .plain, target: self, action: #selector(tapOnLogout))
-        //cancelLeftBarButtonItem.tintColor = UIColor.tangerine
+        let logoutLeftBarButtonItem: UIBarButtonItem = UIBarButtonItem(title: Constants.logout, style: .plain, target: self, action: #selector(tapOnLogout))
+        logoutLeftBarButtonItem.tintColor = UIColor.tangerine
         navigationItem.leftBarButtonItem = logoutLeftBarButtonItem
         navigationItem.leftBarButtonItem?.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.fontStyle17Regular], for: .normal)
         
-        let editRightBarButtonItem: UIBarButtonItem = UIBarButtonItem(title: Constants.Save, style: .plain, target: self, action: #selector(tapOnSaveUser))
+        let editRightBarButtonItem: UIBarButtonItem = UIBarButtonItem(title: Constants.save, style: .plain, target: self, action: #selector(tapOnSaveUser))
         editRightBarButtonItem.isEnabled = false
-        //postLeftBarButtonItem.tintColor = UIColor.tangerine
+        editRightBarButtonItem.tintColor = UIColor.tangerine
         navigationItem.rightBarButtonItem = editRightBarButtonItem
         navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.fontStyle17SemiBold], for: .normal)
         
         /// Informacion de usuario
         usernameLabel.text = MainViewModel.user.username
-        shoppingSalesLabel.text = "\(MainViewModel.user.shopping) \(Constants.shopping) \(MainViewModel.user.sales) \(Constants.sales)"
+        shoppingSalesLabel.text = "\(MainViewModel.user.shopping) \(Constants.shoppingPlusPipe) \(MainViewModel.user.sales) \(Constants.sales)"
         
         /// Avatar de usuario
         if !MainViewModel.user.avatar.isEmpty {
@@ -250,7 +264,7 @@ class ProfileViewController: UIViewController {
                     self?.avatarImageView.image = value.image
                     
                 case .failure(_):
-                    self?.avatarImageView.image = UIImage(systemName: Constants.faceIcon)
+                    self?.avatarImageView.image = UIImage(systemName: Constants.iconAvatarHolder)
                 }
             }
         }
@@ -278,9 +292,7 @@ class ProfileViewController: UIViewController {
 
 extension ProfileViewController: ProfileViewModelDelegate {
     func geocodeLocationed(location: String) {
-        DispatchQueue.main.async { [weak self] in
-            self?.locationLabel.text = location
-        }
+        locationLabel.text = location
     }
     
     func productCellViewModelsCreated() {
@@ -290,7 +302,13 @@ extension ProfileViewController: ProfileViewModelDelegate {
     
     func searchViewModelsCreated() {
         DispatchQueue.main.async { [weak self] in
-            self?.tableView.reloadData()
+            self?.searchesTableView.reloadData()
+        }
+    }
+    
+    func discussionViewModelsCreated() {
+        DispatchQueue.main.async { [weak self] in
+            self?.discussionsTableView.reloadData()
         }
     }
     
@@ -298,6 +316,15 @@ extension ProfileViewController: ProfileViewModelDelegate {
         DispatchQueue.main.async { [weak self] in
             self?.collectionView.reloadData()
         }
+    }
+}
+
+
+// MARK: ChatViewController Delegate
+
+extension ProfileViewController: ChatViewControllerDelegate {
+    func purchaseCompleted() {
+        shoppingSalesLabel.text = "\(MainViewModel.user.shopping) \(Constants.shoppingPlusPipe) \(MainViewModel.user.sales) \(Constants.sales)"
     }
 }
 

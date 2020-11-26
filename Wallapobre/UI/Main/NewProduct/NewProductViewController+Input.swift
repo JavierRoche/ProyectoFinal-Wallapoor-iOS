@@ -9,10 +9,10 @@
 import UIKit
 import MessageKit
 
-extension NewProductViewController: UITextFieldDelegate, UITextViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate {
-    
-    // MARK: UITextView / UITextField Delegates (Hiding Keyboard)
-    
+
+// MARK: UITextView / UITextField Delegates (Hiding Keyboard)
+
+extension NewProductViewController: UITextFieldDelegate, UITextViewDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
@@ -20,7 +20,7 @@ extension NewProductViewController: UITextFieldDelegate, UITextViewDelegate, UIP
 
     /// Control del numero de caracteres en UITextView
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        if text == Constants.NewParagraph {
+        if text == Constants.newParagraph {
             textView.resignFirstResponder()
             return false
         }
@@ -34,7 +34,7 @@ extension NewProductViewController: UITextFieldDelegate, UITextViewDelegate, UIP
     
     /// Control del numero de caracteres en UITextField
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if string == Constants.NewParagraph {
+        if string == Constants.newParagraph {
             textField.resignFirstResponder()
             return false
         }
@@ -46,26 +46,28 @@ extension NewProductViewController: UITextFieldDelegate, UITextViewDelegate, UIP
             /// Se permiten 40 caracteres  para el titulo
             return updatedText.count < 40
             
-        } else if textField == priceTextField {
-            let currentText = priceTextField.text ?? String()
-            guard let range = Range(range, in: currentText) else { return false }
-            let updatedText = currentText.replacingCharacters(in: range, with: string)
-            /// Se permiten 6 numeros para el precio
-            return updatedText.count < 6
-            
         } else if textField == categoryTextField {
             let currentText = categoryTextField.text ?? String()
             guard let range = Range(range, in: currentText) else { return false }
             let updatedText = currentText.replacingCharacters(in: range, with: string)
             /// No se permite escribir, solo seleccionar
             return updatedText.count < 0
+            
+        } else if textField == priceTextField {
+            let currentText = priceTextField.text ?? String()
+            guard let range = Range(range, in: currentText) else { return false }
+            let updatedText = currentText.replacingCharacters(in: range, with: string)
+            /// Se permiten 7 numeros para el precio
+            return updatedText.count < 7
         }
         return true
     }
-    
-    
-    // MARK: UIPickerView DataSource / UIPickerView Delegate
-    
+}
+
+
+// MARK: UIPickerView DataSource / UIPickerView Delegate
+
+extension NewProductViewController: UIPickerViewDataSource, UIPickerViewDelegate {
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
@@ -80,10 +82,7 @@ extension NewProductViewController: UITextFieldDelegate, UITextViewDelegate, UIP
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         self.viewModel.categoryPicked = Category(rawValue: row)
-        
-        DispatchQueue.main.async { [weak self] in
-            self?.categoryTextField.text = self?.viewModel.getCategoryViewModel(at: row)
-        }
+        categoryTextField.text = self.viewModel.getCategoryViewModel(at: row)
     }
 }
 

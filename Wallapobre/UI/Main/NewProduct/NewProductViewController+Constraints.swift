@@ -21,6 +21,7 @@ extension NewProductViewController {
         view.addSubview(descriptionTextView)
         view.addSubview(priceLabel)
         view.addSubview(priceTextField)
+        view.addSubview(euroLabel)
         view.addSubview(firstStack)
         view.addSubview(secondStack)
         
@@ -45,7 +46,8 @@ extension NewProductViewController {
         
         NSLayoutConstraint.activate([
             titleTextField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8.0),
-            titleTextField.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 32.0)
+            titleTextField.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 32.0),
+            titleTextField.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -32.0)
         ])
         
         NSLayoutConstraint.activate([
@@ -55,7 +57,8 @@ extension NewProductViewController {
         
         NSLayoutConstraint.activate([
             categoryTextField.topAnchor.constraint(equalTo: categoryLabel.bottomAnchor, constant: 8.0),
-            categoryTextField.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 32.0)
+            categoryTextField.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 32.0),
+            categoryTextField.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -32.0)
         ])
         
         NSLayoutConstraint.activate([
@@ -78,6 +81,11 @@ extension NewProductViewController {
         NSLayoutConstraint.activate([
             priceTextField.topAnchor.constraint(equalTo: priceLabel.bottomAnchor, constant: 8.0),
             priceTextField.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 32.0)
+        ])
+        
+        NSLayoutConstraint.activate([
+            euroLabel.centerYAnchor.constraint(equalTo: priceTextField.centerYAnchor),
+            euroLabel.leadingAnchor.constraint(equalTo: priceTextField.trailingAnchor, constant: 4.0)
         ])
         
         NSLayoutConstraint.activate([

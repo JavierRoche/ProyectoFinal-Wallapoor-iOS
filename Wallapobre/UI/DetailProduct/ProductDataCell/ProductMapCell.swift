@@ -12,9 +12,8 @@ import MapKit
 class ProductMapCell: UITableViewCell {
     lazy var iconImage: UIImageView = {
         let image: UIImageView = UIImageView()
-        image.image = UIImage(systemName: Constants.locationIcon)
+        image.image = UIImage(systemName: Constants.iconLocation)
         image.tintColor = UIColor.black
-        //image.contentMode = .scaleAspectFit
         image.translatesAutoresizingMaskIntoConstraints = false
         return image
     }()
@@ -32,6 +31,7 @@ class ProductMapCell: UITableViewCell {
         let map: MKMapView = MKMapView()
         map.delegate = self
         map.showsTraffic = false
+        map.layer.cornerRadius = 8.0
         map.setCameraZoomRange(MKMapView.CameraZoomRange(maxCenterCoordinateDistance: 10000), animated: true)
         map.translatesAutoresizingMaskIntoConstraints = false
         return map
@@ -49,14 +49,6 @@ class ProductMapCell: UITableViewCell {
         self.setMapLocation(seller: seller)
     }
 
-
-    /*override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-        contentView.layer.cornerRadius = 8.0
-        contentView.layer.masksToBounds = true
-    }*/
-
     
     // MARK: Private Functions
         
@@ -68,14 +60,15 @@ class ProductMapCell: UITableViewCell {
     
     fileprivate func setConstraints() {
         NSLayoutConstraint.activate([
-            iconImage.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 34.0),
+            iconImage.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 32.0),
             iconImage.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 16.0),
             iconImage.widthAnchor.constraint(equalToConstant: 16.0),
             iconImage.heightAnchor.constraint(equalToConstant: 16.0)
         ])
         
         NSLayoutConstraint.activate([
-            locationLabel.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 32.0),
+            locationLabel.centerYAnchor.constraint(equalTo: iconImage.centerYAnchor),
+            //locationLabel.bottomAnchor.constraint(equalTo: mapView.topAnchor, constant: 16.0),
             locationLabel.leadingAnchor.constraint(equalTo: iconImage.trailingAnchor, constant: 8.0),
             locationLabel.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -16.0)
         ])
@@ -85,7 +78,7 @@ class ProductMapCell: UITableViewCell {
             mapView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -32.0),
             mapView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 16.0),
             mapView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -16.0),
-            mapView.heightAnchor.constraint(equalToConstant: 200.0)
+            mapView.heightAnchor.constraint(greaterThanOrEqualToConstant: 200.0)
         ])
     }
     

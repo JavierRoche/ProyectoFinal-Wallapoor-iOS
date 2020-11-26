@@ -2,9 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:/Users/apple/Documents/Proyecto/iOS/Wallapobre/Wallapobre/Resources/TestLocations.gpx">
-   </FileRef>
-   <FileRef
       location = "group:Wallapobre.xcodeproj">
    </FileRef>
    <FileRef

@@ -23,7 +23,7 @@ extension ChatViewController: MessagesDataSource {
             self.messagesCollectionView.scrollToBottom()
             
         }) { error in
-            self.showAlert(title: Constants.Error, message: error.localizedDescription)
+            self.showAlert(title: Constants.error, message: error.localizedDescription)
         }
     }
     

@@ -28,15 +28,6 @@ class ProductCell: UICollectionViewCell {
         return label
     }()
     
-    /*lazy var titleLabel: UILabel = {
-        let label: UILabel = UILabel()
-        label.font = UIFont.fontStyle18Regular
-        label.textColor = UIColor.black
-        label.numberOfLines = 1
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()*/
-    
     
     var viewModel: ProductCellViewModel? {
         didSet {
@@ -49,10 +40,10 @@ class ProductCell: UICollectionViewCell {
                     self?.imageView.image = value.image
                     
                 case .failure(_):
-                    self?.imageView.image = UIImage(systemName: Constants.WarningImage)
+                    self?.imageView.image = UIImage(systemName: Constants.iconImageWarning)
                 }
             }
-            priceLabel.text = "\(String(viewModel.product.price))\(Constants.Euro)"
+            priceLabel.text = "\(String(viewModel.product.price))\(Constants.euro)"
             //titleLabel.text = viewModel.product.title
         }
     }
@@ -66,8 +57,6 @@ class ProductCell: UICollectionViewCell {
         /// Borde
         contentView.layer.cornerRadius = 8.0
         contentView.layer.masksToBounds = false
-        //self.layer.borderWidth = 0.4
-        //self.layer.borderColor = UIColor.tangerine.cgColor
         
         /// Sombra
         contentView.layer.shadowColor = UIColor.lightGray.cgColor
@@ -90,7 +79,6 @@ class ProductCell: UICollectionViewCell {
     /// Necesario al redibujar el contenido de una celda para evitar varios tipos de errores de dibujado
     override func prepareForReuse() {
         super.prepareForReuse()
-        //imageView.kf.cancelDownloadTask()
         imageView.image = nil
     }
     
@@ -112,18 +100,8 @@ class ProductCell: UICollectionViewCell {
         ])
         
         NSLayoutConstraint.activate([
-            /*priceLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 8.0),
-            priceLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8.0),
-            priceLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8.0)*/
             priceLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16.0),
             priceLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16.0)
         ])
-        
-        /*NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: priceLabel.bottomAnchor, constant: 8.0),
-            titleLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8.0),
-            titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8.0),
-            titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8.0)
-        ])*/
     }
 }

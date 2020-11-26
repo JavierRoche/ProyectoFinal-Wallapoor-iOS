@@ -41,10 +41,9 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
                 self.viewModel.insertMessage(message: message, onSuccess: {
                     /// El observer hace el trabajo de añadir el mensaje al modelo
                     self.viewModel.messages.append(message)
-                    //self.messagesCollectionView.insertSections([self.viewModel.messages.count - 1])
                     
                 }) { error in
-                    self.showAlert(title: Constants.Error, message: error.localizedDescription)
+                    self.showAlert(title: Constants.error, message: error.localizedDescription)
                 }
             }
         }

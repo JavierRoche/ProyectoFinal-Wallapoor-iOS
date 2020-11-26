@@ -8,7 +8,19 @@
 
 import UIKit
 
+struct Filter: Equatable {
+    var motor: Bool = true
+    var textile: Bool = true
+    var homes: Bool = true
+    var informatic: Bool = true
+    var sports: Bool = true
+    var services: Bool = true
+    var distance: Double = 50.0
+    var text: String = String()
+}
+
 class FiltersViewModel: Equatable {
+    /// Filtro original
     var filter: Filter
     
     
@@ -42,15 +54,4 @@ class FiltersViewModel: Equatable {
     static func == (lhs: FiltersViewModel, rhs: FiltersViewModel) -> Bool {
         return lhs.filter == rhs.filter
     }
-}
-
-struct Filter: Equatable {
-    var motor: Bool = true
-    var textile: Bool = true
-    var homes: Bool = true
-    var informatic: Bool = true
-    var sports: Bool = true
-    var services: Bool = true
-    var distance: Double = 50.0
-    var text: String = String()
 }

@@ -11,7 +11,7 @@ import FirebaseFirestore
 
 class ProductFirestore: ProductFirestoreManager {
     /// Instancia para acceder al nodo principal de la DB de Firestore
-    var db = Firestore.firestore().collection(Constants.productsFirebase)
+    var db = Firestore.firestore().collection(Constants.firestoreProducts)
     
     
     // MARK: Public Functions
@@ -65,6 +65,31 @@ class ProductFirestore: ProductFirestoreManager {
                         .compactMap({ Product.mapper(document: $0) })
                     DispatchQueue.main.async {
                         onSuccess(products)
+                    }
+                }
+        }
+    }
+    
+    public func selectProductById(productId: String, onSuccess: @escaping (Product) -> Void, onError: ErrorClosure?) {
+        /// Realizamos la SELECT a Firebase.products
+        self.db
+            /// Filtramos el producto del id recibido
+            .whereField("productid", isEqualTo: productId)
+            /// No necesitamos listener y usamos .getDocuments
+            .getDocuments { (snapshot, error) in
+                /// Raro que devuelva Firestore un error aqui
+                if let error = error, let retError = onError {
+                    DispatchQueue.main.async {
+                        retError(error)
+                    }
+                }
+                
+                /// El usuario existia
+                if let snapshot = snapshot {
+                    /// Si no hay ningun producto salimos. No saldra la foto
+                    guard let document: QueryDocumentSnapshot = snapshot.documents.first else { return }
+                    DispatchQueue.main.async {
+                        onSuccess(Product.mapper(document: document))
                     }
                 }
         }

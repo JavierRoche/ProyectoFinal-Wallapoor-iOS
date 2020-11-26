@@ -11,7 +11,35 @@ import FirebaseFirestore
 
 class DiscussionFirestore: DiscussionFirestoreManager {
     /// Instancia para acceder al nodo principal de la DB de Firestore
-    var db = Firestore.firestore().collection(Constants.discussionsFirebase)
+    var db = Firestore.firestore().collection(Constants.firestoreDiscussions)
+    
+    
+    func selectDiscussionByUser(user: User, field: String, onSuccess: @escaping ([Discussion]) -> Void, onError: ErrorClosure?) {
+        
+        /// Realizamos la SELECT a Firebase.discussions
+        self.db
+            /// Firestore no permite consultas OR
+            .whereField(field, isEqualTo: user.sender.senderId)
+            /// No necesitamos listener y usamos .getDocuments
+            .getDocuments { (snapshot, error) in
+                /// Raro que devuelva Firestore un error aqui
+                if let error = error, let retError = onError {
+                    DispatchQueue.main.async {
+                        retError(error)
+                    }
+                }
+                
+                /// Hay Discussion donde el user es seller
+                if let snapshot = snapshot {
+                    let discussions: [Discussion] = snapshot.documents
+                        .compactMap({ Discussion.mapper(document: $0) })
+                    
+                    DispatchQueue.main.async {
+                        onSuccess(discussions)
+                    }
+                }
+        }
+    }
     
     func selectDiscussion(discussion: Discussion, onSuccess: @escaping (Discussion) -> Void, onNonexistent: @escaping () -> Void, onError: ErrorClosure?) {
         

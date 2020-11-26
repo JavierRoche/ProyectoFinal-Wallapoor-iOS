@@ -20,11 +20,23 @@ class SellingViewController: UIViewController {
         return view
     }()
     
+    lazy var selectBuyerLabel: UILabel = {
+        let label: UILabel = UILabel()
+        label.font = UIFont.fontStyle18Bold
+        label.textColor = UIColor.black
+        label.text = Constants.selectBuyer
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
     lazy var tableView: UITableView = {
         let table = UITableView(frame: .zero, style: UITableView.Style.plain)
+        table.register(UITableViewCell.self, forCellReuseIdentifier: Constants.cell)
+        table.tableFooterView = UIView()
+        table.backgroundColor = UIColor.white
+        table.separatorColor = UIColor.tangerine
         table.dataSource = self
         table.delegate = self
-        table.register(UITableViewCell.self, forCellReuseIdentifier: Constants.Cell)
         table.translatesAutoresizingMaskIntoConstraints = false
         return table
     }()
@@ -54,21 +66,29 @@ class SellingViewController: UIViewController {
         view = UIView()
         
         view.addSubview(backgroundView)
+        view.addSubview(selectBuyerLabel)
         view.addSubview(tableView)
         
         NSLayoutConstraint.activate([
-            self.backgroundView.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height / 2),
-            //self.backgroundView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            self.backgroundView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            self.backgroundView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            self.backgroundView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
+            backgroundView.topAnchor.constraint(equalTo: selectBuyerLabel.topAnchor, constant: -32.0),
+            backgroundView.bottomAnchor.constraint(equalTo: tableView.bottomAnchor, constant: 32.0),
+            backgroundView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 64.0),
+            backgroundView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -64.0),
+            backgroundView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            backgroundView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
         
         NSLayoutConstraint.activate([
-            self.tableView.topAnchor.constraint(equalTo: backgroundView.topAnchor, constant: 16.0),
-            self.tableView.bottomAnchor.constraint(equalTo: backgroundView.bottomAnchor, constant: -16.0),
-            self.tableView.leadingAnchor.constraint(equalTo: backgroundView.leadingAnchor, constant: 16.0),
-            self.tableView.trailingAnchor.constraint(equalTo: backgroundView.trailingAnchor, constant: -16.0)
+            selectBuyerLabel.topAnchor.constraint(equalTo: backgroundView.topAnchor, constant: 32.0),
+            selectBuyerLabel.centerXAnchor.constraint(equalTo: backgroundView.centerXAnchor)
+        ])
+        
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: selectBuyerLabel.bottomAnchor, constant: 16.0),
+            tableView.bottomAnchor.constraint(equalTo: backgroundView.bottomAnchor, constant: -16.0),
+            tableView.leadingAnchor.constraint(equalTo: backgroundView.leadingAnchor, constant: 16.0),
+            tableView.trailingAnchor.constraint(equalTo: backgroundView.trailingAnchor, constant: -16.0),
+            tableView.heightAnchor.constraint(equalToConstant: 300.0)
         ])
     }
     
@@ -83,11 +103,10 @@ class SellingViewController: UIViewController {
 // MARK: UITableView Delegate
 
 extension SellingViewController: UITableViewDelegate {
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        self.showAlert(forInput: false, onlyAccept: false, title: Constants.UpdatePurchase, message: Constants.SelectABuyer) { [weak self] _ in
+        self.showAlert(forInput: false, onlyAccept: false, title: Constants.purchasingProcess, message: Constants.buyerSelected) { [weak self] _ in
             guard let user = self?.viewModel.getUser(at: indexPath) else { return }
             /// Devolvemos el control al ChatViewController que se encargara de actualizar todo
             self?.delegate?.buyerSelected(buyer: user)
@@ -105,12 +124,17 @@ extension SellingViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.Cell, for: indexPath)
-        /// Ignoramos el user que se corresponda con el user logueado
-        if self.viewModel.getUser(at: indexPath).sender.senderId == MainViewModel.user.sender.senderId { return UITableViewCell() }
-        
+        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.cell, for: indexPath)
         /// Informamos los campos
         cell.textLabel?.text = self.viewModel.getUser(at: indexPath).username
+        cell.imageView?.tintColor = UIColor.tangerine
+        cell.imageView?.contentMode = .scaleToFill
+        cell.layer.cornerRadius = 4.0
+        cell.layer.masksToBounds = false
+        cell.layer.shadowColor = UIColor.lightGray.cgColor
+        cell.layer.shadowOffset = CGSize(width: 0.6, height: 0.6)
+        cell.layer.shadowOpacity = 0.8
+        
         if let url = URL.init(string: self.viewModel.getUser(at: indexPath).avatar ) {
             /// Aqui puntualmente no uso KingFisher porque da mejor resultado el nativo
             DispatchQueue.global(qos:.userInitiated).async {
@@ -118,12 +142,13 @@ extension SellingViewController: UITableViewDataSource {
 
                 DispatchQueue.main.async {
                     cell.imageView?.image = UIImage(data: data)
+                    cell.layer.shadowRadius = 1.5
                     cell.setNeedsLayout()
                 }
             }
             
         } else {
-            cell.imageView?.image = UIImage(systemName: Constants.WarningImage)
+            cell.imageView?.image = UIImage(systemName: Constants.iconImageWarning)
         }
         
         return cell

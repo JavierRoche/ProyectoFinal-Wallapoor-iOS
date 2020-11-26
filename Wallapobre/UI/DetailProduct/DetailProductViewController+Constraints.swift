@@ -27,7 +27,6 @@ extension DetailProductViewController {
         ])
         
         NSLayoutConstraint.activate([
-            //footerView.topAnchor.constraint(equalTo: tableView.bottomAnchor),
             footerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             footerView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             footerView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
@@ -35,17 +34,17 @@ extension DetailProductViewController {
         ])
         
         NSLayoutConstraint.activate([
-            chatButton.topAnchor.constraint(equalTo: footerView.topAnchor, constant: 16.0),
-            chatButton.bottomAnchor.constraint(equalTo: footerView.bottomAnchor, constant: -16.0),
-            chatButton.leadingAnchor.constraint(equalTo: footerView.leadingAnchor, constant: 16.0),
-            chatButton.trailingAnchor.constraint(equalTo: footerView.trailingAnchor, constant: -16.0)
+            chatButton.topAnchor.constraint(equalTo: footerView.topAnchor, constant: 12.0),
+            chatButton.bottomAnchor.constraint(equalTo: footerView.bottomAnchor, constant: -12.0),
+            chatButton.leadingAnchor.constraint(equalTo: footerView.leadingAnchor, constant: 12.0),
+            chatButton.trailingAnchor.constraint(equalTo: footerView.trailingAnchor, constant: -12.0)
         ])
         
         NSLayoutConstraint.activate([
-            deleteProductButton.topAnchor.constraint(equalTo: footerView.topAnchor, constant: 16.0),
-            deleteProductButton.bottomAnchor.constraint(equalTo: footerView.bottomAnchor, constant: -16.0),
-            deleteProductButton.leadingAnchor.constraint(equalTo: footerView.leadingAnchor, constant: 16.0),
-            deleteProductButton.trailingAnchor.constraint(equalTo: footerView.trailingAnchor, constant: -16.0)
+            deleteProductButton.topAnchor.constraint(equalTo: footerView.topAnchor, constant: 12.0),
+            deleteProductButton.bottomAnchor.constraint(equalTo: footerView.bottomAnchor, constant: -12.0),
+            deleteProductButton.leadingAnchor.constraint(equalTo: footerView.leadingAnchor, constant: 12.0),
+            deleteProductButton.trailingAnchor.constraint(equalTo: footerView.trailingAnchor, constant: -12.0)
         ])
     }
 }

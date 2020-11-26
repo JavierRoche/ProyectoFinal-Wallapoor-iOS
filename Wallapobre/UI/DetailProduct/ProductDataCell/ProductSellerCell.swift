@@ -10,10 +10,12 @@ import UIKit
 
 class ProductSellerCell: UITableViewCell {
     lazy var avatarImageView: UIImageView = {
-        let image: UIImageView = UIImageView()
-        image.image = UIImage(systemName: Constants.faceIcon)
+        let image: UIImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 48, height: 48))
+        image.image = UIImage(systemName: Constants.iconAvatarHolder)
         image.tintColor = UIColor.black
-        image.layer.cornerRadius = 8.0
+        image.contentMode = .scaleAspectFit
+        image.layer.masksToBounds = true
+        image.layer.cornerRadius = 24.0
         image.translatesAutoresizingMaskIntoConstraints = false
         return image
     }()
@@ -22,7 +24,6 @@ class ProductSellerCell: UITableViewCell {
         let label: UILabel = UILabel()
         label.font = UIFont.fontStyle16SemiBold
         label.textColor = UIColor.black
-        label.numberOfLines = 1
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -31,7 +32,6 @@ class ProductSellerCell: UITableViewCell {
         let label: UILabel = UILabel()
         label.font = UIFont.fontStyle16Regular
         label.textColor = UIColor.black
-        label.numberOfLines = 1
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -60,7 +60,7 @@ class ProductSellerCell: UITableViewCell {
         NSLayoutConstraint.activate([
             avatarImageView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 32.0),
             avatarImageView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -32.0),
-            avatarImageView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 16.0),
+            avatarImageView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 32.0),
             avatarImageView.widthAnchor.constraint(equalToConstant: 48.0),
             avatarImageView.heightAnchor.constraint(equalToConstant: 48.0)
         ])
@@ -72,7 +72,7 @@ class ProductSellerCell: UITableViewCell {
         
         NSLayoutConstraint.activate([
             shoppingSalesLabel.bottomAnchor.constraint(equalTo: avatarImageView.bottomAnchor, constant: -3.0),
-            shoppingSalesLabel.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: 32.0)
+            shoppingSalesLabel.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: 16.0)
         ])
     }
     
@@ -85,12 +85,12 @@ class ProductSellerCell: UITableViewCell {
                     self?.avatarImageView.image = value.image
                     
                 case .failure(_):
-                    self?.avatarImageView.image = UIImage(systemName: Constants.faceIcon)
+                    self?.avatarImageView.image = UIImage(systemName: Constants.iconAvatarHolder)
                 }
             }
         }
         usernameLabel.text = seller.username
-        shoppingSalesLabel.text = "\(seller.shopping) \(Constants.shopping) \(seller.sales) \(Constants.sales)"
+        shoppingSalesLabel.text = "\(seller.shopping) \(Constants.shoppingPlusPipe) \(seller.sales) \(Constants.sales)"
     }
 }
 

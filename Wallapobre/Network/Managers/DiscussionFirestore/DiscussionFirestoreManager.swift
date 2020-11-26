@@ -10,5 +10,6 @@ import Foundation
 
 protocol DiscussionFirestoreManager {
     func selectDiscussion(discussion: Discussion, onSuccess: @escaping (Discussion) -> Void, onNonexistent: @escaping () -> Void, onError: ErrorClosure?)
+    func selectDiscussionByUser(user: User, field: String, onSuccess: @escaping ([Discussion]) -> Void, onError: ErrorClosure?)
     func insertDiscussion(discussion: Discussion, onSuccess: @escaping () -> Void, onError: ErrorClosure?)
 }

@@ -24,7 +24,13 @@ class SellingViewModel {
     func viewWasLoaded() {
         Managers.managerUserFirestore = UserFirestore()
         Managers.managerUserFirestore!.selectUsers(onSuccess: { users in
-            self.users = users
+            /// Quitamos el user que se corresponda con el user logueado
+            self.users = users.compactMap { user in
+                if user.sender.senderId != MainViewModel.user.sender.senderId {
+                    return user
+                }
+                return nil
+            }
             self.delegate?.viewModelsCreated()
             
         }) { error in

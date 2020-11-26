@@ -22,16 +22,17 @@ class ProductImagesCell: UITableViewCell {
     }()
     
     lazy var imageSlide: ImageSlideshow = {
-        let slide: ImageSlideshow = ImageSlideshow(frame: CGRect(x: 0, y: 0, width: self.bounds.width, height: 400))
+        let slide: ImageSlideshow = ImageSlideshow()//frame: CGRect(x: 0, y: 0, width: self.bounds.width, height: 400))
         //slide.slideshowInterval = 10.0
         slide.pageIndicatorPosition = .init(horizontal: .center, vertical: .under)
-        slide.contentScaleMode = UIViewContentMode.scaleAspectFill
+        slide.contentScaleMode = UIViewContentMode.scaleAspectFit
         slide.pageIndicator = pageControl
         slide.sizeToFit()
         slide.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapPhoto)))
         slide.translatesAutoresizingMaskIntoConstraints = false
         return slide
     }()
+    
     
     /// Delegado para la comunicacion con el controlador
     weak var delegate: ProductImagesCellDelegate?
@@ -59,15 +60,13 @@ class ProductImagesCell: UITableViewCell {
         self.addSubview(imageSlide)
     }
     
-    
-    
     fileprivate func setConstraints() {
         NSLayoutConstraint.activate([
-            imageSlide.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
-            imageSlide.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor),
-            imageSlide.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor),
-            imageSlide.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor),
-            imageSlide.heightAnchor.constraint(equalToConstant: 400.0)
+            imageSlide.topAnchor.constraint(equalTo: self.topAnchor),
+            imageSlide.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            imageSlide.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            imageSlide.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            imageSlide.heightAnchor.constraint(greaterThanOrEqualToConstant: 400.0)
         ])
     }
     

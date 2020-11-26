@@ -14,44 +14,40 @@ protocol FiltersViewControllerDelegate: class {
 
 class FiltersViewController: UIViewController {
     lazy var backgroundView: UIView = {
-        let view: UIView = UIView(frame: self.view.bounds)
+        let view: UIView = UIView()
+        view.layer.cornerRadius = 8.0
         view.backgroundColor = UIColor.white
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
-    lazy var filtersLabel: UILabel = {
+    lazy var filtersByCategoryLabel: UILabel = {
         let label: UILabel = UILabel()
-        label.font = UIFont.fontStyle22Bold
+        label.font = UIFont.fontStyle18Bold
         label.textColor = UIColor.black
         label.numberOfLines = 1
-        label.text = Constants.Filtros
+        label.text = Constants.filtersByCategory
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     lazy var acceptButton: UIButton = {
-        let button: UIButton = UIButton(type: UIButton.ButtonType.system)
-        button.setTitle(Constants.Accept, for: .normal)
-        button.tintColor = UIColor.black
+        let button: UIButton = UIButton(frame: CGRect(x: 0.0, y: 0.0, width: 40.0, height: 40.0))
+        button.setImage(UIImage(systemName: Constants.iconCheckmark, withConfiguration: UIImage.SymbolConfiguration(pointSize: 20, weight: .bold, scale: .large)), for: .normal)
+        button.layer.cornerRadius = button.frame.size.height / 2
+        button.backgroundColor = UIColor.white
+        button.tintColor = UIColor.tangerine
+        button.layer.borderWidth = 1
+        button.layer.borderColor = UIColor.tangerine.cgColor
+        button.layer.masksToBounds = true
         button.addTarget(self, action: #selector (acceptFilter), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
-    lazy var categoriesLabel: UILabel = {
-        let label: UILabel = UILabel()
-        label.font = UIFont.fontStyle18Bold
-        label.textColor = UIColor.black
-        label.numberOfLines = 1
-        label.text = Constants.CATEGORIES
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
     lazy var motorLabel: UILabel = {
         let label: UILabel = UILabel()
-        label.font = UIFont.fontStyle18Bold
+        label.font = UIFont.fontStyle16SemiBold
         label.textColor = UIColor.black
         label.numberOfLines = 1
         label.text = Category.motor.name
@@ -61,7 +57,7 @@ class FiltersViewController: UIViewController {
     
     lazy var textileLabel: UILabel = {
         let label: UILabel = UILabel()
-        label.font = UIFont.fontStyle18Bold
+        label.font = UIFont.fontStyle16SemiBold
         label.textColor = UIColor.black
         label.numberOfLines = 1
         label.text = Category.textile.name
@@ -71,7 +67,7 @@ class FiltersViewController: UIViewController {
     
     lazy var homesLabel: UILabel = {
         let label: UILabel = UILabel()
-        label.font = UIFont.fontStyle18Bold
+        label.font = UIFont.fontStyle16SemiBold
         label.textColor = UIColor.black
         label.numberOfLines = 1
         label.text = Category.homes.name
@@ -81,7 +77,7 @@ class FiltersViewController: UIViewController {
     
     lazy var informaticLabel: UILabel = {
         let label: UILabel = UILabel()
-        label.font = UIFont.fontStyle18Bold
+        label.font = UIFont.fontStyle16SemiBold
         label.textColor = UIColor.black
         label.numberOfLines = 1
         label.text = Category.informatic.name
@@ -91,7 +87,7 @@ class FiltersViewController: UIViewController {
     
     lazy var sportsLabel: UILabel = {
         let label: UILabel = UILabel()
-        label.font = UIFont.fontStyle18Bold
+        label.font = UIFont.fontStyle16SemiBold
         label.textColor = UIColor.black
         label.numberOfLines = 1
         label.text = Category.sports.name
@@ -101,7 +97,7 @@ class FiltersViewController: UIViewController {
     
     lazy var servicesLabel: UILabel = {
         let label: UILabel = UILabel()
-        label.font = UIFont.fontStyle18Bold
+        label.font = UIFont.fontStyle16SemiBold
         label.textColor = UIColor.black
         label.numberOfLines = 1
         label.text = Category.services.name
@@ -111,56 +107,79 @@ class FiltersViewController: UIViewController {
     
     lazy var motorSwitch: UISwitch = {
         let switchy: UISwitch = UISwitch()
+        switchy.onTintColor = UIColor.tangerine
+        switchy.set(width: 40, height: 24)
         switchy.translatesAutoresizingMaskIntoConstraints = false
         return switchy
     }()
     
     lazy var textileSwitch: UISwitch = {
         let switchy: UISwitch = UISwitch()
+        switchy.onTintColor = UIColor.tangerine
+        switchy.set(width: 40, height: 24)
         switchy.translatesAutoresizingMaskIntoConstraints = false
         return switchy
     }()
     
     lazy var homesSwitch: UISwitch = {
         let switchy: UISwitch = UISwitch()
+        switchy.onTintColor = UIColor.tangerine
+        switchy.set(width: 40, height: 24)
         switchy.translatesAutoresizingMaskIntoConstraints = false
         return switchy
     }()
     
     lazy var informaticSwitch: UISwitch = {
         let switchy: UISwitch = UISwitch()
+        switchy.onTintColor = UIColor.tangerine
+        switchy.set(width: 40, height: 24)
         switchy.translatesAutoresizingMaskIntoConstraints = false
         return switchy
     }()
     
     lazy var sportsSwitch: UISwitch = {
         let switchy: UISwitch = UISwitch()
+        switchy.onTintColor = UIColor.tangerine
+        switchy.set(width: 40, height: 24)
         switchy.translatesAutoresizingMaskIntoConstraints = false
         return switchy
     }()
     
     lazy var servicesSwitch: UISwitch = {
         let switchy: UISwitch = UISwitch()
+        switchy.onTintColor = UIColor.tangerine
+        switchy.set(width: 40, height: 24)
         switchy.translatesAutoresizingMaskIntoConstraints = false
         return switchy
+    }()
+    
+    lazy var filterByDistanceLabel: UILabel = {
+        let label: UILabel = UILabel()
+        label.font = UIFont.fontStyle18Bold
+        label.textColor = UIColor.black
+        label.numberOfLines = 1
+        label.text = Constants.filterByDistance
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
     }()
     
     lazy var slider: UISlider = {
         let slider: UISlider = UISlider()
         slider.maximumValue = 50
         slider.minimumValue = 0
+        slider.tintColor = UIColor.tangerine
         slider.isContinuous = true
         slider.addTarget(self, action: #selector (sliderValueDidChange), for: .valueChanged)
         slider.translatesAutoresizingMaskIntoConstraints = false
         return slider
     }()
     
-    lazy var sliderLabel: UILabel = {
+    lazy var valueSliderLabel: UILabel = {
         let label: UILabel = UILabel()
-        label.font = UIFont.fontStyle18Bold
+        label.font = UIFont.fontStyle22Bold
         label.textColor = UIColor.black
         label.numberOfLines = 1
-        label.text = Constants.number50
+        label.text = Constants.maxDistance
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -192,17 +211,14 @@ class FiltersViewController: UIViewController {
     }
     
     override func viewDidLoad() {
-        DispatchQueue.main.async { [weak self] in
-            self?.motorSwitch.isOn = self!.viewModel.filter.motor
-            self?.textileSwitch.isOn = self!.viewModel.filter.textile
-            self?.homesSwitch.isOn = self!.viewModel.filter.homes
-            self?.informaticSwitch.isOn = self!.viewModel.filter.informatic
-            self?.sportsSwitch.isOn = self!.viewModel.filter.sports
-            self?.servicesSwitch.isOn = self!.viewModel.filter.services
-
-            self?.sliderLabel.text = String(Int(self!.viewModel.filter.distance))
-            self?.slider.value = Float(self!.viewModel.filter.distance)
-        }
+        motorSwitch.isOn = self.viewModel.filter.motor
+        textileSwitch.isOn = self.viewModel.filter.textile
+        homesSwitch.isOn = self.viewModel.filter.homes
+        informaticSwitch.isOn = self.viewModel.filter.informatic
+        sportsSwitch.isOn = self.viewModel.filter.sports
+        servicesSwitch.isOn = self.viewModel.filter.services
+        valueSliderLabel.text = String(Int(self.viewModel.filter.distance))
+        slider.value = Float(self.viewModel.filter.distance)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -219,7 +235,7 @@ class FiltersViewController: UIViewController {
     @objc private func sliderValueDidChange(sender: UISlider!) {
         sender.value = round(sender.value / 10) * 10
         DispatchQueue.main.async { [weak self] in
-            self?.sliderLabel.text = String(Int(sender.value))
+            self?.valueSliderLabel.text = String(Int(sender.value))
         }
     }
     

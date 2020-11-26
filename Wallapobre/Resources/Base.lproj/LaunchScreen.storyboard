@@ -15,17 +15,32 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="personalhotspot" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="a9E-4r-GRL">
-                                <rect key="frame" x="147" y="390" width="120" height="116"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="iconApp" translatesAutoresizingMaskIntoConstraints="NO" id="a9E-4r-GRL">
+                                <rect key="frame" x="127" y="304" width="160" height="160"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="120" id="EFh-sa-6zW"/>
-                                    <constraint firstAttribute="width" constant="120" id="Ri6-3D-NuZ"/>
+                                    <constraint firstAttribute="height" constant="160" id="EFh-sa-6zW"/>
+                                    <constraint firstAttribute="width" constant="160" id="Ri6-3D-NuZ"/>
                                 </constraints>
                             </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Wallapoor" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VfZ-7W-Nkj">
+                                <rect key="frame" x="131" y="472" width="160" height="41"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="160" id="4Ce-SS-Bdy"/>
+                                    <constraint firstAttribute="height" constant="41" id="kV4-uv-zUJ"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
+                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                                <variation key="heightClass=regular-widthClass=compact">
+                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="34"/>
+                                </variation>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstItem="a9E-4r-GRL" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="ESy-Nc-ogm"/>
+                            <constraint firstItem="a9E-4r-GRL" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" constant="-64" id="ESy-Nc-ogm"/>
+                            <constraint firstItem="VfZ-7W-Nkj" firstAttribute="top" secondItem="a9E-4r-GRL" secondAttribute="bottom" constant="8" id="lvU-oS-0jE"/>
+                            <constraint firstItem="VfZ-7W-Nkj" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" constant="4" id="oDf-Kt-wzt"/>
                             <constraint firstItem="a9E-4r-GRL" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="z25-eg-T7k"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
@@ -37,6 +52,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="personalhotspot" catalog="system" width="64" height="36"/>
+        <image name="iconApp" width="1087" height="1076"/>
     </resources>
 </document>

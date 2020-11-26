@@ -16,22 +16,33 @@ class LoginViewController: UIViewController {
         return view
     }()
     
+    lazy var appImageView: UIImageView = {
+        let image: UIImageView = UIImageView()
+        image.contentMode = .scaleAspectFit
+        image.image = UIImage(named: Constants.iconApp)
+        image.translatesAutoresizingMaskIntoConstraints = false
+        return image
+    }()
+    
     lazy var emailLabel: UILabel = {
         let label: UILabel = UILabel()
-        label.font = UIFont.fontStyle14Regular
+        label.font = UIFont.fontStyle16SemiBold
         label.textColor = UIColor.black
-        label.numberOfLines = 1
-        label.text = Constants.EMAIL
+        label.text = Constants.email
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     lazy var emailTextField: UITextField = {
         let textField: UITextField = UITextField()
-        textField.placeholder = Constants.TypeAnEmail
+        textField.placeholder = Constants.typeEmail
         textField.font = UIFont.fontStyle16Regular
         textField.textColor = UIColor.black
         textField.borderStyle = UITextField.BorderStyle.roundedRect
+        textField.tintColor = UIColor.tangerine
+        textField.layer.borderColor = UIColor.tangerine.cgColor
+        textField.layer.borderWidth = 1
+        textField.layer.cornerRadius = 4.0
         textField.autocorrectionType = UITextAutocorrectionType.no
         textField.keyboardType = UIKeyboardType.emailAddress
         textField.returnKeyType = UIReturnKeyType.done
@@ -42,20 +53,23 @@ class LoginViewController: UIViewController {
     
     lazy var passwordLabel: UILabel = {
         let label: UILabel = UILabel()
-        label.font = UIFont.fontStyle14Regular
+        label.font = UIFont.fontStyle16SemiBold
         label.textColor = UIColor.black
-        label.numberOfLines = 1
-        label.text = Constants.Password.uppercased()
+        label.text = Constants.password
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     lazy var passwordTextField: UITextField = {
         let textField: UITextField = UITextField()
-        textField.placeholder = Constants.TypeAnPassword
+        textField.placeholder = Constants.typePassword
         textField.font = UIFont.fontStyle16Regular
         textField.textColor = UIColor.black
         textField.borderStyle = UITextField.BorderStyle.roundedRect
+        textField.tintColor = UIColor.tangerine
+        textField.layer.borderColor = UIColor.tangerine.cgColor
+        textField.layer.borderWidth = 1
+        textField.layer.cornerRadius = 4.0
         textField.autocorrectionType = UITextAutocorrectionType.no
         textField.keyboardType = UIKeyboardType.default
         textField.returnKeyType = UIReturnKeyType.done
@@ -68,10 +82,9 @@ class LoginViewController: UIViewController {
     lazy var usernameLabel: UILabel = {
         let label: UILabel = UILabel()
         label.isHidden = true
-        label.font = UIFont.fontStyle14Regular
+        label.font = UIFont.fontStyle16SemiBold
         label.textColor = UIColor.black
-        label.numberOfLines = 1
-        label.text = Constants.USERNAME
+        label.text = Constants.username
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -79,10 +92,14 @@ class LoginViewController: UIViewController {
     lazy var usernameTextField: UITextField = {
         let textField: UITextField = UITextField()
         textField.isHidden = true
-        textField.placeholder = Constants.TypeAnUsername
+        textField.placeholder = Constants.typeUsername
         textField.font = UIFont.fontStyle16Regular
         textField.textColor = UIColor.black
         textField.borderStyle = UITextField.BorderStyle.roundedRect
+        textField.tintColor = UIColor.tangerine
+        textField.layer.borderColor = UIColor.tangerine.cgColor
+        textField.layer.borderWidth = 1
+        textField.layer.cornerRadius = 4.0
         textField.autocorrectionType = UITextAutocorrectionType.no
         textField.keyboardType = UIKeyboardType.default
         textField.returnKeyType = UIReturnKeyType.done
@@ -93,7 +110,8 @@ class LoginViewController: UIViewController {
     
     lazy var loginButton: UIButton = {
         let button: UIButton = UIButton(type: UIButton.ButtonType.system)
-        button.setTitle(Constants.Login, for: .normal)
+        button.setTitle(Constants.login, for: .normal)
+        button.titleLabel?.font = UIFont.fontStyle16SemiBold
         button.tintColor = UIColor.black
         button.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapOnLogin)))
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -102,7 +120,7 @@ class LoginViewController: UIViewController {
     
     lazy var hideButton: UIButton = {
         let button: UIButton = UIButton(type: UIButton.ButtonType.system)
-        button.setImage(UIImage(systemName: Constants.upIcon), for: .normal)
+        button.setImage(UIImage(systemName: Constants.iconUp), for: .normal)
         button.tintColor = UIColor.black
         button.isHidden = true
         button.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapOnHideUsername)))
@@ -112,7 +130,8 @@ class LoginViewController: UIViewController {
     
     lazy var registerButton: UIButton = {
         let button: UIButton = UIButton(type: UIButton.ButtonType.system)
-        button.setTitle(Constants.Register, for: .normal)
+        button.setTitle(Constants.register, for: .normal)
+        button.titleLabel?.font = UIFont.fontStyle16SemiBold
         button.tintColor = UIColor.black
         button.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapOnRegister)))
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -121,7 +140,8 @@ class LoginViewController: UIViewController {
     
     lazy var recoverButton: UIButton = {
         let button: UIButton = UIButton(type: UIButton.ButtonType.system)
-        button.setTitle(Constants.RecoverPassword, for: .normal)
+        button.setTitle(Constants.recoverPassword, for: .normal)
+        button.titleLabel?.font = UIFont.fontStyle16SemiBold
         button.tintColor = UIColor.black
         button.addTarget(self, action: #selector (tapOnRecover), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -162,13 +182,13 @@ class LoginViewController: UIViewController {
             Managers.managerUserLocation = UserLocation()
             Managers.managerUserAuthoritation = UserAuthoritation()
             
-            self.showAlert(title: Constants.Logout, message: Constants.UserLogout)
+            self.showAlert(title: Constants.logout, message: Constants.userLogout)
         }
         
         /// Solicitamos permisos de geolocalizacion al usuario
         guard let _ = viewModel.askForLocationPermissions() else { return }
         
-        self.showAlert(title: Constants.Error, message: "\(Constants.fatalErrorAuth)\n\(Constants.fatalErrorNeedLoc)")
+        self.showAlert(title: Constants.error, message: "\(Constants.errorLocation)\n\(Constants.appNeedLocation)")
     }
     
     
@@ -191,7 +211,7 @@ class LoginViewController: UIViewController {
             }
             
             /// Si no hay permisos de localizacion damos un mensaje informativo
-            self.showAlert(title: Constants.Error, message: "\(Constants.fatalErrorAuth)\n\(Constants.fatalErrorNeedLoc)")
+            self.showAlert(title: Constants.error, message: "\(Constants.errorLocation)\n\(Constants.appNeedLocation)")
         }
     }
     
@@ -244,12 +264,12 @@ class LoginViewController: UIViewController {
     fileprivate func login() {
         /// Comprobamos que el usuario ha introducido un email y un pass y que los campos no esten vacios
         guard let email = emailTextField.text?.lowercased(), let password = passwordTextField.text else {
-            self.showAlert(title: Constants.Warning, message: Constants.MissingData)
+            self.showAlert(title: Constants.warning, message: Constants.missingData)
             return
         }
         
         if email.isEmpty || password.isEmpty {
-            self.showAlert(title: Constants.Warning, message: Constants.MissingData)
+            self.showAlert(title: Constants.warning, message: Constants.missingData)
             return
         }
         
@@ -261,23 +281,23 @@ class LoginViewController: UIViewController {
                 self?.createMainScene(user: user)
                 
             }) { (error) in
-                self?.showAlert(title: Constants.Error, message: error.localizedDescription)
+                self?.showAlert(title: Constants.error, message: error.localizedDescription)
             }
             
         }) { [weak self] error in
-            self?.showAlert(title: Constants.Error, message: error.localizedDescription)
+            self?.showAlert(title: Constants.error, message: error.localizedDescription)
         }
     }
     
     fileprivate func register() {
         /// Comprobamos que el usuario ha introducido un email, un pass y un username, y que los campos no esten vacios
         guard let email = emailTextField.text?.lowercased(), let password = passwordTextField.text, let username = usernameTextField.text else {
-            self.showAlert(title: Constants.Warning, message: Constants.MissingData)
+            self.showAlert(title: Constants.warning, message: Constants.missingData)
             return
         }
         
         if email.isEmpty || password.isEmpty || username.isEmpty {
-            self.showAlert(title: Constants.Warning, message: Constants.MissingData)
+            self.showAlert(title: Constants.warning, message: Constants.missingData)
             return
         }
         
@@ -290,23 +310,23 @@ class LoginViewController: UIViewController {
                 self?.createMainScene(user: user)
                 
             }) { (error) in
-                self?.showAlert(title: Constants.Error, message: error.localizedDescription)
+                self?.showAlert(title: Constants.error, message: error.localizedDescription)
             }
             
         }) { [weak self] error in
-            self?.showAlert(title: Constants.Error, message: error.localizedDescription)
+            self?.showAlert(title: Constants.error, message: error.localizedDescription)
         }
     }
     
     fileprivate func recover() {
         /// Comprobamos que el usuario ha introducido un email y que los campos no esten vacios
         guard let email = emailTextField.text?.lowercased() else {
-            self.showAlert(title: Constants.Warning, message: Constants.MissingData)
+            self.showAlert(title: Constants.warning, message: Constants.missingData)
             return
         }
         
         if email.isEmpty {
-            self.showAlert(title: Constants.Warning, message: Constants.MissingData)
+            self.showAlert(title: Constants.warning, message: Constants.missingData)
             return
         }
         
@@ -314,10 +334,10 @@ class LoginViewController: UIViewController {
         let user = User.init(id: String(), email: email, password: nil)
         
         self.viewModel.recoverUser(user: user, onSuccess: {
-            self.showAlert(title: Constants.Password, message: Constants.PasswordRecovered)
+            self.showAlert(title: Constants.password, message: Constants.passwordRecovered)
             
         }) { [weak self] error in
-            self?.showAlert(title: Constants.Error, message: error.localizedDescription)
+            self?.showAlert(title: Constants.error, message: error.localizedDescription)
         }
     }
     

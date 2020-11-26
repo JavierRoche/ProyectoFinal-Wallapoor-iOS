@@ -14,7 +14,7 @@ import UIKit
 extension MainViewController: UISearchBarDelegate  {
     /// Funcion delegada de UISearchBar para controlar cada caracter introducido
     func searchBar(_ searchBar: UISearchBar, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        if text == Constants.NewParagraph {
+        if text == Constants.newParagraph {
             searchBar.resignFirstResponder()
             return false
         }
@@ -39,12 +39,8 @@ extension MainViewController: UISearchBarDelegate  {
             self?.collectionView.reloadData()
         }
         
-        if self.viewModel.showUpSaveSearchButton() {
-            self.saveButtonFadeOut()
-            
-        } else {
-            self.saveButtonFadeIn()
-        }
+        /// Ofrecemos guardar la busquedea tras un filtrado
+        self.coordinateSituation()
         
         return true
     }
@@ -64,12 +60,8 @@ extension MainViewController: UISearchBarDelegate  {
                 self?.collectionView.reloadData()
             }
             
-            if self.viewModel.showUpSaveSearchButton() {
-                self.saveButtonFadeOut()
-                
-            } else {
-                self.saveButtonFadeIn()
-            }
+            /// Ofrecemos guardar la busquedea tras un filtrado
+            self.coordinateSituation()
             
             /// Paramos la animacion y liberamos el uso del searchController y del resto de la interface
             self.deactivateActivityIndicator()
@@ -102,11 +94,7 @@ extension MainViewController: UISearchBarDelegate  {
             self?.collectionView.reloadData()
         }
         
-        if self.viewModel.showUpSaveSearchButton() {
-            self.saveButtonFadeOut()
-            
-        } else {
-            self.saveButtonFadeIn()
-        }
+        /// Ofrecemos guardar la busquedea tras un filtrado
+        self.coordinateSituation()
     }
 }

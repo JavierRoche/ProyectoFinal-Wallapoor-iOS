@@ -12,7 +12,7 @@ import FirebaseFirestore
 
 class UserFirestore: UserFirestoreManager {
     /// Instancia para acceder al nodo principal de la DB de Firestore
-    var db = Firestore.firestore().collection(Constants.usersFirebase)
+    var db = Firestore.firestore().collection(Constants.firestoreUsers)
     
     
     // MARK: Public Functions

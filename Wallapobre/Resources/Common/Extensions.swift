@@ -14,8 +14,8 @@ import MessageKit
 
 extension UIViewController {
     func showAlert(forInput: Bool = false, onlyAccept: Bool = true,
-                   title: String? = nil, message: String? = nil, actionTitle: String? = Constants.Accept,
-                   cancelTitle: String? = Constants.Cancel, inputPlaceholder: String? = nil,
+                   title: String? = nil, message: String? = nil, actionTitle: String? = Constants.accept,
+                   cancelTitle: String? = Constants.cancel, inputPlaceholder: String? = nil,
                    inputKeyboardType: UIKeyboardType = UIKeyboardType.alphabet,
                    cancelHandler: ((UIAlertAction) -> Swift.Void)? = nil,
                    actionHandler: ((_ text: String?) -> Void)? = nil) {
@@ -77,6 +77,43 @@ extension UIImage {
         UIGraphicsEndImageContext()
         
         return newImage!
+    }
+}
+
+
+// MARK: UISwitch Personal Utilities
+
+extension UISwitch {
+    /// Funcion que scala un UISwitch al tamaño que queramos
+    func set(width: CGFloat, height: CGFloat) {
+        let standardHeight: CGFloat = 31
+        let standardWidth: CGFloat = 51
+        let heightRatio = height / standardHeight
+        let widthRatio = width / standardWidth
+        self.transform = CGAffineTransform(scaleX: widthRatio, y: heightRatio)
+    }
+}
+
+
+// MARK: UISwitch Personal Utilities
+
+extension Date {
+    /// Funcion que transforma una String a un formato dado de Date
+    static func fromStringToDate(input: String, format: String) -> Date {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = format
+        if let date = dateFormatter.date(from: input) {
+            return date
+        }
+        return Date()
+    }
+
+    /// Funcion que transforma un Date una String legible
+    static func fromDateToString(date: Date, format: String) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = format
+        let retString = dateFormatter.string(from: date)
+        return retString
     }
 }
 

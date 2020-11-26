@@ -18,7 +18,7 @@ class StorageFirebase: StorageFirebaseManager {
             
             /// Objeto de tipo StorageMetadata que contiene las caracteristicas del fichero
             let metadata: StorageMetadata = StorageMetadata()
-            metadata.contentType = Constants.jpegDirectory
+            metadata.contentType = Constants.firestoreJpegDirectory
 
             /// Intentamos guardar el fichero en Cloud Storage con la imagen en Data y el StorageMetadata
             ref.putData(imageData, metadata: metadata) { (metadata, error) in

@@ -18,6 +18,7 @@ class DetailProductViewController: UIViewController {
         let table: UITableView = UITableView(frame: .zero, style: UITableView.Style.plain)
         table.register(ProductImagesCell.self, forCellReuseIdentifier: String(describing: ProductImagesCell.self))
         table.register(ProductDataCell.self, forCellReuseIdentifier: String(describing: ProductDataCell.self))
+        table.register(ProductDataEditionCell.self, forCellReuseIdentifier: String(describing: ProductDataEditionCell.self))
         table.register(ProductMapCell.self, forCellReuseIdentifier: String(describing: ProductMapCell.self))
         table.register(ProductSellerCell.self, forCellReuseIdentifier: String(describing: ProductSellerCell.self))
         table.register(ProductSocialNetworksCell.self, forCellReuseIdentifier: String(describing: ProductSocialNetworksCell.self))
@@ -25,6 +26,7 @@ class DetailProductViewController: UIViewController {
         table.delegate = self
         table.estimatedRowHeight = 30
         table.backgroundColor = UIColor.white
+        table.separatorColor = UIColor.tangerine
         table.rowHeight = UITableView.automaticDimension
         table.translatesAutoresizingMaskIntoConstraints = false
         return table
@@ -33,17 +35,18 @@ class DetailProductViewController: UIViewController {
     lazy var footerView: UIView = {
         let view: UIView = UIView()
         view.backgroundColor = UIColor.white
-        view.layer.borderColor = CGColor.init(srgbRed: 196/255.0, green: 196/255.0, blue: 196/255.0, alpha: 0.75)
-        view.layer.borderWidth = 1
+        view.layer.borderColor = UIColor.tangerine.cgColor
+        view.layer.borderWidth = 0.5
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
     lazy var chatButton: UIButton = {
         let button: UIButton = UIButton(type: UIButton.ButtonType.system)
-        button.setTitle(Constants.Chat, for: .normal)
-        button.tintColor = UIColor.black
-        button.backgroundColor = UIColor.cyan
+        button.setTitle(Constants.chat, for: .normal)
+        button.tintColor = UIColor.white
+        button.backgroundColor = UIColor.tangerine
+        button.layer.cornerRadius = 16.0
         button.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapOnChat)))
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -51,9 +54,10 @@ class DetailProductViewController: UIViewController {
     
     lazy var deleteProductButton: UIButton = {
         let button: UIButton = UIButton(type: UIButton.ButtonType.system)
-        button.setTitle(Constants.DeleteProduct, for: .normal)
-        button.tintColor = UIColor.black
-        button.backgroundColor = UIColor.red
+        button.setTitle(Constants.deleteProduct, for: .normal)
+        button.tintColor = UIColor.white
+        button.backgroundColor = UIColor.tangerine
+        button.layer.cornerRadius = 16.0
         button.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapOnDelete)))
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -71,6 +75,7 @@ class DetailProductViewController: UIViewController {
     init(viewModel: DetailProductViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
+        self.title = String()
     }
 
     required init?(coder: NSCoder) {
@@ -123,7 +128,7 @@ class DetailProductViewController: UIViewController {
     }
     
     @objc private func tapOnDelete() {
-        self.showAlert(forInput: false, onlyAccept: false, title: Constants.DeleteProduct, message: Constants.GoingToDelete) { [weak self] _ in
+        self.showAlert(forInput: false, onlyAccept: false, title: Constants.deleteProduct, message: Constants.goingToDelete) { [weak self] _ in
             /// Borramos el producto de la base de datos de Firestore
             self?.viewModel.deleteProduct(onSuccess: {
                 /// Informamos al MainViewController para que notifique al usuario
@@ -131,7 +136,7 @@ class DetailProductViewController: UIViewController {
                 self?.dismiss(animated: true, completion: nil)
                     
             }, onError: { error in
-                self?.showAlert(title: Constants.Error, message: error.localizedDescription)
+                self?.showAlert(title: Constants.error, message: error.localizedDescription)
             })
         }
     }
@@ -144,7 +149,7 @@ class DetailProductViewController: UIViewController {
         Managers.managerUserFirestore = UserFirestore()
         self.viewModel.getSellerData(onSuccess: { [weak self] user in
             guard let _ = user else {
-                self?.showAlert(title: Constants.Error, message: Constants.MissingSeller) { _ in
+                self?.showAlert(title: Constants.error, message: Constants.missingSeller) { _ in
                     self?.dismiss(animated: true, completion: nil)
                 }
                 return
@@ -158,23 +163,20 @@ class DetailProductViewController: UIViewController {
             }
             
         }) { [weak self] error in
-            self?.showAlert(title: Constants.Error, message: error.localizedDescription) { _ in
+            self?.showAlert(title: Constants.error, message: error.localizedDescription) { _ in
                 self?.dismiss(animated: true, completion: nil)
             }
         }
     }
     
     fileprivate func configureUI() {
-        /// Boton superior para salir del chat
-        let leftBarButtonItem: UIBarButtonItem = UIBarButtonItem(image: UIImage(systemName: Constants.arrowIcon), style: .plain, target: self, action: #selector(backButtonTapped))
-        leftBarButtonItem.tintColor = .black
-        navigationItem.leftBarButtonItem = leftBarButtonItem
-        //navigationController?.navigationBar.alpha = 0.4
+        self.navigationController?.navigationBar.tintColor = UIColor.tangerine
+        self.navigationController?.navigationBar.backgroundColor = UIColor.white
         
         /// Saldra la opcion de modificar si el producto es del usuario y NO esta vendido
         if self.viewModel.seller?.sender.senderId == MainViewModel.user.sender.senderId && self.viewModel.product.state != .sold {
-            let modifyRightBarButtonItem: UIBarButtonItem = UIBarButtonItem(title: Constants.Modify, style: .plain, target: self, action: #selector(tapOnModify))
-            //postLeftBarButtonItem.tintColor = UIColor.tangerine
+            let modifyRightBarButtonItem: UIBarButtonItem = UIBarButtonItem(title: Constants.modify, style: .plain, target: self, action: #selector(tapOnModify))
+            modifyRightBarButtonItem.tintColor = UIColor.tangerine
             navigationItem.rightBarButtonItem = modifyRightBarButtonItem
             navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.fontStyle17SemiBold], for: .normal)
         }
@@ -207,13 +209,13 @@ extension DetailProductViewController: ProductImagesCellDelegate {
         fullScreenController.initialPage = 0
         fullScreenController.modalPresentationStyle = .custom
         
-        /// Recuperamos el la vista que necesitamos para poder pasarsela al zoom animado
+        /// Recuperamos la vista que necesitamos para poder pasarsela al zoom animado
         let indexPath = IndexPath(row: 0, section: 0)
         if let cell = tableView.cellForRow(at: indexPath) as? ProductImagesCell {   // MARK: ESTO ES SENCILLAMENTE LA POLLA
             let slideshowTransitioningDelegate = ZoomAnimatedTransitioningDelegate(slideshowView: cell.imageSlide, slideshowController: fullScreenController)
             fullScreenController.modalPresentationStyle = .custom
             fullScreenController.transitioningDelegate = slideshowTransitioningDelegate
-            present(fullScreenController, animated: true, completion: nil)
+            self.present(fullScreenController, animated: true, completion: nil)
         }
     }
 }
@@ -223,7 +225,7 @@ extension DetailProductViewController: ProductImagesCellDelegate {
 
 extension DetailProductViewController: ModifyProductViewControllerDelegate {
     func productModified() {
-        self.showAlert(title: Constants.Info, message: Constants.ProductUpdated) { _ in
+        self.showAlert(title: Constants.info, message: Constants.productUpdated) { _ in
             self.dismiss(animated: true, completion: nil)
         }
     }

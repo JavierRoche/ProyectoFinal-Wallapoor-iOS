@@ -18,9 +18,12 @@ extension MainViewController: UICollectionViewDelegate {
         let detailProductViewModel = DetailProductViewModel.init(product: viewModel.getCellViewModel(at: indexPath).product)
         let detailProductViewController = DetailProductViewController.init(viewModel: detailProductViewModel)
         detailProductViewController.delegate = self
+        self.navigationController?.pushViewController(detailProductViewController, animated: true)
+        /*
+        
         let navigationController: UINavigationController = UINavigationController.init(rootViewController: detailProductViewController)
         navigationController.modalPresentationStyle = .fullScreen
-        self.present(navigationController, animated: true, completion: nil)
+        self.present(navigationController, animated: true, completion: nil)*/
     }
 }
 
@@ -34,13 +37,7 @@ extension MainViewController: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: ProductCell.self), for: indexPath) as? ProductCell else { fatalError() }
-        
-        //let productViewModel: ProductCellViewModel = self.viewModel.getProductViewModel(at: indexPath)
-        
-        //cell.configureCell(viewModel: productViewModel)
         cell.viewModel = self.viewModel.getCellViewModel(at: indexPath)
-        
-        //collectionView.collectionViewLayout.invalidateLayout()
         return cell
     }
 }
@@ -50,6 +47,6 @@ extension MainViewController: UICollectionViewDataSource {
 
 extension MainViewController: PinterestLayoutDelegate {
     func collectionView(_ collectionView: UICollectionView, heightForCellAtIndexPath indexPath: IndexPath) -> CGFloat {
-        return CGFloat(self.viewModel.getCellViewModel(at: indexPath).product.heightMainphoto + 50)
+        return CGFloat(self.viewModel.getCellViewModel(at: indexPath).product.heightMainphoto)
     }
 }

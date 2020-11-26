@@ -9,115 +9,135 @@
 import UIKit
 
 enum Constants {
-    static let Accept: String = "Aceptar"
-    static let Cancel: String = "Cancelar"
-    static let Error: String = "Error"
-    static let Warning: String = "Advertencia"
-    static let Productos: String = "Productos"
-    static let starIcon: String = "star.fill"
-    static let cameraIcon: String = "camera.fill"
-    static let Perfil: String = "Perfil"
-    static let EMAIL: String = "EMAIL"
-    static let TypeAnEmail: String = "Escribe un email"
-    static let Password: String = "Password"
-    static let TypeAnPassword: String = "Escribe una password"
-    static let USERNAME: String = "USERNAME"
-    static let TypeAnUsername: String = "Escribe un username"
-    static let Login: String = "Login"
-    static let upIcon: String = "chevron.up"
-    static let Register: String = "Register"
-    static let RecoverPassword: String = "Recover password"
-    static let keyPathPosition: String = "position"
-    static let MissingData: String = "Faltan datos"
-    static let PasswordRecovered: String = "Password recuperada"
-    static let filterIcon: String = "line.horizontal.3.decrease"
-    static let plusIcon: String = "plus"
-    static let SaveSearch: String = "Guardar búsqueda"
-    static let NameForPersonal: String = "Nombre de búsqueda personal"
-    static let Success: String = "Exito"
-    static let PersonalSearchSaved: String = "Búsqueda personal guardada"
-    static let Info: String = "Info"
-    static let ProductUploaded: String = "Product uploaded"
-    static let ProductUpdated: String = "Product updated"
-    static let UserUpdated: String = "User updated"
-    static let Upload: String = "Upload"
-    static let Update: String = "Update"
-    static let UploadProduct: String = "Upload product"
-    static let GoingToUpload: String = "Going to upload a product"
-    static let GoingToDelete: String = "Going to delete a product"
-    static let SellProduct: String = "Sell product"
-    static let GoingToSell: String = "Going to sell a product"
-    static let SelectABuyer: String = "Going to select a buyer"
-    static let NewParagraph: String = "\n"
-    static let Filtros: String = "Filtros"
-    static let CATEGORIES: String = "CATEGORÍAS"
-    static let number50: String = "50"
-    static let TITLE: String = "TITLE"
-    static let NewProduct: String = "Producto nuevo"
-    static let ModifyProduct: String = "Modify product"
-    static let CATEGORY: String = "CATEGORÍA"
-    static let SelectCategory: String = "Selecciona categoría"
-    static let DESCRIPTION: String = "DESCRIPCIÓN"
-    static let PRICE: String = "PRECIO"
-    static let price0000: String = "00.00"
-    static let PriceHasToBe: String = "Price has to be a number"
-    static let OnePhotoAtLess: String = "At less 1 photo is required"
-    static let Chat: String = "Chat"
-    static let MissingSeller: String = "Missing seller"
-    static let arrowIcon: String = "arrow.left"
+    // MARK: TabBar
+    
+    static let shopping: String = "Shopping"
+    static let profile: String = "Profile"
+    
+    // MARK: Firestore DB
+    
+    static let firestoreUsers: String = "users"
+    static let firestoreProducts: String = "products"
+    static let firestoreSearches: String = "searches"
+    static let firestoreDiscussions: String = "discussions"
+    static let firestoreMessages: String = "messages"
+    static let firestoreJpegDirectory: String = "image/jpeg"
+    
+    // MARK: LoginViewController
+    
+    static let iconApp: String = "iconApp"
+    static let email: String = "Email"
+    static let password: String = "Password"
+    static let username: String = "Username"
+    static let login: String = "Login"
+    static let register: String = "Register"
+    static let recoverPassword: String = "Recover password"
+    static let iconUp: String = "chevron.up"
+    static let typeEmail: String = "Type an email"
+    static let typePassword: String = "Type a password"
+    static let typeUsername: String = "Type an username"
+    
+    // MARK: MainViewController
+    
+    static let iconCategoryOff: String = "iconCategoryOff"
+    static let iconCategoryOn: String = "iconCategoryOn"
+    static let iconStar: String = "star.fill"
+    static let iconPlus: String = "plus"
     static let iconArchieveboxFill: String = "archivebox.fill"
     static let iconPersonFill: String = "person.fill"
-    static let locationIcon: String = "location.circle"
-    static let faceIcon: String = "faceid"
-    static let WarningImage: String = "exclamationmark.triangle"
-    static let Logout: String = "Logout"
-    static let UserLogout: String = "User logout"
-    static let GoingToLogout: String = "Going to logout"
-    static let fatalErrorAuth: String = "Configure Wallapoor authorization from options"
-    static let fatalErrorNeedLoc: String = "Wallapoor needs to get the locations to work"
-    static let usersFirebase: String = "users"
-    static let Euro: String = "€"
-    static let productsFirebase: String = "products"
-    static let jpegDirectory: String = "image/jpeg"
-    static let discussionsFirebase: String = "discussions"
-    static let messagesFirebase: String = "messages"
-    static let searchesFirebase: String = "searches"
-    static let Searches: String = "Searches"
-    static let Selling: String = "Selling"
-    static let Sold: String = "Sold"
-    static let Edit: String = "Edit"
-    static let Save: String = "Save"
-    static let UpdateProfile: String = "Update profile"
-    static let UpdatePurchase: String = "Update purchase"
-    static let PurchaseCompleted: String = "Purchase completed"
-    static let ProductDeleted: String = "Product deleted"
-    static let GoingToUpdate: String = "Going to update profile"
-    static let AvatarUpdated: String = "Avatar updated"
-    static let Shopping: String = "Shopping"
-    static let shopping: String = "shopping |"
+    static let newParagraph: String = "\n"
+    
+    // MARK: FiltersViewController
+    
+    static let filtersByCategory: String = "Filters by category"
+    static let filterByDistance: String = "Filter by distance"
+    static let iconCheckmark: String = "checkmark"
+    static let maxDistance: String = "50"
+    
+    // MARK: NewProductViewController
+    
+    static let newProduct: String = "New product"
+    static let modifyProduct: String = "Modify product"
+    static let title: String = "Title"
+    static let productName: String = "Product name"
+    static let category: String = "Category"
+    static let selectCategory: String = "Select a category"
+    static let description: String = "Description"
+    static let price: String = "Price"
+    static let priceHolder: String = "0"
+    static let euro: String = "€"
+    static let iconCameraFill: String = "camera.fill"
+    static let upload: String = "Upload"
+    static let update: String = "Update"
+    static let iconImageWarning: String = "exclamationmark.triangle"
+    
+    // MARK: DetailProductViewController
+    
+    static let modify: String = "Modify"
+    static let chat: String = "Chat"
+    static let deleteProduct: String = "Delete product"
+    static let lastEdition: String = "Last edition: "
+    static let dateFormat: String = "dd-MM-yyyy"
+    static let iconEye: String = "eye"
+    static let iconLocation: String = "location.circle"
+    static let iconAvatarHolder: String = "faceid"
+    static let shoppingPlusPipe: String = "shopping |"
     static let sales: String = "sales"
-    static let Deal: String = "deal"
-    static let Cell: String = "Cell"
-    static let Modify: String = "Modify"
-    static let AddedPurchaseToBuyer: String = "Added purchase to buyer"
-    static let TransactionCompleted: String = "Transaction completed"
-    static let DeleteProduct: String = "Delete product"
+    static let iconFacebook: String = "iconFacebook"
+    static let iconTwitter: String = "iconTwitter"
+    static let iconWhatsapp: String = "iconWhatsapp"
     
+    // MARK: ChatViewController
     
+    static let iconChevronLeft: String = "chevron.left"
+    static let iconDeal: String = "iconDeal"
     
+    // MARK: SellingViewController
     
+    static let selectBuyer: String = "Select buyer"
+    static let cell: String = "Cell"
     
+    // MARK: ProfileViewController
     
+    static let logout: String = "Logout"
+    static let selling: String = "Selling"
+    static let sold: String = "Sold"
+    static let searches: String = "Searches"
+    static let messages: String = "Messages"
+    static let save: String = "Save"
+    static let seller: String = "seller"
+    static let buyer: String = "buyer"
     
+    // MARK: UIAlertController
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    static let accept: String = "Accept"
+    static let cancel: String = "Cancel"
+    static let error: String = "Error"
+    static let userLogout: String = "User logout"
+    static let errorLocation: String = "Location error"
+    static let appNeedLocation: String = "Wallapoor needs to get the locations to work"
+    static let warning: String = "Warning"
+    static let missingData: String = "Missing data"
+    static let passwordRecovered: String = "Password recovered\nCheck your email"
+    static let saveSearch: String = "Save search"
+    static let nameForSearch: String = "Name for search"
+    static let success: String = "Success"
+    static let productUploaded: String = "Product uploaded"
+    static let info: String = "Info"
+    static let productDeleted: String = "Product deleted"
+    static let uploadProduct: String = "Upload product"
+    static let goingToUpload: String = "Going to upload a product"
+    static let priceHasToBe: String = "Price has to be a number"
+    static let photoRequired: String = "At less 1 photo is required"
+    static let goingToDelete: String = "Going to delete a product"
+    static let missingSeller: String = "Missing seller"
+    static let productUpdated: String = "Product updated"
+    static let purchasingProcess: String = "Purchasing process"
+    static let buyerSelected: String = "Buyer has been selected"
+    static let purchaseCompleted: String = "Purchase completed"
+    static let goingToLogout: String = "Going to logout"
+    static let updateProfile: String = "Update profile"
+    static let goingToUpdate: String = "Going to update profile"
+    static let profileUpdated: String = "Profile updated"
+    static let personalSearchSaved: String = "Personal search saved"
 }

@@ -12,29 +12,36 @@ import CoreLocation
 protocol ProfileViewModelDelegate: class {
     func productCellViewModelsCreated()
     func searchViewModelsCreated()
+    func discussionViewModelsCreated()
     func filterApplied()
     func geocodeLocationed(location: String)
 }
 
 class ProfileViewModel {
     weak var delegate: ProfileViewModelDelegate?
-    /// Lista original con todos los productos del usuario descargados de Firebase DB
+    /// Lista original con todos los productos del usuario descargados de Firestore DB
     private var originalProductList: [ProductCellViewModel] = []
     /// Es la lista de la que tira el Collection View principal
     private var actualProductList: [ProductCellViewModel] = []
-    /// Lista original con todos las busquedas de usuario descargadas de Firebase DB
+    /// Lista original con todos las busquedas de usuario descargadas de Firestore DB
     private var originalSearchList: [Search] = []
+    /// Lista original con todas las discussions del usuario descargadas de Firestore DB
+    private var originalDiscussionList: [DiscussionCellViewModel] = []
 
     
     // MARK: Life Cycle
     
     func viewWasLoaded() {
         self.setAddress()
-        self.getUserProducts()
-        self.getUserSearches()
     }
     
+    func viewWasAppear() {
+        self.getUserProducts()
+        self.getUserSearches()
+        self.getUserDiscussions()
+    }
     
+
     // MARK: Public Functions
     
     func numberOfItems(in section: Int) -> Int {
@@ -45,12 +52,20 @@ class ProfileViewModel {
         return actualProductList[indexPath.row]
     }
     
-    func numberOfRows(in section: Int) -> Int {
+    func numberOfSearches(in section: Int) -> Int {
         return originalSearchList.count
     }
 
-    func getRowViewModel(at indexPath: IndexPath) -> Search {
+    func getSearchViewModel(at indexPath: IndexPath) -> Search {
         return originalSearchList[indexPath.row]
+    }
+    
+    func numberOfDiscussions(in section: Int) -> Int {
+        return originalDiscussionList.count
+    }
+
+    func getDiscussionViewModel(at indexPath: IndexPath) -> DiscussionCellViewModel {
+        return originalDiscussionList[indexPath.row]
     }
     
     func filterByState(state: ProductState){
@@ -164,6 +179,69 @@ class ProfileViewModel {
         })
     }
     
+    fileprivate func getUserDiscussions() {
+        Managers.managerDiscussionFirestore = DiscussionFirestore()
+        Managers.managerDiscussionFirestore?.selectDiscussionByUser(user: MainViewModel.user, field: Constants.seller, onSuccess: { [weak self] sellerDiscussions in
+            
+            /// Una vez tenemos las Discussion en las que el usuario es seller obtenemos las que es buyer
+            /// Esto es porque Firestore no permite consultas OR
+            Managers.managerDiscussionFirestore?.selectDiscussionByUser(user: MainViewModel.user, field: Constants.buyer, onSuccess: { buyerDiscussions in
+                /// Liberamos memoria
+                Managers.managerDiscussionFirestore = nil
+                
+                /// Unimos ambas listas en el modelo y las mapeamos al modelo de celda
+                let discussions = sellerDiscussions + buyerDiscussions
+                var discussionCellViewModels: [DiscussionCellViewModel] = [DiscussionCellViewModel]()
+                var count: Int = 1
+                
+                for discussion in discussions {
+                    self?.getProduct(productId: discussion.productId, onSuccess: { product in
+                        /// Comprobamos que el producto se ha recuperado
+                        if let product = product {
+                            discussionCellViewModels.append(DiscussionCellViewModel(discussion: discussion, product: product))
+                            
+                        } /*else {
+                            let emptyProduct = Product.init(seller: String(), title: String(), category: Category.homes, description: String(), price: 0, photos: [String()], heightMainphoto: 0)
+                            discussionCellViewModels.append(DiscussionCellViewModel(discussion: discussion, product: emptyProduct))
+                        }*/
+                        
+                        if count == discussions.count {
+                            self?.originalDiscussionList = discussionCellViewModels
+                            /// Informamos al controlador para el repintado
+                            self?.delegate?.discussionViewModelsCreated()
+                        }
+                        count += 1
+                        
+                    }, onError: { _ in })
+                }
+                
+            }, onError: { error in
+                /// Ha habido error raro
+                print(error.localizedDescription)
+            })
+            
+        }, onError: { error in
+            /// Ha habido error raro
+            print(error.localizedDescription)
+        })
+    }
+    
+    fileprivate func getProduct(productId: String, onSuccess: @escaping (Product?) -> Void, onError: ErrorClosure?) {
+        Managers.managerProductFirestore?.selectProductById(productId: productId, onSuccess: { product in
+            DispatchQueue.main.async {
+                onSuccess(product)
+            }
+            
+        }, onError: { error in
+            if let retError = onError {
+                DispatchQueue.main.async {
+                    retError(error)
+                }
+            }
+        })
+    }
+    
+
     fileprivate func uploadImages(image: UIImage, onSuccess: @escaping (_ urlList: String) -> Void, onError: ErrorClosure?) {
         let fileName = "\(UUID().uuidString).jpg"
         Managers.managerStorageFirebase = StorageFirebase()

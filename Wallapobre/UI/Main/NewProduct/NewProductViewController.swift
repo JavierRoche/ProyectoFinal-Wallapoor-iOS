@@ -34,20 +34,24 @@ class NewProductViewController: UIViewController {
     
     lazy var titleLabel: UILabel = {
         let label: UILabel = UILabel()
-        label.font = UIFont.fontStyle14Regular
+        label.font = UIFont.fontStyle16SemiBold
         label.textColor = UIColor.black
         label.numberOfLines = 1
-        label.text = Constants.TITLE
+        label.text = Constants.title
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     lazy var titleTextField: UITextField = {
         let textField: UITextField = UITextField()
-        textField.placeholder = Constants.NewProduct
+        textField.placeholder = Constants.productName
         textField.font = UIFont.fontStyle16Regular
         textField.textColor = UIColor.black
         textField.borderStyle = UITextField.BorderStyle.roundedRect
+        textField.tintColor = UIColor.tangerine
+        textField.layer.borderColor = UIColor.tangerine.cgColor
+        textField.layer.borderWidth = 1
+        textField.layer.cornerRadius = 4.0
         textField.autocorrectionType = UITextAutocorrectionType.no
         textField.keyboardType = UIKeyboardType.default
         textField.returnKeyType = UIReturnKeyType.done
@@ -59,20 +63,24 @@ class NewProductViewController: UIViewController {
     
     lazy var categoryLabel: UILabel = {
         let label: UILabel = UILabel()
-        label.font = UIFont.fontStyle14Regular
+        label.font = UIFont.fontStyle16SemiBold
         label.textColor = UIColor.black
         label.numberOfLines = 1
-        label.text = Constants.CATEGORY
+        label.text = Constants.category
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     lazy var categoryTextField: UITextField = {
         let textField: UITextField = UITextField()
-        textField.placeholder = Constants.SelectCategory
+        textField.placeholder = Constants.selectCategory
         textField.font = UIFont.fontStyle16Regular
         textField.textColor = UIColor.black
         textField.borderStyle = UITextField.BorderStyle.roundedRect
+        textField.tintColor = UIColor.tangerine
+        textField.layer.borderColor = UIColor.tangerine.cgColor
+        textField.layer.borderWidth = 1
+        textField.layer.cornerRadius = 4.0
         textField.inputView = categoryPicker
         textField.delegate = self
         textField.translatesAutoresizingMaskIntoConstraints = false
@@ -81,6 +89,7 @@ class NewProductViewController: UIViewController {
     
     lazy var categoryPicker: UIPickerView = {
         let picker: UIPickerView = UIPickerView()
+        picker.backgroundColor = UIColor.lightTangerine
         picker.delegate = self
         picker.dataSource = self
         return picker
@@ -88,10 +97,10 @@ class NewProductViewController: UIViewController {
     
     lazy var descriptionLabel: UILabel = {
         let label: UILabel = UILabel()
-        label.font = UIFont.fontStyle14Regular
+        label.font = UIFont.fontStyle16SemiBold
         label.textColor = UIColor.black
         label.numberOfLines = 1
-        label.text = Constants.DESCRIPTION
+        label.text = Constants.description
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -102,11 +111,12 @@ class NewProductViewController: UIViewController {
         textView.textColor = UIColor.black
         textView.showsVerticalScrollIndicator = true
         textView.isScrollEnabled = true
-        textView.layer.borderColor = CGColor.init(srgbRed: 196/255.0, green: 196/255.0, blue: 196/255.0, alpha: 0.75)
-        textView.layer.borderWidth = 1.0;
-        textView.layer.cornerRadius = 5.0;
+        textView.layer.borderColor = UIColor.tangerine.cgColor
+        textView.layer.borderWidth = 1.0
+        textView.layer.cornerRadius = 5.0
         textView.autocorrectionType = UITextAutocorrectionType.no
         textView.returnKeyType = UIReturnKeyType.done
+        textView.tintColor = UIColor.tangerine
         textView.delegate = self
         textView.translatesAutoresizingMaskIntoConstraints = false
         return textView
@@ -114,27 +124,40 @@ class NewProductViewController: UIViewController {
     
     lazy var priceLabel: UILabel = {
         let label: UILabel = UILabel()
-        label.font = UIFont.fontStyle14Regular
+        label.font = UIFont.fontStyle16SemiBold
         label.textColor = UIColor.black
         label.numberOfLines = 1
-        label.text = Constants.PRICE
+        label.text = Constants.price
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     lazy var priceTextField: UITextField = {
         let textField: UITextField = UITextField()
-        textField.placeholder = Constants.price0000
+        textField.placeholder = Constants.priceHolder
         textField.font = UIFont.fontStyle16Regular
+        textField.textAlignment = .right
         textField.textColor = UIColor.black
+        textField.tintColor = UIColor.tangerine
         textField.borderStyle = UITextField.BorderStyle.roundedRect
+        textField.layer.borderColor = UIColor.tangerine.cgColor
+        textField.layer.borderWidth = 1.0
+        textField.layer.cornerRadius = 5.0
         textField.autocorrectionType = UITextAutocorrectionType.no
         textField.keyboardType = UIKeyboardType.numberPad
         textField.returnKeyType = UIReturnKeyType.done
-        textField.clearButtonMode = UITextField.ViewMode.whileEditing
         textField.delegate = self
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
+    }()
+    
+    lazy var euroLabel: UILabel = {
+        let label: UILabel = UILabel()
+        label.font = UIFont.fontStyle20SemiBold
+        label.textColor = UIColor.black
+        label.text = Constants.euro
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
     }()
     
     lazy var firstStack: UIStackView = {
@@ -145,7 +168,6 @@ class NewProductViewController: UIViewController {
     
     lazy var secondStack: UIStackView = {
         let stack: UIStackView = UIStackView()
-        stack.spacing = 32
         stack.translatesAutoresizingMaskIntoConstraints = false
         return stack
     }()
@@ -156,9 +178,8 @@ class NewProductViewController: UIViewController {
         image.isUserInteractionEnabled = true
         image.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(pickPhoto)))
         image.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(deletePhoto)))
-        image.image = UIImage.init(systemName: Constants.cameraIcon)
-        image.layer.masksToBounds = true
-        image.layer.cornerRadius = 8.0
+        image.image = UIImage.init(systemName: Constants.iconCameraFill)
+        image.tintColor = UIColor.lightTangerine
         image.translatesAutoresizingMaskIntoConstraints = false
         return image
     }()
@@ -169,9 +190,8 @@ class NewProductViewController: UIViewController {
         image.isUserInteractionEnabled = true
         image.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(pickPhoto)))
         image.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(deletePhoto)))
-        image.image = UIImage.init(systemName: Constants.cameraIcon)
-        image.layer.masksToBounds = true
-        image.layer.cornerRadius = 8.0
+        image.image = UIImage.init(systemName: Constants.iconCameraFill)
+        image.tintColor = UIColor.lightTangerine
         image.translatesAutoresizingMaskIntoConstraints = false
         return image
     }()
@@ -182,9 +202,8 @@ class NewProductViewController: UIViewController {
         image.isUserInteractionEnabled = true
         image.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(pickPhoto)))
         image.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(deletePhoto)))
-        image.image = UIImage.init(systemName: Constants.cameraIcon)
-        image.layer.masksToBounds = true
-        image.layer.cornerRadius = 8.0
+        image.image = UIImage.init(systemName: Constants.iconCameraFill)
+        image.tintColor = UIColor.lightTangerine
         image.translatesAutoresizingMaskIntoConstraints = false
         return image
     }()
@@ -195,9 +214,8 @@ class NewProductViewController: UIViewController {
         image.isUserInteractionEnabled = true
         image.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(pickPhoto)))
         image.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(deletePhoto)))
-        image.image = UIImage.init(systemName: Constants.cameraIcon)
-        image.layer.masksToBounds = true
-        image.layer.cornerRadius = 8.0
+        image.image = UIImage.init(systemName: Constants.iconCameraFill)
+        image.tintColor = UIColor.lightTangerine
         image.translatesAutoresizingMaskIntoConstraints = false
         return image
     }()
@@ -220,7 +238,7 @@ class NewProductViewController: UIViewController {
         self.viewModel = viewModel
         super.init(nibName: String(describing: NewProductViewController.self), bundle: nil)
         
-        self.title = Constants.NewProduct
+        self.title = Constants.newProduct
         UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.font: UIFont.fontStyle17Bold]
     }
 
@@ -250,14 +268,13 @@ class NewProductViewController: UIViewController {
     // MARK: User Interactions
     
     @objc private func tapOnCancel() {
-        /// Eliminamos el controlador
         self.dismiss(animated: true, completion: nil)
     }
     
     @objc private func tapOnUpload() {
         /// Chequeo de datos y confirmacion de usuario
         if areDataRight() {
-            self.showAlert(forInput: false, onlyAccept: false, title: Constants.UploadProduct, message: Constants.GoingToUpload) { [weak self] _ in
+            self.showAlert(forInput: false, onlyAccept: false, title: Constants.uploadProduct, message: Constants.goingToUpload) { [weak self] _ in
                 /// Iniciamos la animacion de waiting y bloqueamos la pantalla
                 guard let position = self?.view.center, let activityIndicator = self?.activityIndicator else { return }
                 self?.activityIndicator.center = position
@@ -287,19 +304,19 @@ class NewProductViewController: UIViewController {
         DispatchQueue.main.async { [weak self] in
             switch imageView {
             case self?.photo1Image:
-                self?.photo1Image.image = UIImage.init(systemName: Constants.cameraIcon)
+                self?.photo1Image.image = UIImage.init(systemName: Constants.iconCameraFill)
                 break
                 
             case self?.photo2Image:
-                self?.photo2Image.image = UIImage.init(systemName: Constants.cameraIcon)
+                self?.photo2Image.image = UIImage.init(systemName: Constants.iconCameraFill)
                 break
                 
             case self?.photo3Image:
-                self?.photo3Image.image = UIImage.init(systemName: Constants.cameraIcon)
+                self?.photo3Image.image = UIImage.init(systemName: Constants.iconCameraFill)
                 break
                 
             case self?.photo4Image:
-                self?.photo4Image.image = UIImage.init(systemName: Constants.cameraIcon)
+                self?.photo4Image.image = UIImage.init(systemName: Constants.iconCameraFill)
                 break
                 
             default:
@@ -313,19 +330,19 @@ class NewProductViewController: UIViewController {
     
     fileprivate func configureUI() {
         /// Creacion del boton de cancelar y publicar
-        let cancelLeftBarButtonItem: UIBarButtonItem = UIBarButtonItem(title: Constants.Cancel, style: .plain, target: self, action: #selector(tapOnCancel))
-        //cancelLeftBarButtonItem.tintColor = UIColor.tangerine
+        let cancelLeftBarButtonItem: UIBarButtonItem = UIBarButtonItem(title: Constants.cancel, style: .plain, target: self, action: #selector(tapOnCancel))
+        cancelLeftBarButtonItem.tintColor = UIColor.tangerine
         navigationItem.leftBarButtonItem = cancelLeftBarButtonItem
         navigationItem.leftBarButtonItem?.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.fontStyle17Regular], for: .normal)
         
-        let postRightBarButtonItem: UIBarButtonItem = UIBarButtonItem(title: Constants.Upload, style: .plain, target: self, action: #selector(tapOnUpload))
-        //postLeftBarButtonItem.tintColor = UIColor.tangerine
-        navigationItem.rightBarButtonItem = postRightBarButtonItem
+        let uploadRightBarButtonItem: UIBarButtonItem = UIBarButtonItem(title: Constants.upload, style: .plain, target: self, action: #selector(tapOnUpload))
+        uploadRightBarButtonItem.tintColor = UIColor.tangerine
+        navigationItem.rightBarButtonItem = uploadRightBarButtonItem
         navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.fontStyle17SemiBold], for: .normal)
         
         /// El interespaciado de los stack hay que definirlo una vez el objeto creado
-        firstStack.setCustomSpacing(32, after: photo1Image)
-        secondStack.setCustomSpacing(32, after: photo3Image)
+        firstStack.setCustomSpacing(64, after: photo1Image)
+        secondStack.setCustomSpacing(64, after: photo3Image)
         
         /// Se informan los campos si se inicio el controller para modificacion
         self.setProductToModify()
@@ -336,8 +353,8 @@ class NewProductViewController: UIViewController {
         guard let product = self.viewModel.originalProduct else { return }
         
         /// Cambiamos el valor del titulo y del boton
-        self.title = Constants.ModifyProduct
-        navigationItem.rightBarButtonItem?.title = Constants.Update
+        self.title = Constants.modifyProduct
+        navigationItem.rightBarButtonItem?.title = Constants.update
         
         /// Informamos las cajas de texto
         titleTextField.text = product.title
@@ -355,7 +372,7 @@ class NewProductViewController: UIViewController {
                             self?.photo1Image.image = value.image
                             
                         case .failure(_):
-                            self?.photo1Image.image = UIImage(systemName: Constants.WarningImage)
+                            self?.photo1Image.image = UIImage(systemName: Constants.iconImageWarning)
                         }
                     }
                     
@@ -366,7 +383,7 @@ class NewProductViewController: UIViewController {
                             self?.photo2Image.image = value.image
                             
                         case .failure(_):
-                            self?.photo2Image.image = UIImage(systemName: Constants.WarningImage)
+                            self?.photo2Image.image = UIImage(systemName: Constants.iconImageWarning)
                         }
                     }
                     
@@ -377,7 +394,7 @@ class NewProductViewController: UIViewController {
                             self?.photo3Image.image = value.image
                             
                         case .failure(_):
-                            self?.photo3Image.image = UIImage(systemName: Constants.WarningImage)
+                            self?.photo3Image.image = UIImage(systemName: Constants.iconImageWarning)
                         }
                     }
                     
@@ -388,7 +405,7 @@ class NewProductViewController: UIViewController {
                             self?.photo4Image.image = value.image
                             
                         case .failure(_):
-                            self?.photo4Image.image = UIImage(systemName: Constants.WarningImage)
+                            self?.photo4Image.image = UIImage(systemName: Constants.iconImageWarning)
                         }
                     }
                 }
@@ -398,38 +415,38 @@ class NewProductViewController: UIViewController {
     
     fileprivate func areDataRight() -> Bool {
         guard let title = titleTextField.text, let description = descriptionTextView.text, let price = priceTextField.text, let category = categoryTextField.text else {
-            self.showAlert(title: Constants.Warning, message: Constants.MissingData)
+            self.showAlert(title: Constants.warning, message: Constants.missingData)
             return false
         }
         
         if title.isEmpty || description.isEmpty || price.isEmpty || category.isEmpty {
-            self.showAlert(title: Constants.Warning, message: Constants.MissingData)
+            self.showAlert(title: Constants.warning, message: Constants.missingData)
             return false
         }
         
         guard let _: Int = Int(price) else {
-            self.showAlert(title: Constants.Warning, message: Constants.PriceHasToBe)
+            self.showAlert(title: Constants.warning, message: Constants.priceHasToBe)
             return false
         }
         
-        if photo1Image.image != UIImage.init(systemName: Constants.cameraIcon) {
+        if photo1Image.image != UIImage.init(systemName: Constants.iconCameraFill) {
             if let image = photo1Image.image { imagesList.append(image) }
         }
         
-        if photo2Image.image != UIImage.init(systemName: Constants.cameraIcon) {
+        if photo2Image.image != UIImage.init(systemName: Constants.iconCameraFill) {
             if let image = photo2Image.image { imagesList.append(image) }
         }
         
-        if photo3Image.image != UIImage.init(systemName: Constants.cameraIcon) {
+        if photo3Image.image != UIImage.init(systemName: Constants.iconCameraFill) {
             if let image = photo3Image.image { imagesList.append(image) }
         }
         
-        if photo4Image.image != UIImage.init(systemName: Constants.cameraIcon) {
+        if photo4Image.image != UIImage.init(systemName: Constants.iconCameraFill) {
             if let image = photo4Image.image { imagesList.append(image) }
         }
         
         if imagesList.count == 0 {
-            self.showAlert(title: Constants.Warning, message: Constants.OnePhotoAtLess)
+            self.showAlert(title: Constants.warning, message: Constants.photoRequired)
             return false
         }
         return true
@@ -448,7 +465,6 @@ class NewProductViewController: UIViewController {
         /// Subimos las imagenes al Cloud Firebase y esperamos recibir la lista de urls
         self.viewModel.uploadImages(images: self.imagesList, onSuccess: { [weak self] urlList in
             /// Para layout Pinterest necesito guardar la altura de la imagen principal
-            // Tushe - Pinterest
             guard let mainImage = self?.imagesList[0] else { return }
             let height = self?.viewModel.getHeightMainImage(image: mainImage)
             
@@ -464,12 +480,12 @@ class NewProductViewController: UIViewController {
                 self?.dismiss(animated: true, completion: nil)
                 
             }, onError: { [weak self] error in
-                self?.showAlert(title: Constants.Error, message: error.localizedDescription)
+                self?.showAlert(title: Constants.error, message: error.localizedDescription)
             })
             
             
         }) { [weak self] error in
-            self?.showAlert(title: Constants.Error, message: error.localizedDescription)
+            self?.showAlert(title: Constants.error, message: error.localizedDescription)
         }
     }
     
@@ -493,12 +509,12 @@ class NewProductViewController: UIViewController {
                 self?.dismiss(animated: true, completion: nil)
                 
             }, onError: { error in
-                self?.showAlert(title: Constants.Error, message: error.localizedDescription)
+                self?.showAlert(title: Constants.error, message: error.localizedDescription)
             })
             
             
         }) { [weak self] error in
-            self?.showAlert(title: Constants.Error, message: error.localizedDescription)
+            self?.showAlert(title: Constants.error, message: error.localizedDescription)
         }
     }
 }

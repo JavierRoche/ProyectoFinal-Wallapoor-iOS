@@ -13,9 +13,8 @@ extension FiltersViewController {
         view = UIView()
         
         view.addSubview(backgroundView)
-        view.addSubview(filtersLabel)
+        view.addSubview(filtersByCategoryLabel)
         view.addSubview(acceptButton)
-        view.addSubview(categoriesLabel)
         view.addSubview(motorLabel)
         view.addSubview(textileLabel)
         view.addSubview(homesLabel)
@@ -28,102 +27,107 @@ extension FiltersViewController {
         view.addSubview(informaticSwitch)
         view.addSubview(sportsSwitch)
         view.addSubview(servicesSwitch)
+        view.addSubview(filterByDistanceLabel)
+        view.addSubview(valueSliderLabel)
         view.addSubview(slider)
-        view.addSubview(sliderLabel)
     }
     
     func setConstraints() {
         NSLayoutConstraint.activate([
-            self.backgroundView.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height / 2),
-            self.backgroundView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            self.backgroundView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            self.backgroundView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
+            backgroundView.topAnchor.constraint(equalTo: filtersByCategoryLabel.topAnchor, constant: -32.0),
+            backgroundView.bottomAnchor.constraint(equalTo: valueSliderLabel.bottomAnchor, constant: 32.0),
+            backgroundView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 64.0),
+            backgroundView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -64.0),
+            backgroundView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            backgroundView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
         
         NSLayoutConstraint.activate([
-            self.filtersLabel.topAnchor.constraint(equalTo: backgroundView.topAnchor, constant: 16.0),
-            self.filtersLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+            filtersByCategoryLabel.topAnchor.constraint(equalTo: backgroundView.topAnchor, constant: 32.0),
+            filtersByCategoryLabel.centerXAnchor.constraint(equalTo: backgroundView.centerXAnchor)
         ])
         
         NSLayoutConstraint.activate([
-            self.acceptButton.topAnchor.constraint(equalTo: backgroundView.topAnchor, constant: 16.0),
-            self.acceptButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
+            acceptButton.centerYAnchor.constraint(equalTo: backgroundView.topAnchor),
+            acceptButton.centerXAnchor.constraint(equalTo: backgroundView.trailingAnchor),
+            acceptButton.widthAnchor.constraint(equalToConstant: 40.0),
+            acceptButton.heightAnchor.constraint(equalToConstant: 40.0)
         ])
         
         NSLayoutConstraint.activate([
-            self.categoriesLabel.topAnchor.constraint(equalTo: filtersLabel.bottomAnchor, constant: 16.0),
-            self.categoriesLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor)
+            motorLabel.topAnchor.constraint(equalTo: filtersByCategoryLabel.bottomAnchor, constant: 32.0),
+            motorLabel.leadingAnchor.constraint(equalTo: backgroundView.leadingAnchor, constant: 16.0)
         ])
         
         NSLayoutConstraint.activate([
-            self.motorLabel.topAnchor.constraint(equalTo: categoriesLabel.bottomAnchor, constant: 16.0),
-            self.motorLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor)
+            motorSwitch.centerYAnchor.constraint(equalTo: motorLabel.centerYAnchor),
+            motorSwitch.trailingAnchor.constraint(equalTo: backgroundView.trailingAnchor, constant: -16.0)
         ])
         
         NSLayoutConstraint.activate([
-            self.motorSwitch.topAnchor.constraint(equalTo: categoriesLabel.bottomAnchor, constant: 16.0),
-            self.motorSwitch.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16.0)
+            textileLabel.topAnchor.constraint(equalTo: motorLabel.bottomAnchor, constant: 16.0),
+            textileLabel.leadingAnchor.constraint(equalTo: backgroundView.leadingAnchor, constant: 16.0)
         ])
         
         NSLayoutConstraint.activate([
-            self.textileLabel.topAnchor.constraint(equalTo: motorLabel.bottomAnchor, constant: 16.0),
-            self.textileLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor)
+            textileSwitch.centerYAnchor.constraint(equalTo: textileLabel.centerYAnchor),
+            textileSwitch.trailingAnchor.constraint(equalTo: backgroundView.trailingAnchor, constant: -16.0)
         ])
         
         NSLayoutConstraint.activate([
-            self.textileSwitch.topAnchor.constraint(equalTo: motorSwitch.bottomAnchor, constant: 8.0),
-            self.textileSwitch.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16.0)
+            homesLabel.topAnchor.constraint(equalTo: textileLabel.bottomAnchor, constant: 16.0),
+            homesLabel.leadingAnchor.constraint(equalTo: backgroundView.leadingAnchor, constant: 16.0)
         ])
         
         NSLayoutConstraint.activate([
-            self.homesLabel.topAnchor.constraint(equalTo: textileLabel.bottomAnchor, constant: 16.0),
-            self.homesLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor)
+            homesSwitch.centerYAnchor.constraint(equalTo: homesLabel.centerYAnchor),
+            homesSwitch.trailingAnchor.constraint(equalTo: backgroundView.trailingAnchor, constant: -16.0)
         ])
         
         NSLayoutConstraint.activate([
-            self.homesSwitch.topAnchor.constraint(equalTo: textileSwitch.bottomAnchor, constant: 8.0),
-            self.homesSwitch.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16.0)
+            informaticLabel.topAnchor.constraint(equalTo: homesLabel.bottomAnchor, constant: 16.0),
+            informaticLabel.leadingAnchor.constraint(equalTo: backgroundView.leadingAnchor, constant: 16.0)
         ])
         
         NSLayoutConstraint.activate([
-            self.informaticLabel.topAnchor.constraint(equalTo: homesLabel.bottomAnchor, constant: 16.0),
-            self.informaticLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor)
+            informaticSwitch.centerYAnchor.constraint(equalTo: informaticLabel.centerYAnchor),
+            informaticSwitch.trailingAnchor.constraint(equalTo: backgroundView.trailingAnchor, constant: -16.0)
         ])
         
         NSLayoutConstraint.activate([
-            self.informaticSwitch.topAnchor.constraint(equalTo: homesSwitch.bottomAnchor, constant: 8.0),
-            self.informaticSwitch.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16.0)
+            sportsLabel.topAnchor.constraint(equalTo: informaticLabel.bottomAnchor, constant: 16.0),
+            sportsLabel.leadingAnchor.constraint(equalTo: backgroundView.leadingAnchor, constant: 16.0)
         ])
         
         NSLayoutConstraint.activate([
-            self.sportsLabel.topAnchor.constraint(equalTo: informaticLabel.bottomAnchor, constant: 16.0),
-            self.sportsLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor)
+            sportsSwitch.centerYAnchor.constraint(equalTo: sportsLabel.centerYAnchor),
+            sportsSwitch.trailingAnchor.constraint(equalTo: backgroundView.trailingAnchor, constant: -16.0)
         ])
         
         NSLayoutConstraint.activate([
-            self.sportsSwitch.topAnchor.constraint(equalTo: informaticSwitch.bottomAnchor, constant: 8.0),
-            self.sportsSwitch.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16.0)
+            servicesLabel.topAnchor.constraint(equalTo: sportsLabel.bottomAnchor, constant: 16.0),
+            servicesLabel.leadingAnchor.constraint(equalTo: backgroundView.leadingAnchor, constant: 16.0)
         ])
         
         NSLayoutConstraint.activate([
-            self.servicesLabel.topAnchor.constraint(equalTo: sportsLabel.bottomAnchor, constant: 16.0),
-            self.servicesLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor)
+            servicesSwitch.centerYAnchor.constraint(equalTo: servicesLabel.centerYAnchor),
+            servicesSwitch.trailingAnchor.constraint(equalTo: backgroundView.trailingAnchor, constant: -16.0)
         ])
         
         NSLayoutConstraint.activate([
-            self.servicesSwitch.topAnchor.constraint(equalTo: sportsSwitch.bottomAnchor, constant: 8.0),
-            self.servicesSwitch.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16.0)
+            filterByDistanceLabel.topAnchor.constraint(equalTo: servicesLabel.bottomAnchor, constant: 32.0),
+            filterByDistanceLabel.centerXAnchor.constraint(equalTo: backgroundView.centerXAnchor)
         ])
         
         NSLayoutConstraint.activate([
-            self.slider.topAnchor.constraint(equalTo: servicesLabel.bottomAnchor, constant: 32.0),
-            self.slider.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            self.slider.widthAnchor.constraint(equalToConstant: 160)
+            valueSliderLabel.topAnchor.constraint(equalTo: filterByDistanceLabel.bottomAnchor, constant: 16.0),
+            valueSliderLabel.leadingAnchor.constraint(equalTo: backgroundView.leadingAnchor, constant: 32.0)
         ])
         
         NSLayoutConstraint.activate([
-            self.sliderLabel.topAnchor.constraint(equalTo: servicesSwitch.bottomAnchor, constant: 8.0),
-            self.sliderLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16.0)
+            slider.centerYAnchor.constraint(equalTo: valueSliderLabel.centerYAnchor),
+            slider.trailingAnchor.constraint(equalTo: backgroundView.trailingAnchor, constant: -32.0),
+            slider.widthAnchor.constraint(equalToConstant: 160)
         ])
     }
 }
