@@ -50,9 +50,6 @@ class MainViewModel {
             self?.filterByDistance(productCellViewModels: productCellViewModels, onSuccess: { productCellViewModels in
                 self?.originalProductList = productCellViewModels
                 self?.updateSituation(initialSituation: true, productCellViewModels: productCellViewModels)
-                
-                /// Avisamos al controlador de que el modelo de datos se ha creado
-                self?.delegate?.productCellViewModelsCreated()
             })
             
         }, onError: { error in

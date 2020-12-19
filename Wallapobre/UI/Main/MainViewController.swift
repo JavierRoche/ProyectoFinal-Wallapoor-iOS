@@ -15,13 +15,13 @@ class MainViewController: UIViewController {
         return pinterestLayout
     }()
 
-    lazy var flowLayout: UICollectionViewFlowLayout = {
+    /*lazy var flowLayout: UICollectionViewFlowLayout = {
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         layout.itemSize = CGSize(width: (UIScreen.main.bounds.width / 2) - (layout.minimumInteritemSpacing * 3), height: 180.0)
         layout.minimumInteritemSpacing = 16.0
         layout.sectionInset = UIEdgeInsets(top: 16.0, left: 16.0, bottom: 16.0, right: 16.0)
         return layout
-    }()
+    }()*/
     
     lazy var collectionView: UICollectionView = {
         let collection = UICollectionView(frame: .zero, collectionViewLayout: pinterestLayout)
@@ -243,6 +243,7 @@ extension MainViewController: MainViewModelDelegate {
         
         DispatchQueue.main.async { [weak self] in
             self?.collectionView.reloadData()
+            self?.collectionView.collectionViewLayout.invalidateLayout()
         }
     }
 }

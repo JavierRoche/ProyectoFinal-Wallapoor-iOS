@@ -37,9 +37,24 @@ class LoginViewModel {
         return nil
     }
     
-    func checkUserLogged(onSuccess: @escaping (User?) -> Void, onError: ErrorClosure?) {
-        /// Chequea usuario logueado en UserAuthoritation
-        Managers.managerUserAuthoritation!.isLogged(onSuccess: { user in
+    func logUser(user: User, onSuccess: @escaping (User) -> Void, onError: ErrorClosure?) {
+        /// Obtenemos el manager del interactor y hacemos el login
+        Managers.managerUserAuthoritation!.login(user: user, onSuccess: { user in
+            DispatchQueue.main.async {
+                onSuccess(user)
+            }
+            
+        }) { error in
+            if let retError = onError {
+                DispatchQueue.main.async {
+                    retError(error)
+                }
+            }
+        }
+    }
+    
+    func registerUser(user: User, onSuccess: @escaping (User) -> Void, onError: ErrorClosure?) {
+        Managers.managerUserAuthoritation!.register(user: user, onSuccess: { user in
             DispatchQueue.main.async {
                 onSuccess(user)
             }
@@ -75,37 +90,6 @@ class LoginViewModel {
             
         }) { error in
             /// Ha habido error raro
-            if let retError = onError {
-                DispatchQueue.main.async {
-                    retError(error)
-                }
-            }
-        }
-    }
-    
-    func logUser(user: User, onSuccess: @escaping (User) -> Void, onError: ErrorClosure?) {
-        /// Obtenemos el manager del interactor y hacemos el login
-        Managers.managerUserAuthoritation!.login(user: user, onSuccess: { user in
-            DispatchQueue.main.async {
-                onSuccess(user)
-            }
-            
-        }) { error in
-            if let retError = onError {
-                DispatchQueue.main.async {
-                    retError(error)
-                }
-            }
-        }
-    }
-    
-    func registerUser(user: User, onSuccess: @escaping (User) -> Void, onError: ErrorClosure?) {
-        Managers.managerUserAuthoritation!.register(user: user, onSuccess: { user in
-            DispatchQueue.main.async {
-                onSuccess(user)
-            }
-            
-        }) { error in
             if let retError = onError {
                 DispatchQueue.main.async {
                     retError(error)

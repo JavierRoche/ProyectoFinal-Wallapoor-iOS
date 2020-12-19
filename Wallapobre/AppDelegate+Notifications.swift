@@ -5,11 +5,10 @@
 //  Created by APPLE on 18/11/2020.
 //  Copyright © 2020 Javier Roche. All rights reserved.
 //
-
+/*
 import UIKit
 import UserNotifications
 import Firebase
-import FirebaseMessaging
 
 extension AppDelegate: UNUserNotificationCenterDelegate {
     /// Para registrarnos a las notificaciones push hay que usar unas funciones del Delegate
@@ -47,3 +46,4 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         // TODO
     }
 }
+*/

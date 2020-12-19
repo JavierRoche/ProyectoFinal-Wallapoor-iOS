@@ -8,7 +8,6 @@
 
 import Foundation
 import FirebaseAuth
-import FirebaseFirestore
 
 class UserAuthoritation: UserAuthorizationManager {
     
@@ -52,7 +51,7 @@ class UserAuthoritation: UserAuthorizationManager {
     
     /// Metodo para recuperar la pass de un email
     public func recoverPassword(user: User, onSuccess: @escaping (User) -> Void, onError: ErrorClosure?) {
-        /// Enviamos el recover pass al email del user a Firebase
+        /// Enviamos el recover pass al email del user
         Auth.auth().sendPasswordReset(withEmail: user.email) { (error) in
             /// Nos aseguramos de que ha llegado un error y la clausura de error existe
             if let error = error, let retError = onError {

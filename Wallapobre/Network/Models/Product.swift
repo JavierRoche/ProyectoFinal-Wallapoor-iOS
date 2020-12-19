@@ -82,7 +82,7 @@ class Product {
         let description = json["description"] as? String ?? String()
         let price = json["price"] as? Int ?? 0
         let viewers = json["viewers"] as? Int ?? 0
-        let sentDate = json["sentDate"] as? Date ?? Date()
+        let sentDate = json["sentdate"] as? Timestamp ?? Timestamp.init(date: Date())
         let heightMainphoto = json["heightmainphoto"] as? Double ?? 0.0
         let photo2 = json["photo2"] as? String ?? String()
         let photo3 = json["photo3"] as? String ?? String()
@@ -101,7 +101,7 @@ class Product {
         }
         
         /// Creamos y devolvemos el objeto Product
-        return Product.init(productId: productId, seller: seller, state: ProductState(rawValue: state)!, title: title, category: category, description: description, price: price, viewers: viewers, sentDate: sentDate, photos: photos, heightMainphoto: heightMainphoto)
+        return Product.init(productId: productId, seller: seller, state: ProductState(rawValue: state)!, title: title, category: category, description: description, price: price, viewers: viewers, sentDate: sentDate.dateValue(), photos: photos, heightMainphoto: heightMainphoto)
     }
     
     class func toSnapshot(product: Product) -> [String: Any] {

@@ -31,7 +31,7 @@ class UserFirestore: UserFirestoreManager {
                     }
                 }
                 
-                /// Existen busquedas de usuario
+                /// Existen usuario usuarios y los mapeamos al modelo
                 if let snapshot = snapshot {
                     let users: [User] = snapshot.documents
                         .compactMap({ User.mapper(document: $0) })

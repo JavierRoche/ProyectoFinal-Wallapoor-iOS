@@ -208,8 +208,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "151"
             endingLineNumber = "151"
-            landmarkName = "viewDidAppear(_:)"
-            landmarkType = "7">
+            landmarkName = "unknown"
+            landmarkType = "0">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -242,38 +242,6 @@
             endingLineNumber = "185"
             landmarkName = "getUserDiscussions()"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "C3DF3D7E-5219-4AA1-8027-EAD7C2AF934B - bb988b674baea504"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.Array&lt;Wallapobre.Discussion&gt;) -&gt; () in Wallapobre.ProfileViewModel.(getUserDiscussions in _A89FF1B0E70100D4106C5492D11EA285)() -&gt; ()"
-                  moduleName = "Wallapobre"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/apple/Documents/Proyecto/iOS/Wallapobre/Wallapobre/UI/Profile/ProfileViewModel.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "185"
-                  endingLineNumber = "185"
-                  offsetFromSymbolStart = "92">
-               </Location>
-               <Location
-                  uuid = "C3DF3D7E-5219-4AA1-8027-EAD7C2AF934B - 545fe246deb2fb60"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.Array&lt;Wallapobre.Discussion&gt;) -&gt; () in closure #1 (Swift.Array&lt;Wallapobre.Discussion&gt;) -&gt; () in Wallapobre.ProfileViewModel.(getUserDiscussions in _A89FF1B0E70100D4106C5492D11EA285)() -&gt; ()"
-                  moduleName = "Wallapobre"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/apple/Documents/Proyecto/iOS/Wallapobre/Wallapobre/UI/Profile/ProfileViewModel.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "181"
-                  endingLineNumber = "181"
-                  offsetFromSymbolStart = "198">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -290,6 +258,38 @@
             endingLineNumber = "187"
             landmarkName = "getUserDiscussions()"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "C1FFD1DA-D48F-42E3-8A55-0C312005C3BB - bb988b674baea504"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Array&lt;Wallapobre.Discussion&gt;) -&gt; () in Wallapobre.ProfileViewModel.(getUserDiscussions in _A89FF1B0E70100D4106C5492D11EA285)() -&gt; ()"
+                  moduleName = "Wallapobre"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/apple/Documents/Proyecto/iOS/Wallapobre/Wallapobre/UI/Profile/ProfileViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "188"
+                  endingLineNumber = "188"
+                  offsetFromSymbolStart = "92">
+               </Location>
+               <Location
+                  uuid = "C1FFD1DA-D48F-42E3-8A55-0C312005C3BB - 545fe246deb2fb60"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Array&lt;Wallapobre.Discussion&gt;) -&gt; () in closure #1 (Swift.Array&lt;Wallapobre.Discussion&gt;) -&gt; () in Wallapobre.ProfileViewModel.(getUserDiscussions in _A89FF1B0E70100D4106C5492D11EA285)() -&gt; ()"
+                  moduleName = "Wallapobre"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/apple/Documents/Proyecto/iOS/Wallapobre/Wallapobre/UI/Profile/ProfileViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "184"
+                  endingLineNumber = "184"
+                  offsetFromSymbolStart = "198">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -306,38 +306,6 @@
             endingLineNumber = "195"
             landmarkName = "getUserDiscussions()"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "F9B61706-9B69-40E9-9B31-602ED36A6569 - 545fe246deb2fb60"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.Array&lt;Wallapobre.Discussion&gt;) -&gt; () in closure #1 (Swift.Array&lt;Wallapobre.Discussion&gt;) -&gt; () in Wallapobre.ProfileViewModel.(getUserDiscussions in _A89FF1B0E70100D4106C5492D11EA285)() -&gt; ()"
-                  moduleName = "Wallapobre"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/apple/Documents/Proyecto/iOS/Wallapobre/Wallapobre/UI/Profile/ProfileViewModel.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "195"
-                  endingLineNumber = "195"
-                  offsetFromSymbolStart = "837">
-               </Location>
-               <Location
-                  uuid = "F9B61706-9B69-40E9-9B31-602ED36A6569 - 1153478b92180ea3"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.Optional&lt;Wallapobre.Product&gt;) -&gt; () in closure #1 (Swift.Array&lt;Wallapobre.Discussion&gt;) -&gt; () in closure #1 (Swift.Array&lt;Wallapobre.Discussion&gt;) -&gt; () in Wallapobre.ProfileViewModel.(getUserDiscussions in _A89FF1B0E70100D4106C5492D11EA285)() -&gt; ()"
-                  moduleName = "Wallapobre"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/apple/Documents/Proyecto/iOS/Wallapobre/Wallapobre/UI/Profile/ProfileViewModel.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "191"
-                  endingLineNumber = "191"
-                  offsetFromSymbolStart = "264">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy

@@ -14,7 +14,7 @@ protocol PinterestLayoutDelegate: class {
 
 class PinterestLayout: UICollectionViewLayout {
     /// El delegate al que consultamos el alto de la celda en un determinado indexPath
-    weak var delegate: PinterestLayoutDelegate?
+    weak var delegate: PinterestLayoutDelegate!
     var numberOfColumns: Int = 2
     /// Distancia entre elementos
     private let interItemSpacing: CGFloat = 6
@@ -41,9 +41,13 @@ class PinterestLayout: UICollectionViewLayout {
     /// Metodo llamado por UIKit la primera vez que se calcula el layout y tantas veces como el layout sea invalidado implícita o explicitamente
     /// Aprovechamos para calcular el layout y cachearlo en un array, para luego no tener que volver a hacerlo en layoutAttributesForElements / layoutAttributesForItem
     override func prepare() {
+        /// Soluciona el problema decremental del contentHeight: parte 1
+        cache.removeAll()
         /// Si la cache esta vacia no tenemos que hacerlo
-        guard cache.isEmpty, let collectionView = collectionView else { return }
-
+        guard cache.isEmpty == true || cache.isEmpty == false, let collectionView = collectionView else { return }
+        /// Soluciona el problema decremental del contentHeight: parte 2
+        contentHeight = 0
+        
         let columnWidth = contentWidth / CGFloat(numberOfColumns)
         var xOffset: [CGFloat] = []
         for column in 0 ..< numberOfColumns {
@@ -54,10 +58,15 @@ class PinterestLayout: UICollectionViewLayout {
 
         /// Recorremos todos los items de la seccion (1)
         for item in 0 ..< collectionView.numberOfItems(inSection: 0) {
+            /*if collectionView.numberOfItems(inSection: 0) < 3 {
+                collectionView.isScrollEnabled = false
+            } else {
+                collectionView.isScrollEnabled = true
+            }*/
             let indexPath = IndexPath(item: item, section: 0)
 
             /// Calculo del frame del item actual
-            let photoHeight = delegate?.collectionView(collectionView, heightForCellAtIndexPath: indexPath) ?? 180
+            let photoHeight = delegate!.collectionView(collectionView, heightForCellAtIndexPath: indexPath)
             let height = interItemSpacing * 2 + photoHeight
             let frame = CGRect(x: xOffset[column],
                                y: yOffset[column],

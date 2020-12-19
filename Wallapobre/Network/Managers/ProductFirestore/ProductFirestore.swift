@@ -84,7 +84,7 @@ class ProductFirestore: ProductFirestoreManager {
                     }
                 }
                 
-                /// El usuario existia
+                /// El producto existe
                 if let snapshot = snapshot {
                     /// Si no hay ningun producto salimos. No saldra la foto
                     guard let document: QueryDocumentSnapshot = snapshot.documents.first else { return }
@@ -99,7 +99,7 @@ class ProductFirestore: ProductFirestoreManager {
         /// Pasamos el producto al tipo QueryDocumentSnapshot
         let snapshot = Product.toSnapshot(product: product)
         
-        /// Insertamos el usuario en BD
+        /// Insertamos el producto en BD
         self.db
             .addDocument(data: snapshot) { (error) in
                 if let error = error, let retError = onError {
