@@ -18,12 +18,9 @@ extension MainViewController: UICollectionViewDelegate {
         let detailProductViewModel = DetailProductViewModel.init(product: viewModel.getCellViewModel(at: indexPath).product)
         let detailProductViewController = DetailProductViewController.init(viewModel: detailProductViewModel)
         detailProductViewController.delegate = self
-        self.navigationController?.pushViewController(detailProductViewController, animated: true)
-        /*
         
-        let navigationController: UINavigationController = UINavigationController.init(rootViewController: detailProductViewController)
-        navigationController.modalPresentationStyle = .fullScreen
-        self.present(navigationController, animated: true, completion: nil)*/
+        /// Presentamos el ViewController
+        self.navigationController?.pushViewController(detailProductViewController, animated: true)
     }
 }
 

@@ -150,13 +150,6 @@ class ProfileViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         segmentControl.frame = CGRect(x: 32, y: 250, width: (self.view.bounds.width - 64), height: 31)
         view.addSubview(segmentControl)
-        /*NSLayoutConstraint.activate([
-            segmentControl.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 100.0),
-            segmentControl.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32.0),
-            segmentControl.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32.0),
-            segmentControl.widthAnchor.constraint(equalTo: view.widthAnchor),
-            segmentControl.heightAnchor.constraint(equalToConstant: 31.0)
-        ])*/
         
         /// Los productos se cargan aqui por si ha entrado desde el profile a modifcarlo
         self.viewModel.viewWasAppear()

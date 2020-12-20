@@ -131,9 +131,10 @@ class DetailProductViewController: UIViewController {
         self.showAlert(forInput: false, onlyAccept: false, title: Constants.deleteProduct, message: Constants.goingToDelete) { [weak self] _ in
             /// Borramos el producto de la base de datos de Firestore
             self?.viewModel.deleteProduct(onSuccess: {
+                /// Cerramos la ventana de detalle
+                self?.navigationController?.popViewController(animated: true)
                 /// Informamos al MainViewController para que notifique al usuario
                 self?.delegate?.productDeleted()
-                self?.dismiss(animated: true, completion: nil)
                     
             }, onError: { error in
                 self?.showAlert(title: Constants.error, message: error.localizedDescription)

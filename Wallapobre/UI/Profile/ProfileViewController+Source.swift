@@ -13,15 +13,13 @@ import UIKit
 
 extension ProfileViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionView.deselectItem(at: indexPath, animated: true)
+        
         let detailProductViewModel: DetailProductViewModel = DetailProductViewModel.init(product: viewModel.getCellViewModel(at: indexPath).product)
         let detailProductViewController: DetailProductViewController = DetailProductViewController.init(viewModel: detailProductViewModel)
-        //detailProductViewController.delegate = self
-        let navigationController: UINavigationController = UINavigationController.init(rootViewController: detailProductViewController)
-        navigationController.modalPresentationStyle = .fullScreen
-        self.present(navigationController, animated: true, completion: nil)
         
         /// Presentamos el ViewController
-        collectionView.deselectItem(at: indexPath, animated: true)
+        self.navigationController?.pushViewController(detailProductViewController, animated: true)
     }
 }
 
